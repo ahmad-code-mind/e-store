@@ -1,7 +1,7 @@
 @extends('admin.admin')
 
-@section('styles')
-<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+@section('style')
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 @endsection
 
 @section('content')
@@ -28,36 +28,38 @@
     </div>
 </div>
 @section('script')
-<script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script>
 $(document).ready(function() {
     $('#categoryTable').DataTable({
+        // select: true,
         processing: true,
         serverSide: true,
-        ajax: "{!! route('admin.category.index') !!}",
+        ajax: "{!! route('get.category') !!}",
         columns: [{
                 data: 'id',
-                name: 'id'
+                name: 'id',
             },
             {
                 data: 'name',
-                name: 'name'
+                name: 'name',
             },
             {
                 data: 'slug',
-                name: 'slug'
+                name: 'slug',
             },
             {
                 data: 'description',
-                name: 'description'
+                name: 'description',
             },
             {
                 data: 'image',
-                name: 'image'
+                name: 'image',
             },
             {
                 data: 'action',
-                name: 'action'
+                name: 'action',
+                searchable: false,
             },
         ],
         "columnDefs": [{

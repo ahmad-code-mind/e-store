@@ -9,6 +9,7 @@ class Categories extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'id';
     protected $fillable = [
         'name',
         'slug',
@@ -18,6 +19,6 @@ class Categories extends Model
         'image',
         'meta_title',
         'meta_descrip',
-        'meta_keywords'
+        'meta_keywords',
     ];
 }

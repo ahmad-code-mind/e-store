@@ -4,20 +4,20 @@
         </a></div>
     <div class="sidebar-wrapper">
         <ul class="nav">
-            <li class="nav-item active  ">
-                <a class="nav-link" href="./dashboard.html">
+            <li class="nav-item {{ Request::is('/') ? 'active':'' }}  ">
+                <a class="nav-link" href="{{ url('/') }}">
                     <i class="material-icons">dashboard</i>
                     <p>Dashboard</p>
                 </a>
             </li>
-            <li class="nav-item ">
-                <a class="nav-link" href="{{ route('admin.category.index') }}">
+            <li class="nav-item {{ Request::is('categories') ? 'active':'' }} ">
+                <a class="nav-link" href="{{ url('/categories') }}">
                     <i class="material-icons">category</i>
                     <p>Category</p>
                 </a>
             </li>
-            <li class="nav-item ">
-                <a class="nav-link" href="./tables.html">
+            <li class="nav-item {{ Request::is('') ? 'active':'' }} ">
+                <a class="nav-link" href="#">
                     <i class="material-icons">content_paste</i>
                     <p>Table List</p>
                 </a>
