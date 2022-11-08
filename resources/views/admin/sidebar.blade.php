@@ -16,10 +16,10 @@
                     <p>Category</p>
                 </a>
             </li>
-            <li class="nav-item {{ Request::is('') ? 'active':'' }} ">
-                <a class="nav-link" href="#">
-                    <i class="material-icons">content_paste</i>
-                    <p>Table List</p>
+            <li class="nav-item {{ Request::is('products') ? 'active':'' }} ">
+                <a class="nav-link" href="{{ url('/products') }}">
+                    <i class="material-icons">inventory2</i>
+                    <p>Products</p>
                 </a>
             </li>
         </ul>

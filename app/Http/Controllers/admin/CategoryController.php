@@ -14,7 +14,8 @@ class CategoryController extends Controller
         return view('admin.category.index');
     }
     public function show(){
-        $category = Categories::select(['id', 'name', 'slug','description', 'image']);
+        $category = Categories::all();
+        // select(['id', 'name', 'slug','description', 'image']);
         return DataTables::of($category)->addColumn('image', function($category){
             $img = '<img src='.asset('upload/image/category/'.$category->image).' width="50" height="50"
             class="img img-responsive">';
@@ -101,6 +102,6 @@ class CategoryController extends Controller
             }
         }
         $category->delete();
-        return redirect('/categories')->with('status','Category Updated Successfully');
+        return redirect('/categories')->with('status','Category Deleted Successfully');
     }
 }

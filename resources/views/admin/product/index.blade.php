@@ -7,19 +7,21 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h2 class="mb-2">Categories</h2>
-        <a href="{{ route('admin.category.add') }}">
-            <button class="btn btn-outline-primary">Add New Category</button>
+        <h2 class="mb-2">Products</h2>
+        <a href="{{ route('admin.product.add') }}">
+            <button class="btn btn-outline-primary">Add New Product</button>
         </a>
     </div>
     <div class="card-body">
-        <table class="table table-bordered text-center" id="categoryTable">
+        <table class="table table-bordered text-center" id="productTable">
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Category</th>
                     <th>Name</th>
                     <th>Slug</th>
                     <th>Description</th>
+                    <th>Selling Price</th>
                     <th>Image</th>
                     <th>Action</th>
                 </tr>
@@ -31,14 +33,18 @@
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script>
 $(document).ready(function() {
-    $('#categoryTable').DataTable({
+    $('#productTable').DataTable({
         // select: true,
         processing: true,
         serverSide: true,
-        ajax: "{!! route('get.category') !!}",
+        ajax: "{!! route('get.product') !!}",
         columns: [{
                 data: 'id',
                 name: 'id',
+            },
+            {
+                data: 'category',
+                name: 'category.name',
             },
             {
                 data: 'name',
@@ -49,8 +55,12 @@ $(document).ready(function() {
                 name: 'slug',
             },
             {
-                data: 'description',
-                name: 'description',
+                data: 'small_description',
+                name: 'small_description',
+            },
+            {
+                data: 'selling_price',
+                name: 'selling_price',
             },
             {
                 data: 'image',

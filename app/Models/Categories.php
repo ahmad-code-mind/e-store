@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Categories extends Model
 {
@@ -21,4 +22,8 @@ class Categories extends Model
         'meta_descrip',
         'meta_keywords',
     ];
+
+    public function product(){
+        return $this->hasMany(Product::class);
+    }
 }

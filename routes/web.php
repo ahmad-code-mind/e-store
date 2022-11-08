@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\admin\ProductController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -36,4 +37,14 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
     Route::put('edit-categories/{id}',[CategoryController::class, 'edit'])->name('edit-category');
     Route::get('delete-categories/{id}',[CategoryController::class, 'delete'])->name('delete-category');
     // ***********************************End Category**************************************  //
+
+    // *************************************Product*****************************************  //
+    Route::get('/products',[ProductController::class, 'index']);
+    Route::get('get-product',[ProductController::class, 'show'])->name('get.product');
+    Route::get('add-product',[ProductController::class, 'add'])->name('admin.product.add');
+    Route::post('store-product',[ProductController::class, 'store'])->name('store-product');
+    Route::get('show-edit-product/{id}',[ProductController::class, 'showedit'])->name('show-edit-product');
+    Route::put('edit-product/{id}',[ProductController::class, 'edit'])->name('edit-product');
+    Route::get('delete-product/{id}',[ProductController::class, 'delete'])->name('delete-product');
+    // ***********************************End Product***************************************  //
  });
