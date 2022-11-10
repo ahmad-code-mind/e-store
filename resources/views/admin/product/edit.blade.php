@@ -13,10 +13,10 @@
                 <div class="col-md-12 mb-3">
                     <label for="category" class="form-label">Category</label>
                     <select name="category" class="form-select">
-                        <option selected disabled>Select Category</option>
-                        @foreach ($category as $getcategory)
-                        <option value="{{$getcategory->id}}">{{$getcategory->name}}</option>
-                        @endforeach
+                        {{-- <option selected disabled>Select Category</option> --}}
+                        {{-- @foreach ($category as $getcategory) --}}
+                        <option value="{{$product->category->id}}">{{$product->category->name}}</option>
+                        {{-- @endforeach --}}
                     </select>
                 </div>
                 <div class="col-md-6 mb-3">

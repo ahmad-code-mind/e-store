@@ -10,14 +10,14 @@
                     <p>Dashboard</p>
                 </a>
             </li>
-            <li class="nav-item {{ Request::is('categories') ? 'active':'' }} ">
-                <a class="nav-link" href="{{ url('/categories') }}">
+            <li class="nav-item {{ Request::is('admin/category') ? 'active':'' }} ">
+                <a class="nav-link" href="{{ url('admin/category') }}">
                     <i class="material-icons">category</i>
                     <p>Category</p>
                 </a>
             </li>
-            <li class="nav-item {{ Request::is('products') ? 'active':'' }} ">
-                <a class="nav-link" href="{{ url('/products') }}">
+            <li class="nav-item {{ Request::is('admin/product') ? 'active':'' }} ">
+                <a class="nav-link" href="{{ url('admin/product') }}">
                     <i class="material-icons">inventory2</i>
                     <p>Products</p>
                 </a>
