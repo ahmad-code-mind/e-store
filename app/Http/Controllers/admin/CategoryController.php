@@ -60,7 +60,7 @@ class CategoryController extends Controller
         $category->meta_descrip = $request->input('meta_description');
 
         $category->save();
-        return redirect('/categories')->with('status','Category Added Successfully');
+        return redirect('admin/category')->with('status','Category Added Successfully');
     }
     public function showedit($id){
         $category = Categories::find($id);
@@ -89,7 +89,7 @@ class CategoryController extends Controller
         $category->meta_descrip = $request->input('meta_description');
 
         $category->update();
-        return redirect('/categories')->with('status','Category Updated Successfully');
+        return redirect('admin/category')->with('status','Category Updated Successfully');
     }
 
     public function delete($id){
@@ -102,6 +102,6 @@ class CategoryController extends Controller
             }
         }
         $category->delete();
-        return redirect('/categories')->with('status','Category Deleted Successfully');
+        return redirect('admin/category')->with('status','Category Deleted Successfully');
     }
 }

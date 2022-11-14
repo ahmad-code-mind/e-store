@@ -3,6 +3,8 @@
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\admin\ProductController;
+use App\Http\Controllers\admin\RoleAndPermissionController;
+use App\Http\Controllers\admin\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +30,18 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
  Route::middleware(['auth','isAdmin'])->group(function(){
     Route::get('/',[AdminController::class, 'index']);
 
+    // *************************************User****************************************  //
+    Route::prefix('admin/user')->group(function(){
+        Route::get('/',[UserController::class, 'index']);
+        Route::get('add',[UserController::class, 'add'])->name('admin.user.add');
+        Route::post('store',[UserController::class, 'store'])->name('store-user');
+        Route::get('get-user',[UserController::class, 'show'])->name('get.user');
+        Route::get('edit/{id}',[UserController::class, 'showedit'])->name('show-edit-user');
+        Route::put('edit/{id}',[UserController::class, 'edit'])->name('edit-user');
+        Route::get('delete/{id}',[UserController::class, 'delete'])->name('delete-user');
+    });
+    // ***********************************End User**************************************  //
+
     // *************************************Category****************************************  //
     Route::prefix('admin/category')->group(function(){
         Route::get('/',[CategoryController::class, 'index']);
@@ -51,4 +65,17 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
         Route::get('delete/{id}',[ProductController::class, 'delete'])->name('delete-product');
     });
     // ***********************************End Product***************************************  //
+
+    // *************************************Role*****************************************  //
+    Route::prefix('admin/role')->group(function(){
+        Route::get('/',[RoleAndPermissionController::class, 'index']);
+        Route::get('get',[RoleAndPermissionController::class, 'getAllRoles'])->name('get.role');
+        Route::get('permissions',[RoleAndPermissionController::class, 'assignPermission'])->name('get-permissions');
+        Route::post('store-Permission',[RoleAndPermissionController::class, 'storePermission'])->name('store-permission');
+        Route::post('store-Role',[RoleAndPermissionController::class, 'storeRole'])->name('store-role');
+        Route::get('permission/{id}',[RoleAndPermissionController::class, 'getAllPermissions'])->name('get-permissions');
+        // Route::put('edit/{id}',[ProductController::class, 'edit'])->name('edit-product');
+        // Route::get('delete/{id}',[ProductController::class, 'delete'])->name('delete-product');
+    });
+    // ***********************************End Role***************************************  //
  });

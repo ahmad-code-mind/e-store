@@ -70,7 +70,7 @@ class ProductController extends Controller
         $product->meta_description = $request->input('meta_description');
 
         $product->save();
-        return redirect('/products')->with('status','Product Added Successfully');
+        return redirect('admin/product')->with('status','Product Added Successfully');
     }
     public function showedit($id){
         $product = Product::find($id);
@@ -106,7 +106,7 @@ class ProductController extends Controller
         $product->meta_description = $request->input('meta_description');
 
         $product->update();
-        return redirect('/products')->with('status','Product Updated Successfully');
+        return redirect('admin/product')->with('status','Product Updated Successfully');
     }
 
     public function delete($id){
@@ -119,6 +119,6 @@ class ProductController extends Controller
             }
         }
         $product->delete();
-        return redirect('/products')->with('status','Product Deleted Successfully');
+        return redirect('admin/product')->with('status','Product Deleted Successfully');
     }
 }

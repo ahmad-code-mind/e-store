@@ -44,6 +44,7 @@
     <script src="{{ asset('backend/js/bootstrap-material-design.min.js') }}" defer></script>
     <script src="{{ asset('backend/js/perfect-scrollbar.jquery.min.js') }}" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     @if(Session('status'))
     <script>
     toastr.options = {
