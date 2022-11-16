@@ -18,12 +18,12 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <form id="assignPermissionForm" action="" method="POST">
+                        <form id="assignPermissionForm" action="{{ route('assign-permissions',  ['id' => $roles->id]) }}" method="POST">
                             @csrf
                             <div class="row">
                                 @foreach($permissions as $permission)
                                 <div class="col-md-4 col-6 mb-3">
-                                    <input type="checkbox" value="{{ $permission->id }}" id='{{ $permission->id }}' name="permission">
+                                    <input type="checkbox" value="{{ $permission->id }}" {{ ((App\Models\User::checkPermissionByRoleId($permission->id , $roleID)) == 1) ? 'checked' : '' }} id='{{ $permission->id }}' name="permission[]">
                                     <label for="{{ $permission->id }}">{{ $permission->name }}</label>
                                 </div>
                                 @endforeach

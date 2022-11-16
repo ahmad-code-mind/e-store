@@ -1,7 +1,12 @@
-<div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
-    <div class="logo"><a href="#" class="simple-text logo-normal">
+<div class="sidebar" data-color="rose" data-background-color="black" data-image="{{ asset('assets/img/sidebar-1.jpg') }}">
+    <div class="logo">
+        <a href="http://www.creative-tim.com" class="simple-text logo-mini">
+            ES
+          </a>
+        <a href="{{ url('/') }}" class="simple-text logo-normal">
             E-store
-        </a></div>
+        </a>
+    </div>
     <div class="sidebar-wrapper">
         <ul class="nav">
             <li class="nav-item {{ Request::is('/*') ? 'active':'' }}  ">
@@ -28,14 +33,13 @@
                     <p>Roles</p>
                 </a>
             </li>
-            @role('admin')
             <li class="nav-item {{ Request::is('admin/user*') ? 'active':'' }} ">
                 <a class="nav-link" href="{{ url('admin/user') }}">
                     <i class="material-icons">group</i>
                     <p>Users</p>
                 </a>
             </li>
-            @endrole
         </ul>
     </div>
+    <div class="sidebar-background"></div>
 </div>

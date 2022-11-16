@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -42,4 +43,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function checkPermissionByRoleId($permission_id, $role_id)
+    {
+        $status = DB::table('role_has_permissions')->where('permission_id', $permission_id)->where('role_id', $role_id)->get();
+        if (!$status->isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

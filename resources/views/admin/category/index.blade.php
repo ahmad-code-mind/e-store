@@ -8,9 +8,11 @@
 <div class="card">
     <div class="card-header">
         <h2 class="mb-2">Categories</h2>
+        @can("Add category")       
         <a href="{{ route('admin.category.add') }}">
             <button class="btn btn-outline-primary">Add New Category</button>
         </a>
+        @endcan
     </div>
     <div class="card-body">
         <table class="table table-bordered text-center" id="categoryTable">

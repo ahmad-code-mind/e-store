@@ -46,7 +46,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
     Route::prefix('admin/category')->group(function(){
         Route::get('/',[CategoryController::class, 'index']);
         Route::get('get-category',[CategoryController::class, 'show'])->name('get.category');
-        Route::get('add',[CategoryController::class, 'add'])->name('admin.category.add');
+        Route::group(['middleware' => ['permission:publish articles']], function () {
+            Route::get('add',[CategoryController::class, 'add'])->name('admin.category.add');
+        });
         Route::post('add',[CategoryController::class, 'store'])->name('add-category');
         Route::get('edit/{id}',[CategoryController::class, 'showedit'])->name('show-edit-category');
         Route::put('edit/{id}',[CategoryController::class, 'edit'])->name('edit-category');
@@ -74,6 +76,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
         Route::post('store-Permission',[RoleAndPermissionController::class, 'storePermission'])->name('store-permission');
         Route::post('store-Role',[RoleAndPermissionController::class, 'storeRole'])->name('store-role');
         Route::get('permission/{id}',[RoleAndPermissionController::class, 'getAllPermissions'])->name('get-permissions');
+        Route::post('assign-permission',[RoleAndPermissionController::class, 'assignPermissions'])->name('assign-permissions');
         // Route::put('edit/{id}',[ProductController::class, 'edit'])->name('edit-product');
         // Route::get('delete/{id}',[ProductController::class, 'delete'])->name('delete-product');
     });

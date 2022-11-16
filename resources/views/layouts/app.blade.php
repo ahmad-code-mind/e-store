@@ -15,17 +15,17 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ asset('frontend/css/bootstrap5.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/auth/css/bootstrap5.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/auth/css/app.css') }}">
 </head>
 
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                {{-- <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
-                </a>
+                </a> --}}
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -86,7 +86,7 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('frontend/js/bootstrap.bundle.min.js') }}" defer></script>
+    <script src="{{ asset('assets/auth/js/bootstrap.bundle.min.js') }}" defer></script>
 </body>
 
 </html>

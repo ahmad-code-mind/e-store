@@ -56,15 +56,21 @@ class RoleAndPermissionController extends Controller
         ->make(true);
     }
 
-    public function getAllPermissions($id)
+    public function getAllPermissions(Request $request,$id)
     {
+        // dd($request->id);
         $roles = Role::find($id);
         $permissions = Permission::all();
-        return view('admin.role.permissions',compact('roles','permissions'));
+        $roleID = $request->id;
+        return view('admin.role.permissions',compact('permissions','roles','roleID'));
     }
 
-    public function assignPermissions($request)
+    public function assignPermissions(Request $request)
     {
-        
+        $role = Role::findById($request->id);
+        $permission = $request->permission;
+        $role->syncPermissions($permission);
+        return redirect()->back()->with('status','Permission Assigned');
+        // dd($role);
     }
 }
