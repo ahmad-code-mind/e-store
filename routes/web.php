@@ -46,10 +46,10 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
     Route::prefix('admin/category')->group(function(){
         Route::get('/',[CategoryController::class, 'index']);
         Route::get('get-category',[CategoryController::class, 'show'])->name('get.category');
-        Route::group(['middleware' => ['permission:publish articles']], function () {
+        Route::group(['middleware' => ['permission:Add category']], function () {
             Route::get('add',[CategoryController::class, 'add'])->name('admin.category.add');
+            Route::post('add',[CategoryController::class, 'store'])->name('add-category');
         });
-        Route::post('add',[CategoryController::class, 'store'])->name('add-category');
         Route::get('edit/{id}',[CategoryController::class, 'showedit'])->name('show-edit-category');
         Route::put('edit/{id}',[CategoryController::class, 'edit'])->name('edit-category');
         Route::get('delete/{id}',[CategoryController::class, 'delete'])->name('delete-category');

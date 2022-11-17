@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Models\Categories;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 
@@ -42,24 +43,33 @@ class CategoryController extends Controller
 
     public function store(Request $request){
 
-        $category = new Categories;
-        if ($request->hasFile('image')){
-            $file = $request->file('image');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time().'.'.$extension;
-            $file->move('upload/image/category',$filename);
-            $category->image = $filename;
+        // dd($request->id);
+        // $category = new Categories;
+        // if ($request->hasFile('image')){
+        //     $file = $request->file('image');
+        //     $extension = $file->getClientOriginalExtension();
+        //     $filename = 'category-'.'.'.$extension;
+        //     $file->move('upload/image/category',$filename);
+        //     $category->image = $filename;
+        // }
+        $id = DB::table('categories')->insertGetId([
+            'name' => $request->input('name'),
+            'slug' => $request->input('slug'),
+            'description' => $request->input('description'),
+            'status' => $request->input('status') == TRUE? '1':'0',
+            'popular' => $request->input('popular') == TRUE? '1':'0',
+            'meta_title' => $request->input('meta_title'),
+            'meta_keywords' => $request->input('meta_keywords'),
+            'meta_descrip' => $request->input('meta_description'),
+        ]);
+        $image = 'category-'.$id.'.'.$request->file('image')->extension();
+        $imageSave = $request->image->move('upload/image/category',$image);
+        if ($imageSave){
+            $category = Categories::where('id',$id)->update([
+                'image' => $image
+            ]);
         }
-        $category->name = $request->input('name');
-        $category->slug = $request->input('slug');
-        $category->description = $request->input('description');
-        $category->status = $request->input('status') == TRUE? '1':'0';
-        $category->popular = $request->input('popular') == TRUE? '1':'0';
-        $category->meta_title = $request->input('meta_title');
-        $category->meta_keywords = $request->input('meta_keywords');
-        $category->meta_descrip = $request->input('meta_description');
-
-        $category->save();
+        // $category->save();
         return redirect('admin/category')->with('status','Category Added Successfully');
     }
     public function showedit($id){
@@ -96,9 +106,9 @@ class CategoryController extends Controller
         $category = Categories::find($id);
         if ($category->image)
         {
-            $path = 'upload/image/category'.$category->image;
+            $path = 'upload/image/category/'.$category->image;
             if (File::exists($path)){
-                File::delete($path);
+                unlink($path);
             }
         }
         $category->delete();
