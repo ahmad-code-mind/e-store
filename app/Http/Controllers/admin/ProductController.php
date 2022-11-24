@@ -5,16 +5,21 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Product;
 use App\Models\Categories;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return view('admin.product.index');
     }
-    public function show(){
+
+    public function show()
+    {
         $product = Product::with('category');
         return DataTables::of($product)
         ->addColumn('image', function($product){
@@ -40,84 +45,81 @@ class ProductController extends Controller
         ->rawColumns(['image','action'])
         ->make(true);
     }
-    public function add(){
-        //***Getting Category_id from Category Table*** //
+    public function add()
+    {
         $category = Categories::all();
         return view('admin.product.add',compact('category'));
     }
-    public function store(Request $request){
-        $product = new Product;
-        if ($request->hasFile('image')){
-            $file = $request->file('image');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time().'.'.$extension;
-            $file->move('upload/image/product',$filename);
-            $product->image = $filename;
+    public function store(Request $request)
+    {
+        $id = DB::table('categories')->insertGetId([
+            'category_id' => $request->input('category'),
+            'name' => $request->input('name'),
+            'slug' => $request->input('slug'),
+            'small_description' => $request->input('small_description'),
+            'description' => $request->input('description'),
+            'original_price' => $request->input('original_price'),
+            'selling_price' => $request->input('selling_price'),
+            'qty' => $request->input('qty'),
+            'tax' => $request->input('tax'),
+            'status' => $request->input('status') == TRUE? '1':'0',
+            'trending' => $request->input('trending') == TRUE? '1':'0',
+            'meta_title' => $request->input('meta_title'),
+            'meta_keywords' => $request->input('meta_keywords'),
+            'meta_descrip' => $request->input('meta_description'),
+            'created_at' => Carbon::now()
+        ]);
+        $image = 'product-'.$id.'.'.$request->file('image')->extension();
+        $imageSave = $request->image->move('upload/image/prosuct',$image);
+        if ($imageSave){
+            Product::where('id',$id)->update([
+                'image' => $image
+            ]);
         }
-        $product->category_id = $request->input('category');
-        $product->name = $request->input('name');
-        $product->slug = $request->input('slug');
-        $product->small_description = $request->input('small_description');
-        $product->description = $request->input('description');
-        $product->original_price = $request->input('original_price');
-        $product->selling_price = $request->input('selling_price');
-        $product->qty = $request->input('qty');
-        $product->tax = $request->input('tax');
-        $product->status = $request->input('status') == TRUE? '1':'0';
-        $product->trending = $request->input('trending') == TRUE? '1':'0';
-        $product->meta_title = $request->input('meta_title');
-        $product->meta_keywords = $request->input('meta_keywords');
-        $product->meta_description = $request->input('meta_description');
-
-        $product->save();
         return redirect('admin/product')->with('status','Product Added Successfully');
     }
-    public function showedit($id){
+    public function showedit($id)
+    {
         $product = Product::find($id);
         $category = Categories::all();
         return view('admin.product.edit',compact('product','category'));
     }
-    public function edit(request $request,$id){
-        $product = Product::find($id);
-        if ($request->hasFile('image')){
-            $path = 'upload/image/product'.$product->image;
-            if (File::exists($path)){
-                File::delete($path);
-            }
-            $file = $request->file('image');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time().'.'.$extension;
-            $file->move('upload/image/product',$filename);
-            $product->image = $filename;
+    public function edit(request $request,$id)
+    {
+        Product::find($id)->update([
+            'category_id' => $request->input('category'),
+            'name' => $request->input('name'),
+            'slug' => $request->input('slug'),
+            'small_description' => $request->input('small_description'),
+            'description' => $request->input('description'),
+            'original_price' => $request->input('original_price'),
+            'selling_price' => $request->input('selling_price'),
+            'qty' => $request->input('qty'),
+            'tax' => $request->input('tax'),
+            'status' => $request->input('status') == TRUE? '1':'0',
+            'trending' => $request->input('trending') == TRUE? '1':'0',
+            'meta_title' => $request->input('meta_title'),
+            'meta_keywords' => $request->input('meta_keywords'),
+            'meta_descrip' => $request->input('meta_description'),
+        ]);
+        $path = 'upload/image/product'.$request->image;
+        if (File::exists($path)){
+            File::delete($path);
         }
-        $product->category_id = $request->input('category');
-        $product->name = $request->input('name');
-        $product->slug = $request->input('slug');
-        $product->small_description = $request->input('small_description');
-        $product->description = $request->input('description');
-        $product->original_price = $request->input('original_price');
-        $product->selling_price = $request->input('selling_price');
-        $product->qty = $request->input('qty');
-        $product->tax = $request->input('tax');
-        $product->status = $request->input('status') == TRUE? '1':'0';
-        $product->trending = $request->input('trending') == TRUE? '1':'0';
-        $product->meta_title = $request->input('meta_title');
-        $product->meta_keywords = $request->input('meta_keywords');
-        $product->meta_description = $request->input('meta_description');
-
-        $product->update();
+        $image = 'product-'.$id.'.'.$request->file('image')->extension();
+        $imageSave = $request->image->move('upload/image/product',$image);
+        if ($imageSave){
+            Product::where('id',$id)->update([
+                'image' => $image
+            ]);
+        }
         return redirect('admin/product')->with('status','Product Updated Successfully');
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         $product = Categories::find($id);
-        if ($product->image)
-        {
-            $path = 'upload/image/product'.$product->image;
-            if (File::exists($path)){
-                File::delete($path);
-            }
-        }
+        unlink('upload/image/product/'.$product->image);
         $product->delete();
         return redirect('admin/product')->with('status','Product Deleted Successfully');
     }

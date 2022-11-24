@@ -4,17 +4,23 @@ namespace App\Http\Controllers\admin;
 
 use App\Models\Categories;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use App\Exports\CategoryExport;
+use App\Imports\CategoryImport;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
+use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Calculation\Category;
 
 class CategoryController extends Controller
 {
     public function index(){
         return view('admin.category.index');
     }
-    public function show(){
+    public function show()
+    {
         $category = Categories::all();
         // select(['id', 'name', 'slug','description', 'image']);
         return DataTables::of($category)->addColumn('image', function($category){
@@ -22,13 +28,13 @@ class CategoryController extends Controller
             class="img img-responsive">';
             return $img;
         })
-        ->editColumn('action', function($category){
+        ->editColumn('action', function($category)
+        {
             $btn = '
             <div class="d-grid gap-2 d-md-block"> 
-                <a href='.route('show-edit-category',$category->id).' class="btn btn-sm btn-outline-info"><i class="material-icons">edit</i>Edit
+                <a href='.route('show-edit-category',$category->id).' class="btn btn-sm btn-outline-info"><i class="material-icons">edit</i>
                 </a>
                 <a href='.route('delete-category',$category->id).' onclick="return confirm(\'Are you sure?\')" class="btn btn-sm btn-outline-danger"><i class="material-icons">delete</i>
-                Delete
                 </a>
             </div>';
             return $btn;
@@ -41,17 +47,8 @@ class CategoryController extends Controller
         return view('admin.category.add');
     }
 
-    public function store(Request $request){
-
-        // dd($request->id);
-        // $category = new Categories;
-        // if ($request->hasFile('image')){
-        //     $file = $request->file('image');
-        //     $extension = $file->getClientOriginalExtension();
-        //     $filename = 'category-'.'.'.$extension;
-        //     $file->move('upload/image/category',$filename);
-        //     $category->image = $filename;
-        // }
+    public function store(Request $request)
+    {
         $id = DB::table('categories')->insertGetId([
             'name' => $request->input('name'),
             'slug' => $request->input('slug'),
@@ -61,57 +58,72 @@ class CategoryController extends Controller
             'meta_title' => $request->input('meta_title'),
             'meta_keywords' => $request->input('meta_keywords'),
             'meta_descrip' => $request->input('meta_description'),
+            'created_at' => Carbon::now()
         ]);
         $image = 'category-'.$id.'.'.$request->file('image')->extension();
         $imageSave = $request->image->move('upload/image/category',$image);
         if ($imageSave){
-            $category = Categories::where('id',$id)->update([
+            Categories::where('id',$id)->update([
                 'image' => $image
             ]);
         }
         // $category->save();
         return redirect('admin/category')->with('status','Category Added Successfully');
     }
-    public function showedit($id){
+
+    public function showedit($id)
+    {
         $category = Categories::find($id);
         return view('admin.category.edit',compact('category'));
     }
-    public function edit(request $request,$id){
-        $category = Categories::find($id);
-        if ($request->hasFile('image')){
-            $path = 'upload/image/category'.$category->image;
-            if (File::exists($path)){
-                File::delete($path);
-            }
-            $file = $request->file('image');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time().'.'.$extension;
-            $file->move('upload/image/category',$filename);
-            $category->image = $filename;
+    
+    public function edit(request $request,$id)
+    {
+        Categories::find($id)->update([
+            'name' => $request->input('name'),
+            'slug' => $request->input('slug'),
+            'description' => $request->input('description'),
+            'status' => $request->input('status') == TRUE? '1':'0',
+            'popular' => $request->input('popular') == TRUE? '1':'0',
+            'meta_title' => $request->input('meta_title'),
+            'meta_keywords' => $request->input('meta_keywords'),
+            'meta_descrip' => $request->input('meta_description'),
+        ]);
+        $path = 'upload/image/category'.$request->image;
+        if (File::exists($path)){
+            File::delete($path);
         }
-        $category->name = $request->input('name');
-        $category->slug = $request->input('slug');
-        $category->description = $request->input('description');
-        $category->status = $request->input('status') == TRUE? '1':'0';
-        $category->popular = $request->input('popular') == TRUE? '1':'0';
-        $category->meta_title = $request->input('meta_title');
-        $category->meta_keywords = $request->input('meta_keywords');
-        $category->meta_descrip = $request->input('meta_description');
-
-        $category->update();
+        $image = 'category-'.$id.'.'.$request->file('image')->extension();
+        $imageSave = $request->image->move('upload/image/category',$image);
+        if ($imageSave){
+            Categories::where('id',$id)->update([
+                'image' => $image
+            ]);
+        }
         return redirect('admin/category')->with('status','Category Updated Successfully');
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         $category = Categories::find($id);
-        if ($category->image)
-        {
-            $path = 'upload/image/category/'.$category->image;
-            if (File::exists($path)){
-                unlink($path);
-            }
-        }
+        unlink('upload/image/category/'.$category->image);
         $category->delete();
         return redirect('admin/category')->with('status','Category Deleted Successfully');
+    }
+
+    public function exportCategory()
+    {
+        return Excel::download(new CategoryExport, 'Category.xlsx');
+    }
+    
+    public function getImportCategory()
+    {
+        return view('admin.category.bulkdata');
+    }
+
+    public function importCategory(Request $request)
+    {
+        Excel::import(new CategoryImport, $request->file('bulk'));
+        return redirect('admin/category');
     }
 }

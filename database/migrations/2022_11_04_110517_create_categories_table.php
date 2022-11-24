@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
             $table->longText('description');
-            $table->tinyInteger('status')->default('0');
-            $table->tinyInteger('popular')->default('0');
+            $table->string('status')->default('0');
+            $table->string('popular')->default('0');
             $table->string('image')->nullable();
             $table->string('meta_title');
             $table->string('meta_descrip');

@@ -20,6 +20,16 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('role_as')->default('0');
+            $table->string('image')->nullable();
+            $table->string('gender')->nullable();
+            $table->date('d_o_b')->nullable();
+            $table->string('phone', 20)->nullable();
+            $table->text('about')->nullable();
+            $table->string('address')->nullable();
+            $table->string('city', 50)->nullable();
+            $table->string('state', 50)->nullable();
+            $table->string('zip_code', 10)->nullable();
+            $table->string('country', 100)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

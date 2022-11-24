@@ -16,19 +16,19 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        // $faker = Faker::create();
+        $faker = Faker::create();
 
-        // foreach (range(1,100) as $index)
-        // DB::table('categories')->insert([
-        //     'name' => $faker->name,
-        //     'slug' => $faker->slug,
-        //     'description' => $faker->text,
-        //     'status' => $faker->randomElement(['0','1']),
-        //     'popular' => $faker->randomElement(['0','1']),
-        //     'image' => $faker->image('upload/image/category/',50,50,null,false),
-        //     'meta_title' => $faker->title,
-        //     'meta_descrip' => $faker->title,
-        //     'meta_keywords' => $faker->title,
-        // ]);
+        foreach (range(1,10) as $index)
+        DB::table('categories')->insert([
+            'name' => $faker->name,
+            'slug' => $faker->slug,
+            'description' => $faker->text,
+            'status' => $faker->randomElement(['0','1']),
+            'popular' => $faker->randomElement(['0','1']),
+            'image' => $faker->image(public_path('upload/image/category'),50,50,null,false),
+            'meta_title' => $faker->title,
+            'meta_descrip' => $faker->title,
+            'meta_keywords' => $faker->title,
+        ]);
     }
 }
