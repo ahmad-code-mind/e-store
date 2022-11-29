@@ -1,13 +1,15 @@
 <?php
 
-use App\Http\Controllers\admin\CategoryController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\admin\ProductController;
-use App\Http\Controllers\admin\ProfileController;
-use App\Http\Controllers\admin\RoleAndPermissionController;
-use App\Http\Controllers\admin\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\admin\ProductController;
+use App\Http\Controllers\admin\ProfileController;
+use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\RoleAndPermissionController;
+use App\Http\Controllers\frontend\MainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +29,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Google login
+Route::get('login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('login/google/callback', [LoginController::class, 'handleGoogleCallback']);
 
  Route::middleware(['auth','isAdmin'])->group(function(){
     Route::get('/',[AdminController::class, 'index']);
@@ -103,3 +109,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
     });
     // ***********************************End Role***************************************  //
  });
+ Route::get('/front',[MainController::class, 'index']);
