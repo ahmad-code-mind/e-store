@@ -53,7 +53,7 @@
           </div>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true"
+          <a class="nav-link" href="" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">
             <i class="material-icons">person</i>
             <p class="d-lg-none d-md-block">
@@ -62,7 +62,7 @@
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
             <a class="dropdown-item" href="{{ url('admin/profile') }}">Profile</a>
-            <a class="dropdown-item" href="#">Settings</a>
+            {{-- <a class="dropdown-item" href="{{ route('open-setting') }}">Settings</a> --}}
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();">

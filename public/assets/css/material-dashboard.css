@@ -20626,7 +20626,9 @@ a .material-icons {
 
 .fixed-plugin .dropdown .dropdown-menu .adjustments-line .bootstrap-switch {
     position: absolute;
-    right: 10px !important;
+    /* right: 10px !important;
+    bottom: 50px !important;
+    top: 50px !important; */
 }
 
 .fixed-plugin .dropdown .dropdown-menu .adjustments-line label {
@@ -32111,6 +32113,11 @@ select.selectpicker {
     padding-bottom: 0.5rem;
     padding-left: 1rem;
     font-size: 1.25rem;
+}
+
+model-viewer {
+    height: 50px;
+    width: 50px;
 }
 
 /*# sourceMappingURL=dashboard-pro.css.map */

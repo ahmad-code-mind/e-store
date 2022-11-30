@@ -5,7 +5,7 @@
                 <div class="col-lg-2 col-md-2">
                     <div class="logo">
                         <a href="index-2.html">
-                            <img src="{{ asset('frontend/assets/img/logo.png') }}" alt="" />
+                            <img src="{{ asset('frontend/img/logo.png') }}" alt="" />
                         </a>
                     </div>
                 </div>

@@ -26,6 +26,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/front',[MainController::class, 'index']);
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -46,6 +48,9 @@ Route::get('login/google/callback', [LoginController::class, 'handleGoogleCallba
         Route::get('edit/{id}',[ProfileController::class, 'showedit'])->name('show-edit-profile');
         Route::put('edit/{id}',[ProfileController::class, 'edit'])->name('edit-profile');
         // Route::get('delete/{id}',[UserController::class, 'delete'])->name('delete-user');
+
+        // open Setting Route //
+        // Route::get('open-setting',[ProfileController::class, 'openSetting'])->name('open-setting');
     });
     // ***********************************End User**************************************  //
 
@@ -109,4 +114,4 @@ Route::get('login/google/callback', [LoginController::class, 'handleGoogleCallba
     });
     // ***********************************End Role***************************************  //
  });
- Route::get('/front',[MainController::class, 'index']);
+ 

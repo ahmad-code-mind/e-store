@@ -24,8 +24,11 @@ class CategoryController extends Controller
         $category = Categories::all();
         // select(['id', 'name', 'slug','description', 'image']);
         return DataTables::of($category)->addColumn('image', function($category){
-            $img = '<img src='.asset('upload/image/category/'.$category->image).' width="50" height="50"
-            class="img img-responsive">';
+            // $img = '<img src='.asset('upload/image/category/'.$category->image).' width="50" height="50"
+            // class="img img-responsive">';
+            // return $img;
+            $img = '<model-viewer src='.asset('upload/image/category/'.$category->image).' camera-controls ;"
+            class="img img-responsive"></model-viewer>';
             return $img;
         })
         ->editColumn('action', function($category)

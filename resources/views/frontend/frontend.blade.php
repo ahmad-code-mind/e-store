@@ -1,29 +1,31 @@
 <!DOCTYPE html>
 <html lang="zxx">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content="Fashi Template" />
-    <meta name="keywords" content="Fashi, unica, creative, html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Fashi | Template</title>
+  <meta charset="UTF-8" />
+  <meta name="description" content="Fashi Template" />
+  <meta name="keywords" content="Fashi, unica, creative, html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Fashi | Template</title>
 
-    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&amp;display=swap"
-        rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&amp;display=swap"
+    rel="stylesheet" />
 
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/bootstrap.min.css') }}" type="text/css" />
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/font-awesome.min.css') }}" type="text/css" />
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/themify-icons.css') }}" type="text/css" />
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/elegant-icons.css') }}" type="text/css" />
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/owl.carousel.min.css') }}" type="text/css" />
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/nice-select.css') }}" type="text/css" />
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/slicknav.min.css') }}" type="text/css" />
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/style.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('frontend/css/bootstrap.min.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('frontend/css/font-awesome.min.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('frontend/css/themify-icons.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('frontend/css/elegant-icons.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('frontend/css/owl.carousel.min.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('frontend/css/nice-select.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('frontend/css/slicknav.min.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}" type="text/css" />
 
-    @yield('style')
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
-    {{-- <script nonce="79886520-4d96-47f0-9e69-cb4ae2976cc1">
-        (function (w, d) {
+  @yield('style')
+
+  {{-- <script nonce="79886520-4d96-47f0-9e69-cb4ae2976cc1">
+    (function (w, d) {
         !(function (e, f, g, h) {
           e.zarazData = e.zarazData || {};
           e.zarazData.executed = [];
@@ -86,46 +88,48 @@
             : e.addEventListener("DOMContentLoaded", zaraz.init);
         })(w, d, 0, "script");
       })(window, document);
-    </script> --}}
+  </script> --}}
 </head>
 <body>
-    {{-- <div id="preloder">
-        <div class="loader"></div>
-    </div> --}}
+  {{-- <div id="preloder">
+    <div class="loader"></div>
+  </div> --}}
 
+  <div class="">
     @include('frontend.header')
+    @include('frontend.featured.index')
+    @yield('content')
     @include('frontend.section')
     @include('frontend.footer')
+  </div>
 
 
 
-    <script src="{{ asset('frontend/assets/js/jquery-3.3.1.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/jquery.countdown.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/jquery.nice-select.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/jquery.zoom.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/jquery.dd.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/main.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('frontend/js/jquery-3.3.1.min.js')}}"></script>
+  <script src="{{ asset('frontend/js/bootstrap.min.js') }}"></script>
+  <script src="{{ asset('frontend/js/jquery-ui.min.js') }}"></script>
+  <script src="{{ asset('frontend/js/jquery.countdown.min.js') }}"></script>
+  <script src="{{ asset('frontend/js/jquery.nice-select.min.js') }}"></script>
+  <script src="{{ asset('frontend/js/jquery.zoom.min.js') }}"></script>
+  <script src="{{ asset('frontend/js/jquery.dd.min.js') }}"></script>
+  <script src="{{ asset('frontend/js/owl.carousel.min.js') }}"></script>
+  <script src="{{ asset('public/frontend/js/main.js') }}"></script>
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
 
       gtag("config", "UA-23581568-13");
-    </script>
-    <script defer
-        src="https://static.cloudflareinsights.com/beacon.min.js/vaafb692b2aea4879b33c060e79fe94621666317369993"
-        integrity="sha512-0ahDYl866UMhKuYcW078ScMalXqtFJggm7TmlUtp0UlD4eQk0Ixfnm5ykXKvGJNFjLMoortdseTfsRT8oCfgGA=="
-        data-cf-beacon='{"rayId":"76e2311a3e06d1dc","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2022.11.0","si":100}'
-        crossorigin="anonymous"></script>
+  </script>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vaafb692b2aea4879b33c060e79fe94621666317369993"
+    integrity="sha512-0ahDYl866UMhKuYcW078ScMalXqtFJggm7TmlUtp0UlD4eQk0Ixfnm5ykXKvGJNFjLMoortdseTfsRT8oCfgGA=="
+    data-cf-beacon='{"rayId":"76e2311a3e06d1dc","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2022.11.0","si":100}'
+    crossorigin="anonymous"></script>
 
-    @yield('script')
+  @yield('script')
 </body>
-
 </html>

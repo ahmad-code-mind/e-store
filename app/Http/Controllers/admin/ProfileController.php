@@ -65,4 +65,9 @@ class ProfileController extends Controller
         }
         return redirect('admin/profile')->with('status','Profile Updated Successfully');
     }
+
+    // public function openSetting()
+    // {
+    //     return view('admin.fixedplugin');
+    // }
 }

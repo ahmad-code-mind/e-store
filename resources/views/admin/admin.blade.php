@@ -22,6 +22,8 @@
   <link rel="stylesheet" href="{{ asset('assets/css/material-dashboard.css?v=2.2.2') }}">
   <link rel="stylesheet" href="{{ asset('assets/demo/demo.css') }}">
   {{-- End Styles --}}
+
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   @yield('style')
 </head>
 
@@ -36,7 +38,7 @@
       </div>
 
       @include('admin.footer')
-      @include('admin.fixedplugin')
+      {{-- @include('admin.fixedplugin') --}}
     </div>
   </div>
 

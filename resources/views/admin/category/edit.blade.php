@@ -26,12 +26,12 @@
                 <div class="col-md-6 mb-3">
                     <label for="status" class="form-label">Status</label>
                     <input type="checkbox" class="btn-check" {{ $category->status == '1' ? 'checked': ''}} id="status"
-                        name="status">
+                    name="status">
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="popular" class="form-label">Popular</label>
                     <input type="checkbox" class="btn-check" {{ $category->popular == '1' ? 'checked': ''}} id="popular"
-                        name="popular">
+                    name="popular">
                 </div>
                 <div class="col-md-12 mb-3">
                     <label for="meta_title" class="form-label">Meta Title</label>
@@ -51,8 +51,8 @@
                 <div class="col-md-12 mb-3">
                     <label for="image" class="form-label">Image</label>
                     <input type="file" class="form-control" id="image" name="image">
-                    <img src="{{asset('upload/image/category/'.$category->image)}}" width="50" height="50"
-                        value="{{$category->image}}" name="image">
+                    <model-viewer src="{{asset('upload/image/category/'.$category->image)}}" width="50" height="50"
+                        value="{{$category->image}}" name="image"></model-viewer>
                 </div>
                 <div class="col-md-12">
                     <button type="submit" class="btn btn-outline-primary">Submit</button>
