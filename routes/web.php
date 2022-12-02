@@ -10,6 +10,7 @@ use App\Http\Controllers\admin\ProfileController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\RoleAndPermissionController;
 use App\Http\Controllers\frontend\MainController;
+use App\Http\Controllers\frontend\profile;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,23 +23,27 @@ use App\Http\Controllers\frontend\MainController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Route::get('/front',[MainController::class, 'index']);
+Route::get('/',[MainController::class, 'index']);
+Route::get('/profile',[MainController::class, 'profile']);
+Route::get('edit/{id}',[profile::class, 'showedit'])->name('user-edit-profile');
+Route::put('edit/{id}',[profile::class, 'edit'])->name('user-profile');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 
 // Google login
 Route::get('login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('login/google/callback', [LoginController::class, 'handleGoogleCallback']);
 
  Route::middleware(['auth','isAdmin'])->group(function(){
-    Route::get('/',[AdminController::class, 'index']);
-
+    Route::prefix('admin')->group(function(){
+        Route::get('/',[AdminController::class, 'index']);
+    });
     // *************************************User****************************************  //
     Route::prefix('admin/profile')->group(function(){
         Route::get('/',[ProfileController::class, 'index']);

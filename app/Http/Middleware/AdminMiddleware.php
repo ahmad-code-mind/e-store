@@ -29,12 +29,12 @@ class AdminMiddleware
             }
             else
             {
-                return redirect('/home')->with('status','Welcome');
+                return redirect('/');
             }
         }
-        else
-        {
-            return redirect('/home')->with('status','Please Login First');
-        }
+        // else
+        // {
+        //     return redirect('/home')->with('status','Please Login First');
+        // }
     }
 }

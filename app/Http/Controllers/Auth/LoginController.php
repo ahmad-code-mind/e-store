@@ -29,16 +29,16 @@ class LoginController extends Controller
      *
      * @var string
      */
-    // protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/';
     protected function authenticated()
     {
         if(Auth::user()->role_as == '1') //1 = Admin Login
         {
-            return redirect('/')->with('status','Welcome to your dashboard');
+            return redirect('/admin')->with('status','Welcome to your dashboard');
         }
         elseif(Auth::user()->role_as == '2') // = User Login
         {
-            return redirect('/')->with('status','Welcome to your dashboard');
+            return redirect('/admin')->with('status','Welcome to your dashboard');
         }
         elseif(Auth::user()->role_as == '0') // Normal or Default User Login
         {
@@ -70,7 +70,7 @@ class LoginController extends Controller
         $this->_registerOrLoginUser($user);
 
         // Return home after login
-        return redirect()->route('home')->with('status','Logged in successfully');
+        return redirect('/')->with('status','Logged in successfully');
     }
 
     protected function _registerOrLoginUser($data)

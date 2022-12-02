@@ -51,6 +51,9 @@
 .fa-home:before {
     content: "\f015";
 }
+.fa-edit:before {
+    content: "\f044";
+}
 .fa-tags:before {
     content: "\f02c";
 }
@@ -98,4 +101,7 @@
 }
 .fa-instagram:before {
     content: "\f16d";
+}
+.fa-camera:before {
+    content: "\f030";
 }

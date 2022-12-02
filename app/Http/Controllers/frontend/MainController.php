@@ -11,4 +11,12 @@ class MainController extends Controller
     {
         return view('frontend.frontend');
     }
+    public function profile()
+    {
+        return view('frontend.profile.profile');
+    }
+    public function edit()
+    {
+        return view('frontend.profile.edit');
+    }
 }

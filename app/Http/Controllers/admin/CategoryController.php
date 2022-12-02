@@ -96,12 +96,15 @@ class CategoryController extends Controller
         if (File::exists($path)){
             File::delete($path);
         }
-        $image = 'category-'.$id.'.'.$request->file('image')->extension();
-        $imageSave = $request->image->move('upload/image/category',$image);
-        if ($imageSave){
-            Categories::where('id',$id)->update([
-                'image' => $image
-            ]);
+        if ($request->hasFile('image'))
+        {
+            $image = 'category-'.$id.'.'.$request->file('image')->extension();
+            $imageSave = $request->image->move('upload/image/category',$image);
+            if ($imageSave){
+                Categories::where('id',$id)->update([
+                    'image' => $image
+                ]);
+            }
         }
         return redirect('admin/category')->with('status','Category Updated Successfully');
     }

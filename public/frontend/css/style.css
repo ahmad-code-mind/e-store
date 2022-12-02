@@ -382,7 +382,7 @@ ol {
 }
 
 .inner-header {
-    padding: 20px 0 39px;
+    padding: 39px 0;
 }
 
 .inner-header .logo {
@@ -492,8 +492,6 @@ ol {
 
 .inner-header .nav-right li.cart-icon {
     position: relative;
-    m
-    border-right: 1px solid black;
 }
 
 .inner-header .nav-right li.cart-icon:hover .cart-hover {
@@ -659,10 +657,6 @@ ol {
     color: #252525;
 }
 
-.login-btn a{
-    color: #252525;
-}
-
 .nav-item {
     background: #252525;
     display: -webkit-box;
@@ -825,10 +819,6 @@ ol {
 /*---------------------
   Hero Section
 -----------------------*/
-
-/* .hero-section {
-    height: 100%;
-} */
 
 .hero-items .single-hero-items {
     height: 725px;
@@ -4309,4 +4299,22 @@ ol {
         padding-left: 15px;
         padding-right: 15px;
     }
+}
+
+.f-btn {
+    display: inline-block;
+    color: #ffffff;
+    background: #e7ab3c;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: 1px solid #e7ab3c;
+    /* position: absolute;
+    right: 0;
+    top: 0; */
+    padding: 13px 20px 12px;
+    cursor: pointer;
+}
+.f-btn:hover {
+    color: #ffffff;
 }

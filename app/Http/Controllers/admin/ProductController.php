@@ -23,8 +23,11 @@ class ProductController extends Controller
         $product = Product::with('category');
         return DataTables::of($product)
         ->addColumn('image', function($product){
-            $img = '<img src='.asset('upload/image/product/'.$product->image).' width="50" height="50"
-            class="img img-responsive">';
+            // $img = '<img src='.asset('upload/image/product/'.$product->image).' width="50" height="50"
+            // class="img img-responsive">';
+            // return $img;
+            $img = '<model-viewer src='.asset('upload/image/product/'.$product->image).' camera-controls ;"
+            class="img img-responsive"></model-viewer>';
             return $img;
         })
         ->addColumn('category', function(Product $product){
@@ -52,7 +55,7 @@ class ProductController extends Controller
     }
     public function store(Request $request)
     {
-        $id = DB::table('categories')->insertGetId([
+        $id = DB::table('products')->insertGetId([
             'category_id' => $request->input('category'),
             'name' => $request->input('name'),
             'slug' => $request->input('slug'),
@@ -66,11 +69,11 @@ class ProductController extends Controller
             'trending' => $request->input('trending') == TRUE? '1':'0',
             'meta_title' => $request->input('meta_title'),
             'meta_keywords' => $request->input('meta_keywords'),
-            'meta_descrip' => $request->input('meta_description'),
+            'meta_description' => $request->input('meta_description'),
             'created_at' => Carbon::now()
         ]);
         $image = 'product-'.$id.'.'.$request->file('image')->extension();
-        $imageSave = $request->image->move('upload/image/prosuct',$image);
+        $imageSave = $request->image->move('upload/image/product',$image);
         if ($imageSave){
             Product::where('id',$id)->update([
                 'image' => $image
@@ -106,12 +109,15 @@ class ProductController extends Controller
         if (File::exists($path)){
             File::delete($path);
         }
-        $image = 'product-'.$id.'.'.$request->file('image')->extension();
-        $imageSave = $request->image->move('upload/image/product',$image);
-        if ($imageSave){
-            Product::where('id',$id)->update([
-                'image' => $image
-            ]);
+        if ($request->hasFile('image'))
+        {
+            $image = 'product-'.$id.'.'.$request->file('image')->extension();
+            $imageSave = $request->image->move('upload/image/product',$image);
+            if ($imageSave){
+                Product::where('id',$id)->update([
+                    'image' => $image
+                ]);
+            }
         }
         return redirect('admin/product')->with('status','Product Updated Successfully');
     }

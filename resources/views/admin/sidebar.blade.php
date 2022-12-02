@@ -11,8 +11,8 @@
     <div class="sidebar-wrapper">
         @can('Access Roles','Access Users')
         <ul class="nav">
-            <li class="nav-item {{ Request::is('/*') ? 'active':'' }}  ">
-                <a class="nav-link" href="{{ url('/') }}">
+            <li class="nav-item {{ Request::is('admin') ? 'active':'' }}  ">
+                <a class="nav-link" href="{{ url('/admin') }}">
                     <i class="material-icons">dashboard</i>
                     <p>Dashboard</p>
                 </a>
