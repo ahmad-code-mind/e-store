@@ -9,7 +9,33 @@
         </a>
     </div>
     <div class="sidebar-wrapper">
-        @can('Access Roles','Access Users')
+        <div class="user">
+            <div class="photo">
+                @if (Auth::user()->image && File::exists(public_path("upload/image/profile/".Auth::user()->image)))
+                <img src="{{ asset('upload/image/profile/'.Auth::user()->image) }}" class="rounded-circle img-fluid" />
+                @else
+                <img class="rounded-circle" src="{{ asset('frontend/img/demo.png') }}" alt="" />
+                @endif
+            </div>
+            <div class="user-info">
+                <a data-toggle="collapse" href="#collapseExample" class="username">
+                    <span>
+                        {{ Auth::user()->name }}
+                        <b class="caret"></b>
+                    </span>
+                </a>
+                <div class="collapse" id="collapseExample">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('admin/profile') }}">
+                                <span class="sidebar-mini"> <i class="material-icons">person</i> </span>
+                                <span class="sidebar-normal"> My Profile </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
         <ul class="nav">
             <li class="nav-item {{ Request::is('admin') ? 'active':'' }}  ">
                 <a class="nav-link" href="{{ url('/admin') }}">
@@ -42,7 +68,6 @@
                 </a>
             </li>
         </ul>
-        @endcan
     </div>
     <div class="sidebar-background"></div>
 </div>

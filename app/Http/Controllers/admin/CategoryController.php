@@ -11,6 +11,7 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Calculation\Category;
 
@@ -23,14 +24,22 @@ class CategoryController extends Controller
     {
         $category = Categories::all();
         // select(['id', 'name', 'slug','description', 'image']);
+        // if(Gate::allows('edit-category') && Gate::allows('delete-category')) {
+
+        // } else if(Gate::allows('edit-category')) {
+
+        // } else {
+
+        // }
         return DataTables::of($category)->addColumn('image', function($category){
-            // $img = '<img src='.asset('upload/image/category/'.$category->image).' width="50" height="50"
-            // class="img img-responsive">';
-            // return $img;
-            $img = '<model-viewer src='.asset('upload/image/category/'.$category->image).' camera-controls ;"
-            class="img img-responsive"></model-viewer>';
+            $img = '<img src='.asset('upload/image/category/'.$category->image).' width="50" height="50"
+            class="img img-responsive">';
+            return $img;
+            // $img = '<model-viewer src='.asset('upload/image/category/'.$category->image).' camera-controls ;"
+            // class="img img-responsive"></model-viewer>';
             return $img;
         })
+
         ->editColumn('action', function($category)
         {
             $btn = '

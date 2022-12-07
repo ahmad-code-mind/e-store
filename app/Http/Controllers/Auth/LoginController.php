@@ -57,33 +57,43 @@ class LoginController extends Controller
     }
 
     // Google login
-    public function redirectToGoogle()
+    public function redirectToProvider()
     {
         return Socialite::driver('google')->redirect();
     }
 
     // Google callback
-    public function handleGoogleCallback()
+    public function handleCallback()
     {
-        $user = Socialite::driver('google')->user();
-
-        $this->_registerOrLoginUser($user);
-
-        // Return home after login
-        return redirect('/')->with('status','Logged in successfully');
-    }
-
-    protected function _registerOrLoginUser($data)
-    {
-        $user = User::where('email', '=', $data->email)->first();
-        if (!$user) {
-            $user = new User();
-            $user->name = $data->name;
-            $user->email = $data->email;
-            $user->provider_id = $data->id;
-            $user->save();
+        try {
+            $user = Socialite::driver('google')->user();
+        } catch (\Exception $e) {
+            return redirect('login');
         }
 
-        Auth::login($user);
+        // only allow people with @company.com to login
+        // if(explode("@", $user->email)[1] !== 'company.com'){
+        //     return redirect()->to('/');
+        // }
+        
+        $existingUser = User::where('google_id', '=', $user->id)->first();
+        
+        if($existingUser){
+            Auth::login($existingUser, true);
+        }
+        
+        else if(!$existingUser)
+        {
+            $newUser = User::create(
+            [
+                'name' => $user->name,
+                'email' => $user->email,
+                'google_id' => $user->id,
+            ]);
+            Auth::login($newUser);
+        } 
+
+        // Return home after login
+        return redirect()->to('/');
     }
 }

@@ -5,11 +5,21 @@
 @endsection
 
 @section('content')
+<div class="btn-group float-right">
+    <ol class="breadcrumb hide-phone p-0 m-0">
+        <li class="breadcrumb-item"><a href="{{ url('/') }}">Dashboard</a></li>
+        <li class="breadcrumb-item active">Product</li>
+    </ol>
+</div>
 <div class="card">
     <div class="card-header">
         <h2 class="mb-2">Products</h2>
         <a href="{{ route('admin.product.add') }}">
             <button class="btn btn-outline-primary">Add New Product</button>
+        </a>
+        <a href="#">
+            <button class="btn btn-sm btn-outline-info float-right"><i
+                    class="material-icons">download</i>Download</button>
         </a>
     </div>
     <div class="card-body">
@@ -32,7 +42,7 @@
 @section('script')
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script>
-$(document).ready(function() {
+    $(document).ready(function() {
     $('#productTable').DataTable({
         // select: true,
         processing: true,

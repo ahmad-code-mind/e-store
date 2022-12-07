@@ -5,6 +5,16 @@
 @endsection
 
 @section('content')
+<style>
+    .table th,
+    .table td {
+        max-width: 200px;
+        min-width: 70px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+</style>
 <div class="btn-group float-right">
     <ol class="breadcrumb hide-phone p-0 m-0">
         <li class="breadcrumb-item"><a href="{{ url('/') }}">Dashboard</a></li>
@@ -22,10 +32,10 @@
 </a>
 <div class="card ">
     <div class="card-body">
-        <table class="table table-bordered table-hover text-center" id="categoryTable">
+        <table class="table" id="categoryTable">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th class="fw-normal">ID</th>
                     <th>Name</th>
                     <th>Slug</th>
                     <th>Description</th>

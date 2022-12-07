@@ -2,15 +2,16 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\frontend\profile;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProfileController;
+use App\Http\Controllers\frontend\MainController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\RoleAndPermissionController;
-use App\Http\Controllers\frontend\MainController;
-use App\Http\Controllers\frontend\profile;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,19 +28,27 @@ use App\Http\Controllers\frontend\profile;
 //     return view('welcome');
 // });
 
-Route::get('/',[MainController::class, 'index']);
-Route::get('/profile',[MainController::class, 'profile']);
-Route::get('edit/{id}',[profile::class, 'showedit'])->name('user-edit-profile');
-Route::put('edit/{id}',[profile::class, 'edit'])->name('user-profile');
+// Home Page 
+Route::get('/', [HomeController::class, 'index']);
+Route::get('/',[HomeController::class, 'featured_products']);
 
+
+// Login Auth
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 
 // Google login
-Route::get('login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
-Route::get('login/google/callback', [LoginController::class, 'handleGoogleCallback']);
+Route::get('login-google', [LoginController::class, 'redirectToProvider'])->name('login.google');
+Route::get('auth/google/callback', [LoginController::class, 'handleCallback']);
 
+// Front End
+Route::get('profile',[profile::class, 'index'])->name('profile');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('edit/{id}',[profile::class, 'showedit'])->name('user-edit-profile');
+    Route::put('edit/{id}',[profile::class, 'edit'])->name('user-profile');
+});
+
+// Back End
  Route::middleware(['auth','isAdmin'])->group(function(){
     Route::prefix('admin')->group(function(){
         Route::get('/',[AdminController::class, 'index']);
@@ -104,7 +113,7 @@ Route::get('login/google/callback', [LoginController::class, 'handleGoogleCallba
     // ***********************************End Product***************************************  //
 
     // *************************************Role*****************************************  //
-    Route::group(['middleware' => ['role:user']], function () {
+    // Route::group(['middleware' => ['role:user']], function () {
         Route::prefix('admin/role')->group(function(){
             Route::get('/',[RoleAndPermissionController::class, 'index']);
             Route::get('get',[RoleAndPermissionController::class, 'getAllRoles'])->name('get.role');
@@ -116,7 +125,7 @@ Route::get('login/google/callback', [LoginController::class, 'handleGoogleCallba
             // Route::put('edit/{id}',[ProductController::class, 'edit'])->name('edit-product');
             // Route::get('delete/{id}',[ProductController::class, 'delete'])->name('delete-product');
         });
-    });
+    // });
     // ***********************************End Role***************************************  //
  });
  

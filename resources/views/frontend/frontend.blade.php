@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="zxx">
-<!-- Mirrored from preview.colorlib.com/theme/fashi/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Nov 2022 14:00:21 GMT -->
+<html lang="">
 <head>
   <meta charset="UTF-8" />
-  <meta name="description" content="Fashi Template" />
-  <meta name="keywords" content="Fashi, unica, creative, html" />
+  <meta name="description" />
+  <meta name="keywords" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>Fashi | Template</title>
+  <title>Laravel</title>
 
   <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&amp;display=swap"
     rel="stylesheet" />
@@ -21,7 +20,6 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0- 
      alpha/css/bootstrap.css" rel="stylesheet">
 
-
   {{--
   <link rel="stylesheet" href="{{ asset('frontend/css/bootstrap.min.css') }}" type="text/css" /> --}}
   <link rel="stylesheet" href="{{ asset('frontend/css/font-awesome.min.css') }}" type="text/css" />
@@ -32,6 +30,8 @@
   <link rel="stylesheet" href="{{ asset('frontend/css/jquery-ui.min.css') }}" type="text/css" />
   <link rel="stylesheet" href="{{ asset('frontend/css/slicknav.min.css') }}" type="text/css" />
   <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}" type="text/css" />
+
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <script nonce="28a80ab3-13aa-4fa9-b3a5-436eb21b028b">
     (function (w, d) {
         !(function (e, f, g, h) {
@@ -159,7 +159,7 @@
                       <tbody>
                         <tr>
                           <td class="si-pic">
-                            <img src="img/select-product-1.jpg" alt="" />
+                            <img src="{{ asset('frontend/img/select-product-1.jpg') }}" alt="" />
                           </td>
                           <td class="si-text">
                             <div class="product-selected">
@@ -173,7 +173,7 @@
                         </tr>
                         <tr>
                           <td class="si-pic">
-                            <img src="img/select-product-2.jpg" alt="" />
+                            <img src="{{ asset('frontend/img/select-product-2.jpg') }}" alt="" />
                           </td>
                           <td class="si-text">
                             <div class="product-selected">
@@ -220,7 +220,7 @@
                     {{ Auth::user()->name }}
                   </button> --}}
                   <ul class="dropdown-menu">
-                    <a class="dropdown-item cust" href="{{ url('profile') }}">Profile</a>
+                    <a class="dropdown-item cust" href="{{ route('profile') }}">Profile</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item cust" href="{{ route('logout') }}" onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();">
@@ -245,14 +245,14 @@
             <i class="ti-menu"></i>
             <span>All departments</span>
             <ul class="depart-hover">
-              <li class="active"><a href="#">Women’s Clothing</a></li>
-              <li><a href="#">Men’s Clothing</a></li>
-              <li><a href="#">Underwear</a></li>
+              <li class="active"><a href="#">Home Appliances</a></li>
+              <li><a href="#">Furniture</a></li>
+              {{-- <li><a href="#">Underwear</a></li>
               <li><a href="#">Kid's Clothing</a></li>
               <li><a href="#">Brand Fashion</a></li>
               <li><a href="#">Accessories/Shoes</a></li>
               <li><a href="#">Luxury Brands</a></li>
-              <li><a href="#">Brand Outdoor Apparel</a></li>
+              <li><a href="#">Brand Outdoor Apparel</a></li> --}}
             </ul>
           </div>
         </div>
@@ -263,22 +263,20 @@
             <li>
               <a href="#">Collection</a>
               <ul class="dropdown">
-                <li><a href="#">Men's</a></li>
-                <li><a href="#">Women's</a></li>
-                <li><a href="#">Kid's</a></li>
+                <li><a href="#">Home Appliances</a></li>
+                <li><a href="#">Furniture</a></li>
+                <li><a href="#">Clothes</a></li>
               </ul>
             </li>
             <li><a href="blog.html">Blog</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="{{ url('contact') }}">Contact</a></li>
             <li>
-              <a href="#">Pages</a>
+              <a href="#">More</a>
               <ul class="dropdown">
                 <li><a href="blog-details.html">Blog Details</a></li>
                 <li><a href="shopping-cart.html">Shopping Cart</a></li>
                 <li><a href="check-out.html">Checkout</a></li>
-                <li><a href="faq.html">Faq</a></li>
-                <li><a href="register.html">Register</a></li>
-                <li><a href="{{ url('checklogin') }}">Login</a></li>
+                <li><a href="{{ url('faq') }}">Faq</a></li>
               </ul>
             </li>
           </ul>
@@ -288,9 +286,7 @@
     </div>
   </header>
 
-  <main>
-    @yield('content')
-  </main>
+  @yield('content')
 
   <footer class="footer-section mt-5">
     <div class="container">
@@ -301,8 +297,8 @@
               <a href="#"><img src="img/footer-logo.png" alt="" /></a>
             </div>
             <ul>
-              <li>Address: 60-49 Road 11378 New York</li>
-              <li>Phone: +65 11.188.888</li>
+              <li>Address: Ferozpur Road 57600 Pakistan</li>
+              <li>Phone: +92 311 4127829</li>
               <li>
                 Email:
                 <a href="https://preview.colorlib.com/cdn-cgi/l/email-protection" class="__cf_email__"
@@ -323,17 +319,16 @@
             <ul>
               <li><a href="#">About Us</a></li>
               <li><a href="#">Checkout</a></li>
-              <li><a href="#">Contact</a></li>
+              <li><a href="{{ url('contact') }}">Contact</a></li>
               <li><a href="#">Serivius</a></li>
             </ul>
           </div>
         </div>
         <div class="col-lg-2">
           <div class="footer-widget">
-            <h5>My Account</h5>
+            <h5>Account</h5>
             <ul>
-              <li><a href="#">My Account</a></li>
-              <li><a href="#">Contact</a></li>
+              <li><a href="{{ route('profile') }}">My Account</a></li>
               <li><a href="#">Shopping Cart</a></li>
               <li><a href="#">Shop</a></li>
             </ul>
@@ -364,9 +359,7 @@
               <script>
                 document.write(new Date().getFullYear());
               </script>
-              All rights reserved | This template is made with
-              <i class="fa fa-heart-o" aria-hidden="true"></i> by
-              <a href="https://colorlib.com/" target="_blank">Colorlib</a>
+              All rights reserved
             </div>
             <div class="payment-pic">
               <img src="img/payment-method.png" alt="" />
@@ -429,7 +422,7 @@
     toastr.success("{{Session('status')}}");
   </script>
   @endif
-  {{-- @if(Session('error'))
+  @if(Session('error'))
   <script>
     toastr.options = {
         "closeButton": true,
@@ -438,7 +431,7 @@
     toastr.error("{{Session('error')}}");
   </script>
   @endif
-  @if(Session('info'))
+  {{-- @if(Session('info'))
   <script>
     toastr.options = {
         "closeButton": true,

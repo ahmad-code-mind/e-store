@@ -5,10 +5,22 @@ namespace App\Http\Controllers\frontend;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class profile extends Controller
 {
+    public function index()
+    {
+        if (Auth::check() == false)
+        {
+            return redirect('login')->with('error', 'Please First Login');
+        }
+        else
+        {
+            return view('frontend.profile.profile');
+        }
+    }
     public function showedit($id)
     {
         $user = User::find($id);
