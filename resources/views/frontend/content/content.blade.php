@@ -1,520 +1,570 @@
-{{-- <div class="py-5">
+@extends('frontend.frontend')
+
+@section('content')
+<style>
+    .product_view .modal-dialog {
+        max-width: 1000px;
+        width: 100%;
+    }
+
+    .pre-cost {
+        text-decoration: line-through;
+        color: #a5a5a5;
+    }
+
+    .space-ten {
+        padding: 10px 0;
+    }
+</style>
+<section class="featured-banner">
     <div class="container">
         <div class="row">
-            @foreach ($featured_products as $product)
-            <div class="col-md-3">
-                <div class="card">
-                    <img src="{{asset('upload/image/product/'.$product->image)}}" alt="">
-                    <model-viewer src="{{asset('upload/image/product/'.$product->image)}}" width name="image">
-                    </model-viewer>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</div> --}}
-{{-- <div class="product-slider owl-carousel">
-    <div class="product-item">
-        <div class="pi-pic">
-            <img src="img/products/man-1.jpg" alt="" />
-            <div class="sale">Sale</div>
-            <div class="icon">
-                <i class="icon_heart_alt"></i>
-            </div>
-            <ul>
-                <li class="w-icon active">
-                    <a href="#"><i class="icon_bag_alt"></i></a>
-                </li>
-                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                <li class="w-icon">
-                    <a href="#"><i class="fa fa-random"></i></a>
-                </li>
-            </ul>
-        </div>
-        <div class="pi-text">
-            <div class="catagory-name">Coat</div>
-            <a href="#">
-                <h5>Pure Pineapple</h5>
-            </a>
-            <div class="product-price">
-                $14.00
-                <span>$35.00</span>
-            </div>
-        </div>
-    </div> --}}
-    @extends('frontend.frontend')
-
-    @section('content')
-    <div class="banner-section spad">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="single-banner">
-                        <img src="{{ asset('frontend/img/banner-1.jpg') }}" alt="" />
-                        <div class="inner-text">
-                            <h4>Men’s</h4>
+            <h2 class="mb-4">Featured Products</h2>
+            <div class="product-slider owl-carousel">
+                @foreach ($featured_products as $prod)
+                <div class="product-item">
+                    <div class="pi-pic">
+                        <a href="{{ url('product/'.$prod->slug) }}">
+                            <img src="{{ asset('upload/image/product/'.$prod->image) }}" alt="" />
+                        </a>
+                        <div class="sale">Sale</div>
+                        <div class="icon">
+                            <i class="icon_heart_alt"></i>
                         </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="single-banner">
-                        <img src="{{ asset('frontend/img/banner-2.jpg') }}" alt="" />
-                        <div class="inner-text">
-                            <h4>Women’s</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="single-banner">
-                        <img src="{{ asset('frontend/img/banner-3.jpg') }}" alt="" />
-                        <div class="inner-text">
-                            <h4>Kid’s</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <section class="women-banner spad">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="product-large set-bg" data-setbg="{{ asset('frontend/img/products/women-large.jpg') }}">
-                        <h2>Women’s</h2>
-                        <a href="#">Discover More</a>
-                    </div>
-                </div>
-                <div class="col-lg-8 offset-lg-1">
-                    <div class="filter-control">
                         <ul>
-                            <li class="active">Clothings</li>
-                            <li>HandBag</li>
-                            <li>Shoes</li>
-                            <li>Accessories</li>
+                            {{-- <li class="w-icon active">
+                                <a href="#"><i class="icon_bag_alt"></i></a>
+                            </li> --}}
+                            <li class="quick-view"><a href="{{ url('/') }}" data-toggle="modal"
+                                    data-target="#product_view">+ Quick
+                                    View</a></li>
+                            {{-- <li class="w-icon">
+                                <a href="#"><i class="fa fa-random"></i></a>
+                            </li> --}}
                         </ul>
                     </div>
-                    <div class="product-slider owl-carousel">
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="img/products/women-1.jpg" alt="" />
-                                <div class="sale">Sale</div>
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active">
-                                        <a href="#"><i class="icon_bag_alt"></i></a>
-                                    </li>
-                                    <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                    <li class="w-icon">
-                                        <a href="#"><i class="fa fa-random"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Coat</div>
-                                <a href="#">
-                                    <h5>Pure Pineapple</h5>
-                                </a>
-                                <div class="product-price">
-                                    $14.00
-                                    <span>$35.00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="img/products/women-2.jpg" alt="" />
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active">
-                                        <a href="#"><i class="icon_bag_alt"></i></a>
-                                    </li>
-                                    <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                    <li class="w-icon">
-                                        <a href="#"><i class="fa fa-random"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Shoes</div>
-                                <a href="#">
-                                    <h5>Guangzhou sweater</h5>
-                                </a>
-                                <div class="product-price">$13.00</div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="img/products/women-3.jpg" alt="" />
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active">
-                                        <a href="#"><i class="icon_bag_alt"></i></a>
-                                    </li>
-                                    <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                    <li class="w-icon">
-                                        <a href="#"><i class="fa fa-random"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Towel</div>
-                                <a href="#">
-                                    <h5>Pure Pineapple</h5>
-                                </a>
-                                <div class="product-price">$34.00</div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="img/products/women-4.jpg" alt="" />
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active">
-                                        <a href="#"><i class="icon_bag_alt"></i></a>
-                                    </li>
-                                    <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                    <li class="w-icon">
-                                        <a href="#"><i class="fa fa-random"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Towel</div>
-                                <a href="#">
-                                    <h5>Converse Shoes</h5>
-                                </a>
-                                <div class="product-price">$34.00</div>
-                            </div>
+                    <div class="pi-text">
+                        @foreach ($category as $cat)
+                        <div class="catagory-name">{{ $cat->name }}</div>
+                        @endforeach
+                        <a href="#">
+                            <h5>{{ $prod->name }}</h5>
+                        </a>
+                        <div class="product-price">
+                            RS.{{ $prod->selling_price }}
+                            <span>RS.{{ $prod->original_price }}</span>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="deal-of-week set-bg spad" data-setbg="{{ asset('frontend/img/time-bg.jpg') }}">
-        <div class="container">
-            <div class="col-lg-6 text-center">
-                <div class="section-title">
-                    <h2>Deal Of The Week</h2>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed<br />
-                        do ipsum dolor sit amet, consectetur adipisicing elit
-                    </p>
-                    <div class="product-price">
-                        $35.00
-                        <span>/ HanBag</span>
-                    </div>
-                </div>
-                <div class="countdown-timer" id="countdown">
-                    <div class="cd-item">
-                        <span>56</span>
-                        <p>Days</p>
-                    </div>
-                    <div class="cd-item">
-                        <span>12</span>
-                        <p>Hrs</p>
-                    </div>
-                    <div class="cd-item">
-                        <span>40</span>
-                        <p>Mins</p>
-                    </div>
-                    <div class="cd-item">
-                        <span>52</span>
-                        <p>Secs</p>
-                    </div>
-                </div>
-                <a href="#" class="primary-btn">Shop Now</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="man-banner spad">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="product-slider owl-carousel">
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="img/products/man-1.jpg" alt="" />
-                                <div class="sale">Sale</div>
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active">
-                                        <a href="#"><i class="icon_bag_alt"></i></a>
-                                    </li>
-                                    <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                    <li class="w-icon">
-                                        <a href="#"><i class="fa fa-random"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Coat</div>
-                                <a href="#">
-                                    <h5>Pure Pineapple</h5>
-                                </a>
-                                <div class="product-price">
-                                    $14.00
-                                    <span>$35.00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="img/products/man-2.jpg" alt="" />
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active">
-                                        <a href="#"><i class="icon_bag_alt"></i></a>
-                                    </li>
-                                    <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                    <li class="w-icon">
-                                        <a href="#"><i class="fa fa-random"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Shoes</div>
-                                <a href="#">
-                                    <h5>Guangzhou sweater</h5>
-                                </a>
-                                <div class="product-price">$13.00</div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="img/products/man-3.jpg" alt="" />
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active">
-                                        <a href="#"><i class="icon_bag_alt"></i></a>
-                                    </li>
-                                    <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                    <li class="w-icon">
-                                        <a href="#"><i class="fa fa-random"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Towel</div>
-                                <a href="#">
-                                    <h5>Pure Pineapple</h5>
-                                </a>
-                                <div class="product-price">$34.00</div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="img/products/man-4.jpg" alt="" />
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active">
-                                        <a href="#"><i class="icon_bag_alt"></i></a>
-                                    </li>
-                                    <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                    <li class="w-icon">
-                                        <a href="#"><i class="fa fa-random"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Towel</div>
-                                <a href="#">
-                                    <h5>Converse Shoes</h5>
-                                </a>
-                                <div class="product-price">$34.00</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 offset-lg-1">
-                    <div class="product-large set-bg m-large"
-                        data-setbg="{{ asset('frontend/img/products/man-large.jpg') }}">
-                        <h2>Men’s</h2>
-                        <a href="#">Discover More</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="instagram-photo">
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/insta-1.jpg') }}">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">colorlib_Collection</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/insta-2.jpg') }}">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">colorlib_Collection</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/insta-3.jpg') }}">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">colorlib_Collection</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/insta-4.jpg') }}">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">colorlib_Collection</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/insta-5.jpg') }}">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">colorlib_Collection</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/insta-6.jpg') }}">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">colorlib_Collection</a></h5>
+                @endforeach
             </div>
         </div>
     </div>
-
-    <section class="latest-blog spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title">
-                        <h2>From The Blog</h2>
+</section>
+<section class="featured-banner">
+    <div class="container">
+        <div class="row">
+            <h2 class="mb-4">Categories</h2>
+            <div class="product-slider owl-carousel">
+                @foreach ($featured_products as $prod)
+                <div class="product-item">
+                    <div class="pi-pic">
+                        <img src="{{ asset('upload/image/product/'.$prod->image) }}" alt="" />
+                        <div class="sale">Sale</div>
+                        <div class="icon">
+                            <i class="icon_heart_alt"></i>
+                        </div>
+                        <ul>
+                            <li class="w-icon active">
+                                <a href="#"><i class="icon_bag_alt"></i></a>
+                            </li>
+                            <li class="quick-view"><a href="#">+ Quick View</a></li>
+                            <li class="w-icon">
+                                <a href="#"><i class="fa fa-random"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pi-text">
+                        @foreach ($category as $cat)
+                        <div class="catagory-name">{{ $cat->name }}</div>
+                        @endforeach
+                        <a href="#">
+                            <h5>{{ $prod->name }}</h5>
+                        </a>
+                        <div class="product-price">
+                            RS.{{ $prod->selling_price }}
+                            <span>RS.{{ $prod->original_price }}</span>
+                        </div>
                     </div>
                 </div>
+                @endforeach
             </div>
-            <div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-latest-blog">
-                        <img src="{{ asset('frontend/img/latest-1.jpg') }}" alt="" />
-                        <div class="latest-text">
-                            <div class="tag-list">
-                                <div class="tag-item">
-                                    <i class="fa fa-calendar-o"></i>
-                                    May 4,2019
-                                </div>
-                                <div class="tag-item">
-                                    <i class="fa fa-comment-o"></i>
-                                    5
-                                </div>
-                            </div>
-                            <a href="#">
-                                <h4>The Best Street Style From London Fashion Week</h4>
-                            </a>
-                            <p>
-                                Sed quia non numquam modi tempora indunt ut labore et dolore
-                                magnam aliquam quaerat
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-latest-blog">
-                        <img src="{{ asset('frontend/img/latest-2.jpg') }}" alt="" />
-                        <div class="latest-text">
-                            <div class="tag-list">
-                                <div class="tag-item">
-                                    <i class="fa fa-calendar-o"></i>
-                                    May 4,2019
-                                </div>
-                                <div class="tag-item">
-                                    <i class="fa fa-comment-o"></i>
-                                    5
-                                </div>
-                            </div>
-                            <a href="#">
-                                <h4>Vogue's Ultimate Guide To Autumn/Winter 2019 Shoes</h4>
-                            </a>
-                            <p>
-                                Sed quia non numquam modi tempora indunt ut labore et dolore
-                                magnam aliquam quaerat
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-latest-blog">
-                        <img src="{{ asset('frontend/img/latest-3.jpg') }}" alt="" />
-                        <div class="latest-text">
-                            <div class="tag-list">
-                                <div class="tag-item">
-                                    <i class="fa fa-calendar-o"></i>
-                                    May 4,2019
-                                </div>
-                                <div class="tag-item">
-                                    <i class="fa fa-comment-o"></i>
-                                    5
-                                </div>
-                            </div>
-                            <a href="#">
-                                <h4>How To Brighten Your Wardrobe With A Dash Of Lime</h4>
-                            </a>
-                            <p>
-                                Sed quia non numquam modi tempora indunt ut labore et dolore
-                                magnam aliquam quaerat
-                            </p>
-                        </div>
-                    </div>
-                </div>
+        </div>
+    </div>
+</section>
+<div class="modal fade product_view" id="product_view">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span
+                        class="glyphicon glyphicon-remove"></span></a>
             </div>
-            <div class="benefit-items">
+            <div class="modal-body">
                 <div class="row">
-                    <div class="col-lg-4">
-                        <div class="single-benefit">
-                            <div class="sb-icon">
-                                <img src="{{ asset('frontend/img/icon-1.png') }}" alt="" />
-                            </div>
-                            <div class="sb-text">
-                                <h6>Free Shipping</h6>
-                                <p>For all order over 99$</p>
-                            </div>
-                        </div>
+                    <div class="col-md-6 product_img">
+                        <img src="{{ asset('upload/image/product/'.$prod->image) }}" class="img-responsive">
                     </div>
-                    <div class="col-lg-4">
-                        <div class="single-benefit">
-                            <div class="sb-icon">
-                                <img src="{{ asset('frontend/img/icon-2.png') }}" alt="" />
-                            </div>
-                            <div class="sb-text">
-                                <h6>Delivery On Time</h6>
-                                <p>If good have prolems</p>
-                            </div>
+                    <div class="col-md-6 product_content">
+                        <h4>Product Id: <span>51526</span></h4>
+                        <div class="rating">
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            (10 reviews)
                         </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="single-benefit">
-                            <div class="sb-icon">
-                                <img src="{{ asset('frontend/img/icon-1.png') }}" alt="" />
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+                            been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
+                            galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy
+                            text of the printing and typesetting industry.</p>
+                        <h3 class="cost"><span class="glyphicon glyphicon-usd"></span> 75.00 <small
+                                class="pre-cost"><span class="glyphicon glyphicon-usd"></span> 60.00</small></h3>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-6 col-xs-12">
+                                <select class="form-control" name="select">
+                                    <option value="" selected="">Color</option>
+                                    <option value="black">Black</option>
+                                    <option value="white">White</option>
+                                    <option value="gold">Gold</option>
+                                    <option value="rose gold">Rose Gold</option>
+                                </select>
                             </div>
-                            <div class="sb-text">
-                                <h6>Secure Payment</h6>
-                                <p>100% secure payment</p>
+                            <!-- end col -->
+                            <div class="col-md-4 col-sm-6 col-xs-12">
+                                <select class="form-control" name="select">
+                                    <option value="">Capacity</option>
+                                    <option value="">16GB</option>
+                                    <option value="">32GB</option>
+                                    <option value="">64GB</option>
+                                    <option value="">128GB</option>
+                                </select>
                             </div>
+                            <!-- end col -->
+                            <div class="col-md-4 col-sm-12">
+                                <select class="form-control" name="select">
+                                    <option value="" selected="">QTY</option>
+                                    <option value="">1</option>
+                                    <option value="">2</option>
+                                    <option value="">3</option>
+                                </select>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <div class="space-ten"></div>
+                        <div class="btn-ground">
+                            <button type="button" class="btn btn-primary"><span
+                                    class="glyphicon glyphicon-shopping-cart"></span> Add To Cart</button>
+                            <button type="button" class="btn btn-primary"><span
+                                    class="glyphicon glyphicon-heart"></span> Add To Wishlist</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    @endsection
+    </div>
+</div>
+{{-- <div class="banner-section spad">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="single-banner">
+                    <img src="{{ asset('frontend/img/banner-1.jpg') }}" alt="" />
+                    <div class="inner-text">
+                        <h4>Men’s</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="single-banner">
+                    <img src="{{ asset('frontend/img/banner-2.jpg') }}" alt="" />
+                    <div class="inner-text">
+                        <h4>Women’s</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="single-banner">
+                    <img src="{{ asset('frontend/img/banner-3.jpg') }}" alt="" />
+                    <div class="inner-text">
+                        <h4>Kid’s</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="women-banner spad">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="product-large set-bg" data-setbg="{{ asset('frontend/img/products/women-large.jpg') }}">
+                    <h2>Women’s</h2>
+                    <a href="#">Discover More</a>
+                </div>
+            </div>
+            <div class="col-lg-8 offset-lg-1">
+                <div class="filter-control">
+                    <ul>
+                        <li class="active">Clothings</li>
+                        <li>HandBag</li>
+                        <li>Shoes</li>
+                        <li>Accessories</li>
+                    </ul>
+                </div>
+                <div class="product-slider owl-carousel">
+                    <div class="product-item">
+                        <div class="pi-pic">
+                            <img src="img/products/women-1.jpg" alt="" />
+                            <div class="sale">Sale</div>
+                            <div class="icon">
+                                <i class="icon_heart_alt"></i>
+                            </div>
+                            <ul>
+                                <li class="w-icon active">
+                                    <a href="#"><i class="icon_bag_alt"></i></a>
+                                </li>
+                                <li class="quick-view"><a href="#">+ Quick View</a></li>
+                                <li class="w-icon">
+                                    <a href="#"><i class="fa fa-random"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="pi-text">
+                            <div class="catagory-name">Coat</div>
+                            <a href="#">
+                                <h5>Pure Pineapple</h5>
+                            </a>
+                            <div class="product-price">
+                                $14.00
+                                <span>$35.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item">
+                        <div class="pi-pic">
+                            <img src="img/products/women-2.jpg" alt="" />
+                            <div class="icon">
+                                <i class="icon_heart_alt"></i>
+                            </div>
+                            <ul>
+                                <li class="w-icon active">
+                                    <a href="#"><i class="icon_bag_alt"></i></a>
+                                </li>
+                                <li class="quick-view"><a href="#">+ Quick View</a></li>
+                                <li class="w-icon">
+                                    <a href="#"><i class="fa fa-random"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="pi-text">
+                            <div class="catagory-name">Shoes</div>
+                            <a href="#">
+                                <h5>Guangzhou sweater</h5>
+                            </a>
+                            <div class="product-price">$13.00</div>
+                        </div>
+                    </div>
+                    <div class="product-item">
+                        <div class="pi-pic">
+                            <img src="img/products/women-3.jpg" alt="" />
+                            <div class="icon">
+                                <i class="icon_heart_alt"></i>
+                            </div>
+                            <ul>
+                                <li class="w-icon active">
+                                    <a href="#"><i class="icon_bag_alt"></i></a>
+                                </li>
+                                <li class="quick-view"><a href="#">+ Quick View</a></li>
+                                <li class="w-icon">
+                                    <a href="#"><i class="fa fa-random"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="pi-text">
+                            <div class="catagory-name">Towel</div>
+                            <a href="#">
+                                <h5>Pure Pineapple</h5>
+                            </a>
+                            <div class="product-price">$34.00</div>
+                        </div>
+                    </div>
+                    <div class="product-item">
+                        <div class="pi-pic">
+                            <img src="img/products/women-4.jpg" alt="" />
+                            <div class="icon">
+                                <i class="icon_heart_alt"></i>
+                            </div>
+                            <ul>
+                                <li class="w-icon active">
+                                    <a href="#"><i class="icon_bag_alt"></i></a>
+                                </li>
+                                <li class="quick-view"><a href="#">+ Quick View</a></li>
+                                <li class="w-icon">
+                                    <a href="#"><i class="fa fa-random"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="pi-text">
+                            <div class="catagory-name">Towel</div>
+                            <a href="#">
+                                <h5>Converse Shoes</h5>
+                            </a>
+                            <div class="product-price">$34.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="deal-of-week set-bg spad mb-5" data-setbg="{{ asset('frontend/img/time-bg.jpg') }}">
+    <div class="container">
+        <div class="col-lg-6 text-center">
+            <div class="section-title">
+                <h2>Deal Of The Week</h2>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed<br />
+                    do ipsum dolor sit amet, consectetur adipisicing elit
+                </p>
+                <div class="product-price">
+                    $35.00
+                    <span>/ HanBag</span>
+                </div>
+            </div>
+            <div class="countdown-timer" id="countdown">
+                <div class="cd-item">
+                    <span>56</span>
+                    <p>Days</p>
+                </div>
+                <div class="cd-item">
+                    <span>12</span>
+                    <p>Hrs</p>
+                </div>
+                <div class="cd-item">
+                    <span>40</span>
+                    <p>Mins</p>
+                </div>
+                <div class="cd-item">
+                    <span>52</span>
+                    <p>Secs</p>
+                </div>
+            </div>
+            <a href="#" class="primary-btn">Shop Now</a>
+        </div>
+    </div>
+</section> --}}
+
+{{-- <section class="man-banner spad">
+    <div class="container">
+        <div class="row">
+            <div class="product-slider owl-carousel">
+                @foreach ($featured_products as $prod)
+                <div class="product-item">
+                    <div class="pi-pic">
+                        <img src="{{ asset('upload/image/product/'.$prod->image) }}" alt="" />
+                        <div class="sale">Sale</div>
+                        <div class="icon">
+                            <i class="icon_heart_alt"></i>
+                        </div>
+                        <ul>
+                            <li class="w-icon active">
+                                <a href="#"><i class="icon_bag_alt"></i></a>
+                            </li>
+                            <li class="quick-view"><a href="#">+ Quick View</a></li>
+                            <li class="w-icon">
+                                <a href="#"><i class="fa fa-random"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pi-text">
+                        <div class="catagory-name">Coat</div>
+                        <a href="#">
+                            <h5>Pure Pineapple</h5>
+                        </a>
+                        <div class="product-price">
+                            ${{ $prod->selling_price }}
+                            <span>${{ $prod->original_price }}</span>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</section> --}}
+
+{{-- <div class="instagram-photo">
+    <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/insta-1.jpg') }}">
+        <div class="inside-text">
+            <i class="ti-instagram"></i>
+            <h5><a href="#">colorlib_Collection</a></h5>
+        </div>
+    </div>
+    <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/insta-2.jpg') }}">
+        <div class="inside-text">
+            <i class="ti-instagram"></i>
+            <h5><a href="#">colorlib_Collection</a></h5>
+        </div>
+    </div>
+    <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/insta-3.jpg') }}">
+        <div class="inside-text">
+            <i class="ti-instagram"></i>
+            <h5><a href="#">colorlib_Collection</a></h5>
+        </div>
+    </div>
+    <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/insta-4.jpg') }}">
+        <div class="inside-text">
+            <i class="ti-instagram"></i>
+            <h5><a href="#">colorlib_Collection</a></h5>
+        </div>
+    </div>
+    <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/insta-5.jpg') }}">
+        <div class="inside-text">
+            <i class="ti-instagram"></i>
+            <h5><a href="#">colorlib_Collection</a></h5>
+        </div>
+    </div>
+    <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/insta-6.jpg') }}">
+        <div class="inside-text">
+            <i class="ti-instagram"></i>
+            <h5><a href="#">colorlib_Collection</a></h5>
+        </div>
+    </div>
+</div>
+
+<section class="latest-blog spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h2>From The Blog</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="single-latest-blog">
+                    <img src="{{ asset('frontend/img/latest-1.jpg') }}" alt="" />
+                    <div class="latest-text">
+                        <div class="tag-list">
+                            <div class="tag-item">
+                                <i class="fa fa-calendar-o"></i>
+                                May 4,2019
+                            </div>
+                            <div class="tag-item">
+                                <i class="fa fa-comment-o"></i>
+                                5
+                            </div>
+                        </div>
+                        <a href="#">
+                            <h4>The Best Street Style From London Fashion Week</h4>
+                        </a>
+                        <p>
+                            Sed quia non numquam modi tempora indunt ut labore et dolore
+                            magnam aliquam quaerat
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single-latest-blog">
+                    <img src="{{ asset('frontend/img/latest-2.jpg') }}" alt="" />
+                    <div class="latest-text">
+                        <div class="tag-list">
+                            <div class="tag-item">
+                                <i class="fa fa-calendar-o"></i>
+                                May 4,2019
+                            </div>
+                            <div class="tag-item">
+                                <i class="fa fa-comment-o"></i>
+                                5
+                            </div>
+                        </div>
+                        <a href="#">
+                            <h4>Vogue's Ultimate Guide To Autumn/Winter 2019 Shoes</h4>
+                        </a>
+                        <p>
+                            Sed quia non numquam modi tempora indunt ut labore et dolore
+                            magnam aliquam quaerat
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single-latest-blog">
+                    <img src="{{ asset('frontend/img/latest-3.jpg') }}" alt="" />
+                    <div class="latest-text">
+                        <div class="tag-list">
+                            <div class="tag-item">
+                                <i class="fa fa-calendar-o"></i>
+                                May 4,2019
+                            </div>
+                            <div class="tag-item">
+                                <i class="fa fa-comment-o"></i>
+                                5
+                            </div>
+                        </div>
+                        <a href="#">
+                            <h4>How To Brighten Your Wardrobe With A Dash Of Lime</h4>
+                        </a>
+                        <p>
+                            Sed quia non numquam modi tempora indunt ut labore et dolore
+                            magnam aliquam quaerat
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="benefit-items">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="single-benefit">
+                        <div class="sb-icon">
+                            <img src="{{ asset('frontend/img/icon-1.png') }}" alt="" />
+                        </div>
+                        <div class="sb-text">
+                            <h6>Free Shipping</h6>
+                            <p>For all order over 99$</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="single-benefit">
+                        <div class="sb-icon">
+                            <img src="{{ asset('frontend/img/icon-2.png') }}" alt="" />
+                        </div>
+                        <div class="sb-text">
+                            <h6>Delivery On Time</h6>
+                            <p>If good have prolems</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="single-benefit">
+                        <div class="sb-icon">
+                            <img src="{{ asset('frontend/img/icon-1.png') }}" alt="" />
+                        </div>
+                        <div class="sb-text">
+                            <h6>Secure Payment</h6>
+                            <p>100% secure payment</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> --}}
+@endsection

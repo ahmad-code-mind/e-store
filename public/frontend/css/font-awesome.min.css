@@ -66,6 +66,12 @@
 .fa-heart-o:before {
     content: "\f08a";
 }
+.fa-heart:before {
+    content: "\f004";
+}
+.fa-cart:before {
+    content: "\f07a";
+}
 .fa-phone:before {
     content: "\f095";
 }

@@ -55,6 +55,37 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public static function getpermissionGroup()
+    {
+        $permission_groups = DB::table('permissions')
+        ->select('group_name as name')
+        ->groupBy('group_name')
+        ->get();
+
+        return $permission_groups;
+    }
+
+    public static function getpermissionsByGroupName($group_name)
+    {
+        $permissions = DB::table('permissions')
+            ->select('name', 'id')
+            ->where('group_name', $group_name)
+            ->get();
+        return $permissions;
+    }
+
+    public static function roleHasPermissions($role, $permissions)
+    {
+        $hasPermission = true;
+        foreach ($permissions as $permission) {
+            if (!$role->hasPermissionTo($permission->name)) {
+                $hasPermission = false;
+                return $hasPermission;
+            }
+        }
+        return $hasPermission;
+    }
+
     public static function checkPermissionByRoleId($permission_id, $role_id)
     {
         $status = DB::table('role_has_permissions')->where('permission_id', $permission_id)->where('role_id', $role_id)->get();

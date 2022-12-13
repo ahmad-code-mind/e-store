@@ -124,16 +124,16 @@
         <div class="row">
           <div class="col-lg-2 col-md-2">
             <div class="logo">
-              <a href="index-2.html">
+              <a href="{{ url('/') }}">
                 <img src="{{ asset('frontend/img/logo.png') }}" alt="" />
               </a>
             </div>
           </div>
           <div class="col-lg-7 col-lg-7">
             <div class="advanced-search">
-              <button type="button" class="category-btn">
+              {{-- <button type="button" class="category-btn">
                 All Categories
-              </button>
+              </button> --}}
               <form action="#" class="input-group">
                 <input type="text" placeholder="What do you need?" />
                 <button type="button"><i class="ti-search"></i></button>
@@ -243,10 +243,11 @@
         <div class="nav-depart">
           <div class="depart-btn">
             <i class="ti-menu"></i>
-            <span>All departments</span>
+            <span>All Categories</span>
             <ul class="depart-hover">
               <li class="active"><a href="#">Home Appliances</a></li>
               <li><a href="#">Furniture</a></li>
+              <li><a href="#">Clothes</a></li>
               {{-- <li><a href="#">Underwear</a></li>
               <li><a href="#">Kid's Clothing</a></li>
               <li><a href="#">Brand Fashion</a></li>
@@ -281,7 +282,7 @@
             </li>
           </ul>
         </nav>
-        <div id="mobile-menu-wrap"></div>
+        <div class="d-md-none" id="mobile-menu-wrap"></div>
       </div>
     </div>
   </header>
@@ -380,7 +381,7 @@
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
   </script>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
 
   <script src="{{ asset('frontend/js/jquery-3.3.1.min.js') }}"></script>
   <script src="{{ asset('frontend/js/bootstrap.min.js') }}"></script>

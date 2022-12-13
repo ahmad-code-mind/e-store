@@ -65,35 +65,40 @@ class LoginController extends Controller
     // Google callback
     public function handleCallback()
     {
-        try {
-            $user = Socialite::driver('google')->user();
-        } catch (\Exception $e) {
-            return redirect('login');
-        }
-
-        // only allow people with @company.com to login
-        // if(explode("@", $user->email)[1] !== 'company.com'){
-        //     return redirect()->to('/');
-        // }
-        
-        $existingUser = User::where('google_id', '=', $user->id)->first();
-        
-        if($existingUser){
-            Auth::login($existingUser, true);
-        }
-        
-        else if(!$existingUser)
+        if (!Auth::check())
         {
-            $newUser = User::create(
-            [
-                'name' => $user->name,
-                'email' => $user->email,
-                'google_id' => $user->id,
-            ]);
-            Auth::login($newUser);
-        } 
-
-        // Return home after login
-        return redirect()->to('/');
+            try {
+                $user = Socialite::driver('google')->user();
+            } catch (\Exception $e) {
+                return redirect('login');
+            }
+    
+            // only allow people with @company.com to login
+            // if(explode("@", $user->email)[1] !== 'company.com'){
+            //     return redirect()->to('/');
+            // }
+            
+            $existingUser = User::where('google_id', '=', $user->id)->first();
+            
+            if($existingUser){
+                Auth::login($existingUser, true);
+            }
+            
+            else if(!$existingUser)
+            {
+                $newUser = User::create(
+                [
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'google_id' => $user->id,
+                ]);
+                Auth::login($newUser);
+            } 
+    
+            // Return home after login
+            return redirect()->to('/');
+        } else {
+            return redirect('/');
+        }
     }
 }

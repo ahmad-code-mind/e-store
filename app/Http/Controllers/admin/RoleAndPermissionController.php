@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
@@ -62,7 +63,8 @@ class RoleAndPermissionController extends Controller
         $roles = Role::find($id);
         $permissions = Permission::all();
         $roleID = $request->id;
-        return view('admin.role.permissions',compact('permissions','roles','roleID'));
+        $permission_groups = User::getpermissionGroup();
+        return view('admin.role.permissions',compact('permissions','roles','roleID','permission_groups'));
     }
 
     public function assignPermissions(Request $request)

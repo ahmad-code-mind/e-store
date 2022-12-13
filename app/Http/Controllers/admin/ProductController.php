@@ -23,12 +23,12 @@ class ProductController extends Controller
         $product = Product::with('category');
         return DataTables::of($product)
         ->addColumn('image', function($product){
-            // $img = '<img src='.asset('upload/image/product/'.$product->image).' width="50" height="50"
-            // class="img img-responsive">';
-            // return $img;
-            $img = '<model-viewer src='.asset('upload/image/product/'.$product->image).' camera-controls ;"
-            class="img img-responsive"></model-viewer>';
+            $img = '<img src='.asset('upload/image/product/'.$product->image).' width="50" height="50"
+            class="img img-responsive">';
             return $img;
+            // $img = '<model-viewer src='.asset('upload/image/product/'.$product->image).' camera-controls ;"
+            // class="img img-responsive"></model-viewer>';
+            // return $img;
         })
         ->addColumn('category', function(Product $product){
             $category = $product->category->name;

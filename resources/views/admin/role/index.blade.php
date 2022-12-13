@@ -5,6 +5,12 @@
 @endsection
 
 @section('content')
+<div class="btn-group float-right">
+    <ol class="breadcrumb hide-phone p-0 m-0">
+        <li class="breadcrumb-item"><a href="{{ url('/') }}">Dashboard</a></li>
+        <li class="breadcrumb-item active">Roles</li>
+    </ol>
+</div>
 <div class="page-content-wrapper ">
 
     <div class="container-fluid">
@@ -18,11 +24,11 @@
 
 
             <div class="col-sm-12 mb-4">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop">
                     + Permissions
-                </button>
-                <button type="button" class="btn btn-outline-primary float-right" data-bs-toggle="modal"
-                    data-bs-target="#role">
+                </button> --}}
+                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#role">
                     + Add New Role
                 </button>
             </div>

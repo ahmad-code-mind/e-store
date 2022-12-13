@@ -38,20 +38,29 @@
                     <td class="px-6 py-4">
                         @switch($user->role_as)
                         @case(1)
-                        <span
-                            class="bg-blue">Admin</span>
+                        <span class="bg-blue">SuperAdmin</span>
                         @break
                         @case(2)
-                        <span
-                            class="">User</span>
+                        <span class="bg-blue">Admin</span>
+                        @break
+                        @case(3)
+                        <span class="bg-blue">SubAdmin</span>
+                        @break
+                        @case(4)
+                        <span class="bg-blue">Employee</span>
+                        @break
+                        @case(0)
+                        <span class="bg-blue">User</span>
                         @break
                         @default
 
                         @endswitch
                     </td>
                     <td class="px-6 py-4">
-                        <a href="{{route('show-edit-user',$user->id)}}" class="btn btn-sm btn-outline-info"><i class="material-icons">edit</i>Edit</a>
-                        <a href="{{route('delete-user',$user->id)}}" onclick="return confirm(\'Are you sure?\')" class="btn btn-sm btn-outline-danger"><i class="material-icons">delete</i>Delete</a>
+                        <a href="{{route('show-edit-user',$user->id)}}" class="btn btn-sm btn-outline-info"><i
+                                class="material-icons">edit</i>Edit</a>
+                        <a href="{{route('delete-user',$user->id)}}" onclick="return confirm(\'Are you sure?\')"
+                            class="btn btn-sm btn-outline-danger"><i class="material-icons">delete</i>Delete</a>
                     </td>
                 </tr>
                 @endforeach
@@ -62,7 +71,7 @@
 @section('script')
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script>
-$(document).ready(function() {
+    $(document).ready(function() {
     $('#userTable').DataTable({
         // select: true,
     //     processing: true,

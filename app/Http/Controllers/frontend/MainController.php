@@ -11,7 +11,7 @@ class MainController extends Controller
 {
     public function index()
     {
-        $featured_products = Product::where('trending','1')->take(5)->get();
+        $featured_products = Product::where('trending','1')->take(15)->get();
         return view('frontend.frontend', compact('featured_products'));
     }
     public function profile()
