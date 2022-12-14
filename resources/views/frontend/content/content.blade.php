@@ -35,8 +35,9 @@
                             {{-- <li class="w-icon active">
                                 <a href="#"><i class="icon_bag_alt"></i></a>
                             </li> --}}
-                            <li class="quick-view"><a href="{{ url('/') }}" data-toggle="modal"
-                                    data-target="#product_view">+ Quick
+                            {{-- @dd($prod->id) --}}
+                            <li class="quick-view"><a style="cursor: pointer;" id="quickView"
+                                    onclick="quickview({{ $prod->id }})" data-id="{{ $prod->id }}">+ Quick
                                     View</a></li>
                             {{-- <li class="w-icon">
                                 <a href="#"><i class="fa fa-random"></i></a>
@@ -102,7 +103,7 @@
         </div>
     </div>
 </section>
-<div class="modal fade product_view" id="product_view">
+<div class="modal fade product_view p-5" id="product_view">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -111,26 +112,16 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-6 product_img">
-                        <img src="{{ asset('upload/image/product/'.$prod->image) }}" class="img-responsive">
+                    <div class="col-md-4 product_img">
+                        <img id="product_img" src="" class="img-responsive">
                     </div>
-                    <div class="col-md-6 product_content">
-                        <h4>Product Id: <span>51526</span></h4>
-                        <div class="rating">
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            (10 reviews)
-                        </div>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-                            been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
-                            galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy
-                            text of the printing and typesetting industry.</p>
-                        <h3 class="cost"><span class="glyphicon glyphicon-usd"></span> 75.00 <small
-                                class="pre-cost"><span class="glyphicon glyphicon-usd"></span> 60.00</small></h3>
-                        <div class="row">
+                    <div class="col-md-8 product_content">
+                        <h4 id="product_title"></h4>
+                        <p id="product_descrip"></p>
+                        <h3 class="cost"><span id="product_selling_price"></span>
+                            <span><small class="pre-cost" id="product_original_price"></span></small>
+                        </h3>
+                        {{-- <div class="row">
                             <div class="col-md-4 col-sm-6 col-xs-12">
                                 <select class="form-control" name="select">
                                     <option value="" selected="">Color</option>
@@ -160,13 +151,13 @@
                                 </select>
                             </div>
                             <!-- end col -->
-                        </div>
+                        </div> --}}
                         <div class="space-ten"></div>
                         <div class="btn-ground">
-                            <button type="button" class="btn btn-primary"><span
-                                    class="glyphicon glyphicon-shopping-cart"></span> Add To Cart</button>
-                            <button type="button" class="btn btn-primary"><span
-                                    class="glyphicon glyphicon-heart"></span> Add To Wishlist</button>
+                            <button type="button" class="btn btn-success ml-3 addToCartBtn float-left"><i
+                                    class="fa fa-heart mr-1"></i>Add to Wishlist</button>
+                            <button type="button" class="btn btn-success ml-3 float-left"><i
+                                    class="fa fa-cart mr-1"></i>Add to Cart</button>
                         </div>
                     </div>
                 </div>
@@ -567,4 +558,26 @@
         </div>
     </div>
 </section> --}}
+@section('script')
+<script>
+    function quickview(id) {
+        // alert(id);
+        $.ajax({
+            type: "GET",
+            url: "{{ url('/') }}/product",
+            data: {
+                "id": id,
+            },
+            success: function (response) {
+                document.getElementById("product_img").src = "upload/image/product/" + response.data.image;
+                document.getElementById("product_title").innerText = response.data.name;
+                document.getElementById("product_descrip").innerText = response.data.description;
+                document.getElementById("product_selling_price").innerText = (response.data.selling_price);
+                document.getElementById("product_original_price").innerText = response.data.original_price;
+                $("#product_view").modal('show');
+            },
+        });
+    }
+</script>
+@endsection
 @endsection

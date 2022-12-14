@@ -33,6 +33,16 @@
         prependTo: "#mobile-menu-wrap",
         // allowParentLinks: true,
     });
+    /*------------------
+		Wishlist
+	--------------------*/
+    $.ajax({
+        type: "GET",
+        url: "/load-cart-data",
+        data: "data",
+        dataType: "dataType",
+        success: function (response) {},
+    });
 
     /*------------------
         Hero Slider

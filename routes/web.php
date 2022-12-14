@@ -34,8 +34,12 @@ Route::get('proddetail',[CartController::class, 'index']);
 // Home Page 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/',[HomeController::class, 'featured_products']);
-// Route::get('/{prod_slug}',[HomeController::class, 'modelView']);
+Route::get('product',[HomeController::class, 'quickView']);
 Route::get('product/{prod_slug}',[HomeController::class, 'productView']);
+Route::post('add-to-cart',[CartController::class, 'addProduct']);
+Route::post('delete-cart-item',[CartController::class, 'deleteproduct']);
+Route::post('update-cart',[CartController::class, 'updatecart']);
+Route::get('wishlist',[HomeController::class, 'index']);
 
 
 // Login Auth
@@ -46,6 +50,7 @@ Auth::routes();
 Route::get('login-google', [LoginController::class, 'redirectToProvider'])->name('login.google');
 Route::get('auth/google/callback', [LoginController::class, 'handleCallback']);
 Route::middleware(['auth'])->group(function() {
+    Route::get('cart',[CartController::class, 'viewCart']);
 });
 
 // Front End
@@ -53,7 +58,6 @@ Route::get('profile',[profile::class, 'index'])->name('profile');
 Route::middleware(['auth'])->group(function() {
     Route::get('edit/{id}',[profile::class, 'showedit'])->name('user-edit-profile');
     Route::put('edit/{id}',[profile::class, 'edit'])->name('user-profile');
-    Route::post('add-to-cart', [CartController::class, 'addProduct']);
 });
 
 // Back End

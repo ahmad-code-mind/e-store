@@ -2694,7 +2694,7 @@ ol {
 }
 
 .cart-table table tr td.first-row {
-    padding-top: 30px;
+    padding-top: 0px;
 }
 
 .cart-table table tr td.cart-pic {

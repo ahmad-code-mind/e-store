@@ -36,14 +36,6 @@ class HomeController extends Controller
         $featured_products = Product::where('trending','1')->take(5)->get();
         return view('frontend.content.content', compact('featured_products','category'));
     }
-    // public function modelView($prod_slug)
-    // {
-    //     if(Product::where('slug', $prod_slug)->exists())
-    //     {
-    //         $modelProd = Product::where('slug', $prod_slug)->first();  
-    //         return view('frontend.content.content', compact('modelProd')); 
-    //     }
-    // }
     public function contact()
     {
         return view('frontend.contact.contact');
@@ -68,5 +60,10 @@ class HomeController extends Controller
         } else {
             return redirect('/')->with('error',"The link was broken");
         }
+    }
+    public function quickView(Request $request)
+    {
+        $quickView = Product::find($request->id);
+        return response()->json(["data" => $quickView]);
     }
 }

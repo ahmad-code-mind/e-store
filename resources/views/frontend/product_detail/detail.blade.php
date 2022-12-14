@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb-text">
-                    <a href="#"><i class="fa fa-home"></i> Home</a>
+                    <a href="{{ url('/') }}"><i class="fa fa-home"></i> Home</a>
                     <span>Detail Product</span>
                 </div>
             </div>
@@ -24,7 +24,8 @@
                     <h2 class="mb-0">
                         {{ $products->name }}
                         @if ($products->trending == '1')
-                        <label style="font-size: 16px;" class="float-right bg-danger trending_tag">Trending</label>
+                        <label style="font-size: 16px; border-radius: 10px"
+                            class="float-right bg-danger trending_tag p-2">Trending</label>
                         @endif
                     </h2>
                     <hr>
@@ -41,7 +42,7 @@
                     @endif
                     <div class="row mt-2">
                         <div class="col-md-3">
-                            <input type="hidden" value="" class="prod_id">
+                            <input type="hidden" value="{{ $products->id }}" class="prod_id">
                             <label for="Quantity">Quantity</label>
                             <div class="input-group text-center mb-3">
                                 <div class="input-group-prepend">
@@ -55,10 +56,10 @@
                         </div>
                         <div class="col-md-9">
                             <br>
-                            <button type="button" class="btn btn-success ml-3 addToCartBtn float-left"><i
-                                    class="fa fa-heart mr-1"></i>Add to Wishlist</button>
-                            <button type="button" class="btn btn-success ml-3 float-left"><i
+                            <button type="button" class="btn btn-primary addToCartBtn ml-3 float-left"><i
                                     class="fa fa-cart mr-1"></i>Add to Cart</button>
+                            <button type="button" class="btn btn-success ml-3 float-left"><i
+                                    class="fa fa-heart mr-1"></i>Add to Wishlist</button>
                         </div>
                     </div>
                 </div>
@@ -300,11 +301,18 @@
 @section('script')
 <script>
     $(document).ready(function () {
-        $('.addToCartBtn').change(function (e) { 
+
+        $('.addToCartBtn').click(function (e) { 
             e.preventDefault();
             
-            var product_id = $(this).closet('.product_data').find('.prod_id').val();
-            var product_qty = $(this).closet('.product_data').find('.qty-input').val();
+            var product_id = $(this).closest('.product_data').find('.prod_id').val();
+            var product_qty = $(this).closest('.product_data').find('.qty-input').val();
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
             $.ajax({
                 type: "POST",
@@ -314,7 +322,10 @@
                     'product_qty':product_qty,
                 },
                 success: function (response) {
-                    
+                    toastr.success(response.status);
+                },
+                error: function (response) {
+                    toastr.error(response.status);
                 }
             });
         });

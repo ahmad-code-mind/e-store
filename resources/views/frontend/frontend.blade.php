@@ -6,6 +6,10 @@
   <meta name="keywords" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+  <!-- CSRF Token -->
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
   <title>Laravel</title>
 
   <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&amp;display=swap"
@@ -149,7 +153,7 @@
                 </a>
               </li>
               <li class="cart-icon">
-                <a href="#">
+                <a href="{{ url('cart') }}">
                   <i class="icon_bag_alt"></i>
                   <span>3</span>
                 </a>
@@ -275,7 +279,7 @@
               <a href="#">More</a>
               <ul class="dropdown">
                 <li><a href="blog-details.html">Blog Details</a></li>
-                <li><a href="shopping-cart.html">Shopping Cart</a></li>
+                <li><a href="{{ url('cart') }}">Shopping Cart</a></li>
                 <li><a href="check-out.html">Checkout</a></li>
                 <li><a href="{{ url('faq') }}">Faq</a></li>
               </ul>
