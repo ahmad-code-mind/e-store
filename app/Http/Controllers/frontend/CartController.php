@@ -43,7 +43,7 @@ class CartController extends Controller
         else
         {
             return response()->json([
-                'status' => "Login to Continue"
+                'error' => "Login to Continue"
             ]);
         }
     }
@@ -57,17 +57,21 @@ class CartController extends Controller
     public function updatecart(Request $request)
     {
         $prod_id = $request->input('prod_id');
-        $prod_qty = $request->input('prod_qty');
-
+        $product_qty = $request->input('prod_qty');
+        // $product_price = $request->input('original_price');
+        // dd($product_price);
         if(Auth::check())
         {
-            if(Cart::where('prod_id', $prod_id)->where('user_id',Auth::id())->exists())
+            $cart = Cart::where('prod_id', $prod_id)->where('user_id',Auth::user()->id)->first();
+            if($cart)
             {
-                $cart = Cart::where('prod_id', $prod_id)->where('user_id',Auth::id())->first();
-                $cart->prod_qty = $prod_qty;
-                $cart->save();
+                $cart->prod_qty = $product_qty;
+                $cart->update();
+                // $total = ($product_price * $product_qty);
+                // $ttotal = number_format($total);
                 return response()->json([
-                    'status' => "Quantity Updated Successfully"
+                    'status' => "Quantity Updated",
+                    // 'tprice'=> ''.$ttotal.''
                 ]);
             }
         }
@@ -83,7 +87,7 @@ class CartController extends Controller
                 $cartItem = Cart::where('prod_id', $prod_id)->where('user_id',Auth::id())->first();
                 $cartItem->delete();
                 return response()->json([
-                    'status' => "Product Deleted Successfully"
+                    'status' => "Product Deleted"
                 ]);
             }
         } else {

@@ -56,9 +56,11 @@
                         </div>
                         <div class="col-md-9">
                             <br>
+                            @if ($products->qty > 0)
                             <button type="button" class="btn btn-primary addToCartBtn ml-3 float-left"><i
                                     class="fa fa-cart mr-1"></i>Add to Cart</button>
-                            <button type="button" class="btn btn-success ml-3 float-left"><i
+                            @endif
+                            <button type="button" class="btn btn-success addToWishList ml-3 float-left"><i
                                     class="fa fa-heart mr-1"></i>Add to Wishlist</button>
                         </div>
                     </div>
@@ -322,12 +324,38 @@
                     'product_qty':product_qty,
                 },
                 success: function (response) {
-                    toastr.success(response.status);
-                },
-                error: function (response) {
-                    toastr.error(response.status);
+                    if (response.status)
+                    {
+                        toastr.success(response.status);
+                    } else if (response.error){
+                        toastr.error(response.error);
+                    }
                 }
             });
+        });
+
+        $('.addToWishList').click(function (e) { 
+            e.preventDefault();
+
+            var product_id = $(this).closest('.product_data').find('.prod_id').val();
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/add-to-wishlist",
+                data: {
+                    'product_id':product_id,
+                },
+                success: function (response) {
+                    toastr.success(response.status);
+                }
+            });
+            
         });
 
         $('.increment-btn').click(function (e) { 

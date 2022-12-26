@@ -2884,6 +2884,17 @@ ol {
     display: block;
     text-align: center;
 }
+.proceed-checkout #btn-proceed {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    background: #252525;
+    text-transform: uppercase;
+    padding: 15px 25px 14px 25px;
+    display: block;
+    text-align: center;
+    cursor: pointer;
+}
 
 /*---------------------
   Check Out
@@ -4174,6 +4185,12 @@ ol {
     .cart-table table tr th {
         font-size: 12px;
     }
+    .wishlist-table {
+        overflow: auto;
+    }
+    .wishlist-table table tr th {
+        font-size: 12px;
+    }
     .hero-items .single-hero-items {
         padding: 110px 25px 80px;
         height: auto;
@@ -4332,4 +4349,118 @@ ol {
 }
 .f-btn:hover {
     color: #ffffff;
+}
+
+/* Payment */
+/* .StripeElement {
+    box-sizing: border-box;
+     
+    height: 40px;
+     
+    padding: 10px 12px;
+     
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: white;
+     
+    box-shadow: 0 1px 3px 0 #e6ebf1;
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+}
+  
+.StripeElement--focus {
+    box-shadow: 0 1px 3px 0 #cfd7df;
+}
+  
+.StripeElement--invalid {
+    border-color: #fa755a;
+}
+  
+.StripeElement--webkit-autofill {
+    background-color: #fefde5 !important;
+} */
+
+/*---------------------
+  Wishlist
+-----------------------*/
+
+.wishlist {
+    padding-top: 80px;
+    padding-bottom: 60px;
+}
+
+.wishlist-table {
+    margin-bottom: 40px;
+}
+
+.wishlist-table table {
+    width: 100%;
+    min-width: 480px;
+    border: 1px solid #ebebeb;
+}
+
+.wishlist-table table tr th {
+    font-size: 16px;
+    color: #252525;
+    font-weight: 700;
+    border-bottom: 1px solid #ebebeb;
+    text-align: center;
+    padding: 18px 0 19px;
+    text-transform: uppercase;
+}
+
+.wishlist-table table tr th.p-name {
+    text-align: left;
+}
+.wishlist-table table tr th.addtocart {
+    text-align: center;
+}
+
+.wishlist-table table tr td {
+    text-align: center;
+    padding-bottom: 34px;
+}
+
+.wishlist-table table tr td.first-row {
+    padding-top: 0px;
+}
+
+.wishlist-table table tr td.wishlist-pic {
+    width: 21%;
+}
+
+.wishlist-table table tr td.wishlist-title {
+    text-align: left;
+}
+
+.wishlist-table table tr td.wishlist-title h5 {
+    color: #252525;
+}
+
+.wishlist-table table tr td.p-price {
+    width: 16%;
+}
+
+.wishlist-table table tr td.p-price {
+    color: #e7ab3c;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.wishlist-table table tr td.qua-col {
+    width: 16%;
+}
+
+.wishlist-table table tr td.close-td {
+    font-size: 16px;
+    color: #252525;
+    width: 8%;
+}
+
+.wishlist-table table tr td.close-td i {
+    cursor: pointer;
+}
+
+.wishlist-buttons {
+    margin-bottom: 34px;
 }

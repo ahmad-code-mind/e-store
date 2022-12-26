@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Categories;
 use App\Models\Product;
+use App\Models\Wishlist;
+use App\Models\Categories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,7 +34,7 @@ class HomeController extends Controller
     public function featured_products()
     {
         $category = Categories::all();
-        $featured_products = Product::where('trending','1')->take(5)->get();
+        $featured_products = Product::where('trending','1')->with('wishlist')->with('category')->take(5)->get();
         return view('frontend.content.content', compact('featured_products','category'));
     }
     public function contact()

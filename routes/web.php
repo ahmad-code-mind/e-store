@@ -13,6 +13,9 @@ use App\Http\Controllers\frontend\MainController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\RoleAndPermissionController;
 use App\Http\Controllers\frontend\CartController;
+use App\Http\Controllers\frontend\CheckoutController;
+use App\Http\Controllers\frontend\WishlistController;
+use App\Http\Controllers\payments\StripePaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +42,8 @@ Route::get('product/{prod_slug}',[HomeController::class, 'productView']);
 Route::post('add-to-cart',[CartController::class, 'addProduct']);
 Route::post('delete-cart-item',[CartController::class, 'deleteproduct']);
 Route::post('update-cart',[CartController::class, 'updatecart']);
-Route::get('wishlist',[HomeController::class, 'index']);
+Route::post('add-to-wishlist',[WishlistController::class, 'add']);
+Route::post('delete-wishlist-item',[WishlistController::class, 'deleteitem']);
 
 
 // Login Auth
@@ -51,6 +55,12 @@ Route::get('login-google', [LoginController::class, 'redirectToProvider'])->name
 Route::get('auth/google/callback', [LoginController::class, 'handleCallback']);
 Route::middleware(['auth'])->group(function() {
     Route::get('cart',[CartController::class, 'viewCart']);
+    Route::get('checkout',[CheckoutController::class, 'index'])->name('cart.checkout');
+    // Wishlist 
+    Route::get('wishlist',[WishlistController::class, 'index']);
+    // Stripe payment
+    Route::get('payment',[StripePaymentController::class, 'checkout']);
+    Route::post('payment',[StripePaymentController::class, 'afterpayment'])->name('checkout.credit-card');
 });
 
 // Front End

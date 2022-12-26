@@ -20,16 +20,21 @@
     <div class="container">
         <div class="row">
             <h2 class="mb-4">Featured Products</h2>
-            <div class="product-slider owl-carousel">
+            <div class="product-slider owl-carousel product_data">
                 @foreach ($featured_products as $prod)
                 <div class="product-item">
                     <div class="pi-pic">
                         <a href="{{ url('product/'.$prod->slug) }}">
                             <img src="{{ asset('upload/image/product/'.$prod->image) }}" alt="" />
                         </a>
+                        <input type="hidden" value="{{ $prod->id }}" class="prod_id">
                         <div class="sale">Sale</div>
                         <div class="icon">
-                            <i class="icon_heart_alt"></i>
+                            @if($prod->wishlist == null)
+                            <i class="icon_heart_alt addToWishList"></i>
+                            @else
+                            <i style="color: red" class="fa fa-heart addToWishList"></i>
+                            @endif
                         </div>
                         <ul>
                             {{-- <li class="w-icon active">
@@ -45,9 +50,7 @@
                         </ul>
                     </div>
                     <div class="pi-text">
-                        @foreach ($category as $cat)
-                        <div class="catagory-name">{{ $cat->name }}</div>
-                        @endforeach
+                        <div class="catagory-name">{{ $prod->category->name }}</div>
                         <a href="#">
                             <h5>{{ $prod->name }}</h5>
                         </a>
@@ -578,6 +581,33 @@
             },
         });
     }
+
+    $(document).ready(function () {
+        $('.addToWishList').click(function (e) { 
+            e.preventDefault();
+
+            var product_id = $(this).closest('.product_data').find('.prod_id').val();
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/add-to-wishlist",
+                data: {
+                    'product_id':product_id,
+                },
+                success: function (response) {
+                    toastr.success(response.status);
+                    // $('.addToWishList').css("color", "red");
+                }
+            });
+            
+        });
+    });
 </script>
 @endsection
 @endsection

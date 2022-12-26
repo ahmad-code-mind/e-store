@@ -21,6 +21,8 @@
 
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
   <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0- 
      alpha/css/bootstrap.css" rel="stylesheet">
 
@@ -147,7 +149,7 @@
           <div class="col-lg-3 text-right col-lg-3">
             <ul class="nav-right">
               <li class="heart-icon">
-                <a href="#">
+                <a href="{{ url('wishlist') }}">
                   <i class="icon_heart_alt"></i>
                   <span>1</span>
                 </a>
@@ -160,36 +162,24 @@
                 <div class="cart-hover">
                   <div class="select-items">
                     <table>
-                      <tbody>
+                      {{-- <tbody>
+                        @foreach ($cartitems as $items)
                         <tr>
                           <td class="si-pic">
-                            <img src="{{ asset('frontend/img/select-product-1.jpg') }}" alt="" />
+                            <img src="{{ asset('upload/image/product/'.$items->products->image) }}" alt="" />
                           </td>
                           <td class="si-text">
                             <div class="product-selected">
-                              <p>$60.00 x 1</p>
-                              <h6>Kabino Bedside Table</h6>
+                              <p>{{ $items->products->selling_price }} x {{ $items->prod_qty }}</p>
+                              <h6>{{ $items->products->name }}</h6>
                             </div>
                           </td>
                           <td class="si-close">
                             <i class="ti-close"></i>
                           </td>
                         </tr>
-                        <tr>
-                          <td class="si-pic">
-                            <img src="{{ asset('frontend/img/select-product-2.jpg') }}" alt="" />
-                          </td>
-                          <td class="si-text">
-                            <div class="product-selected">
-                              <p>$60.00 x 1</p>
-                              <h6>Kabino Bedside Table</h6>
-                            </div>
-                          </td>
-                          <td class="si-close">
-                            <i class="ti-close"></i>
-                          </td>
-                        </tr>
-                      </tbody>
+                        @endforeach
+                      </tbody> --}}
                     </table>
                   </div>
                   <div class="select-total">
@@ -197,7 +187,7 @@
                     <h5>$120.00</h5>
                   </div>
                   <div class="select-button">
-                    <a href="#" class="primary-btn view-card">VIEW CARD</a>
+                    <a href="{{ url('cart') }}" class="primary-btn view-card">VIEW CART</a>
                     <a href="#" class="primary-btn checkout-btn">CHECK OUT</a>
                   </div>
                 </div>
@@ -398,8 +388,7 @@
   <script src="{{ asset('frontend/js/owl.carousel.min.js') }}"></script>
   <script src="{{ asset('frontend/js/main.js') }}"></script>
   <script src="{{ asset('assets/js/core/jquery.min.js') }}"></script>
-
-  <script src="https://js.stripe.com/v3/"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
   <script>

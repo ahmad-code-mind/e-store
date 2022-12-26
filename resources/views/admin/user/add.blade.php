@@ -25,8 +25,11 @@
                     <label for="role_as" class="form-label">Role</label>
                     <select name="role_as" class="form-select">
                         <option selected disabled>Select Category</option>
-                        <option value="1">admin</option>
-                        <option value="2">user</option>
+                        <option value="1">SuperAdmin</option>
+                        <option value="2">Admin</option>
+                        <option value="3">SubAdmin</option>
+                        <option value="4">Employee</option>
+                        <option value="0">User</option>
                     </select>
                 </div>
                 <div class="col-md-12">

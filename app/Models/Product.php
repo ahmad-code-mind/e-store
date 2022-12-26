@@ -31,4 +31,12 @@ class Product extends Model
     public function category(){
         return $this->belongsTo(Categories::class, 'category_id','id');
     }
+
+    public function wishlist() {
+        return $this->hasOne(Wishlist::class, 'prod_id', 'id');
+    }
+
+    public function cart() {
+        return $this->hasOne(Cart::class, 'prod_id', 'id');
+    }
 }
