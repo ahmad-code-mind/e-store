@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
+use App\Models\Rating;
 use App\Models\Product;
 use App\Models\Wishlist;
 use App\Models\Categories;
@@ -31,7 +33,7 @@ class HomeController extends Controller
         return view('frontend.frontend');
     }
     
-    public function featured_products()
+    public function featured_products(Request $request)
     {
         $category = Categories::all();
         $featured_products = Product::where('trending','1')->with('wishlist')->with('category')->take(5)->get();
@@ -57,7 +59,15 @@ class HomeController extends Controller
         if(Product::where('slug', $prod_slug)->exists())
         {
             $products = Product::where('slug', $prod_slug)->first();  
-            return view('frontend.product_detail.detail', compact('products')); 
+            $ratings = Rating::where('prod_id',$products->id)->get();
+            $rating_sum = Rating::where('prod_id',$products->id)->sum('stars_rated');
+            if ($ratings->count() > 0)
+            {
+                $rating_value = $rating_sum/$ratings->count();
+            }else {
+                $rating_value = 0;
+            }
+            return view('frontend.product_detail.detail', compact('products','ratings','rating_value')); 
         } else {
             return redirect('/')->with('error',"The link was broken");
         }

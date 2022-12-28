@@ -17,7 +17,7 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
 
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
@@ -151,13 +151,13 @@
               <li class="heart-icon">
                 <a href="{{ url('wishlist') }}">
                   <i class="icon_heart_alt"></i>
-                  <span>1</span>
+                  <span class="wishlist-count"></span>
                 </a>
               </li>
               <li class="cart-icon">
                 <a href="{{ url('cart') }}">
                   <i class="icon_bag_alt"></i>
-                  <span>3</span>
+                  <span class="cart-count"></span>
                 </a>
                 <div class="cart-hover">
                   <div class="select-items">
@@ -215,6 +215,7 @@
                   </button> --}}
                   <ul class="dropdown-menu">
                     <a class="dropdown-item cust" href="{{ route('profile') }}">Profile</a>
+                    <a class="dropdown-item cust" href="{{ route('order-detail') }}">My Orders</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item cust" href="{{ route('logout') }}" onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();">
@@ -405,6 +406,32 @@
     data-cf-beacon='{"rayId":"76e230d3cecade57","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2022.11.0","si":100}'
     crossorigin="anonymous"></script>
 
+  <script>
+    $(document).ready(function () {
+      loadcart();
+      function loadcart()
+      {
+        $.ajax({
+          type: "GET",
+          url: "{{ route('cart-count') }}",
+          data: "",
+          success: function (response) {
+              $(".cart-count").html('');
+              $(".cart-count").html(response.count);
+          },
+        });
+      }
+        $.ajax({
+          type: "GET",
+          url: "{{ route('wishlist-count') }}",
+          data: "",
+          success: function (response) {
+                $(".wishlist-count").html(response.count);
+          },
+        });
+      });
+  </script>
+
   {{-- Toastr --}}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
   @if(Session('status'))
@@ -425,7 +452,7 @@
     toastr.error("{{Session('error')}}");
   </script>
   @endif
-  {{-- @if(Session('info'))
+  @if(Session('info'))
   <script>
     toastr.options = {
         "closeButton": true,
@@ -433,7 +460,7 @@
     }
     toastr.info("{{Session('info')}}");
   </script>
-  @endif --}}
+  @endif
   {{-- End Toastr --}}
 
   @yield('script')

@@ -14,6 +14,8 @@ use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\RoleAndPermissionController;
 use App\Http\Controllers\frontend\CartController;
 use App\Http\Controllers\frontend\CheckoutController;
+use App\Http\Controllers\frontend\OrderController;
+use App\Http\Controllers\frontend\RatingController;
 use App\Http\Controllers\frontend\WishlistController;
 use App\Http\Controllers\payments\StripePaymentController;
 
@@ -27,6 +29,8 @@ use App\Http\Controllers\payments\StripePaymentController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('load-cart-count',[CartController::class, 'cartcount'])->name('cart-count');
+Route::get('wishlist-count',[WishlistController::class, 'wishlistCount'])->name('wishlist-count');
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -56,8 +60,14 @@ Route::get('auth/google/callback', [LoginController::class, 'handleCallback']);
 Route::middleware(['auth'])->group(function() {
     Route::get('cart',[CartController::class, 'viewCart']);
     Route::get('checkout',[CheckoutController::class, 'index'])->name('cart.checkout');
+    Route::post('place-order',[CheckoutController::class, 'placeOrder'])->name('place-order');
+    // Order
+    Route::get('order-detail',[OrderController::class, 'index'])->name('order-detail');
+    Route::get('view-order/{id}',[OrderController::class, 'view'])->name('view-order');
     // Wishlist 
     Route::get('wishlist',[WishlistController::class, 'index']);
+    // Rating
+    Route::post('add-rating',[RatingController::class, 'rating'])->name('product-rating');
     // Stripe payment
     Route::get('payment',[StripePaymentController::class, 'checkout']);
     Route::post('payment',[StripePaymentController::class, 'afterpayment'])->name('checkout.credit-card');

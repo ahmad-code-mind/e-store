@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string('user_id');
             $table->string('name');
             $table->string('email');
             $table->string('phone');
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->string('pincode');
             $table->string('status')->default('0');
             $table->string('message')->nullable();
+            $table->string('total_price');
             $table->string('tracking_no');
             $table->timestamps();
         });

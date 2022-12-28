@@ -16,7 +16,8 @@
 </div>
 <section class="checkout-section spad">
     <div class="container">
-        <form action="#" class="checkout-form">
+        <form action="{{ route('place-order') }}" method="POST" class="checkout-form">
+            @csrf
             <div class="row">
                 <div class="col-lg-6">
                     {{-- <div class="checkout-content">
@@ -26,34 +27,42 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <label for="fir">Name<span>*</span></label>
-                            <input type="text" id="fir">
+                            <input type="text" id="fir" name="name" value="{{ Auth::user()->name }}">
                         </div>
                         <div class="col-lg-12">
                             <label for="email">Email Address<span>*</span></label>
-                            <input type="text" id="email">
+                            <input type="email" id="email" name="email" value="{{ Auth::user()->email }}">
+                        </div>
+                        <div class=" col-lg-12">
+                            <label for="street">Address 1<span>*</span></label>
+                            <input type="text" id="street" class="street-first" name="address1"
+                                value="{{ Auth::user()->address }}">
+                        </div>
+                        <div class=" col-lg-12">
+                            <label for="street">Address 2<span>*</span></label>
+                            <input type="text" id="street" class="street-first" name="address2">
                         </div>
                         <div class="col-lg-12">
-                            <label for="street">Street Address<span>*</span></label>
-                            <input type="text" id="street" class="street-first">
-                            <input type="text">
-                        </div>
-                        <div class="col-lg-6">
-                            <label for="town">Town / City<span>*</span></label>
-                            <input type="text" id="town">
-                        </div>
-                        <div class="col-lg-6">
                             <label for="phone">Phone<span>*</span></label>
-                            <input type="text" id="phone">
+                            <input type="text" id="phone" name="phone" value="{{ Auth::user()->phone }}">
                         </div>
-                        <div class="col-lg-12">
+                        <div class=" col-lg-6">
+                            <label for="town">Town / City<span>*</span></label>
+                            <input type="text" id="town" name="city" value="{{ Auth::user()->city }}">
+                        </div>
+                        <div class=" col-lg-6">
+                            <label for="town">State<span>*</span></label>
+                            <input type="text" id="town" name="state" value="{{ Auth::user()->state }}">
+                        </div>
+                        <div class=" col-lg-12">
                             <label for="cun">Country<span>*</span></label>
-                            <input type="text" id="cun">
+                            <input type="text" id="cun" name="country" value="{{ Auth::user()->country }}">
                         </div>
-                        <div class="col-lg-12">
-                            <label for="zip">Postcode / ZIP (optional)</label>
-                            <input type="text" id="zip">
+                        <div class=" col-lg-12">
+                            <label for="zip">Postcode / ZIP</label>
+                            <input type="text" id="zip" name="pincode" value="{{ Auth::user()->zip_code }}">
                         </div>
-                        {{-- <div class="col-lg-12">
+                        {{-- <div class=" col-lg-12">
                             <div class="create-item">
                                 <label for="acc-create">
                                     Create an account?

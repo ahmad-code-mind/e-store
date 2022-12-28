@@ -15,25 +15,33 @@
     .space-ten {
         padding: 10px 0;
     }
+
+    /* .fa-heart:hover {
+        color: red;
+    } */
+
+    .red {
+        color: red;
+    }
 </style>
 <section class="featured-banner">
     <div class="container">
         <div class="row">
             <h2 class="mb-4">Featured Products</h2>
-            <div class="product-slider owl-carousel product_data">
+            <div class="product-slider owl-carousel">
                 @foreach ($featured_products as $prod)
-                <div class="product-item">
+                <div class="product-item product_data">
                     <div class="pi-pic">
                         <a href="{{ url('product/'.$prod->slug) }}">
                             <img src="{{ asset('upload/image/product/'.$prod->image) }}" alt="" />
                         </a>
                         <input type="hidden" value="{{ $prod->id }}" class="prod_id">
                         <div class="sale">Sale</div>
-                        <div class="icon">
+                        <div class="icon" data-productid="{{ $prod->id }}">
                             @if($prod->wishlist == null)
-                            <i class="icon_heart_alt addToWishList"></i>
+                            <i class="far fa-heart addToWishList"></i>
                             @else
-                            <i style="color: red" class="fa fa-heart addToWishList"></i>
+                            <i class="fas fa-heart delete-wishlist-item" style="color: red;"></i>
                             @endif
                         </div>
                         <ul>
@@ -42,7 +50,8 @@
                             </li> --}}
                             {{-- @dd($prod->id) --}}
                             <li class="quick-view"><a style="cursor: pointer;" id="quickView"
-                                    onclick="quickview({{ $prod->id }})" data-id="{{ $prod->id }}">+ Quick
+                                    onclick="quickview({{ $prod->id }})" data-id="{{ $prod->id }}">+
+                                    Quick
                                     View</a></li>
                             {{-- <li class="w-icon">
                                 <a href="#"><i class="fa fa-random"></i></a>
@@ -109,19 +118,20 @@
 <div class="modal fade product_view p-5" id="product_view">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <a href="#" data-dismiss="modal" class="class pull-right"><span
-                        class="glyphicon glyphicon-remove"></span></a>
-            </div>
+            {{-- <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div> --}}
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-4 product_img">
                         <img id="product_img" src="" class="img-responsive">
                     </div>
-                    <div class="col-md-8 product_content">
-                        <h4 id="product_title"></h4>
-                        <p id="product_descrip"></p>
-                        <h3 class="cost"><span id="product_selling_price"></span>
+                    <div class="col-md-6 product_content">
+                        <h4 id="product_title" class="mb-3"></h4>
+                        <p id="product_descrip" class="mb-3"></p>
+                        <h3 class="cost" style="color: #e7ab3c"><span id="product_selling_price"></span>
                             <span><small class="pre-cost" id="product_original_price"></span></small>
                         </h3>
                         {{-- <div class="row">
@@ -585,7 +595,6 @@
     $(document).ready(function () {
         $('.addToWishList').click(function (e) { 
             e.preventDefault();
-
             var product_id = $(this).closest('.product_data').find('.prod_id').val();
 
             $.ajaxSetup({
@@ -601,11 +610,33 @@
                     'product_id':product_id,
                 },
                 success: function (response) {
+                    $('.icon[data-productid='+product_id+']').html(`<i class="fas fa-heart" style="color: red;"></i>`);
                     toastr.success(response.status);
-                    // $('.addToWishList').css("color", "red");
                 }
             });
+        });
+        $('.delete-wishlist-item').click(function (e) { 
+            e.preventDefault();
             
+            var prod_id = $(this).closest('.product_data').find('.prod_id').val();
+    
+            $.ajaxSetup({
+            headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+    
+            $.ajax({
+                type: "POST",
+                url: "/delete-wishlist-item",
+                data: {
+                    'prod_id':prod_id,
+                },
+                success: function (response) {
+                    toastr.success(response.status);
+                    $('.icon[data-productid='+product_id+']').html(`<i class="far fa-heart addToWishList" style="color: black;"></i>`);
+                },
+            });
         });
     });
 </script>

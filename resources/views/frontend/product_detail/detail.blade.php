@@ -13,12 +13,51 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="{{ route('product-rating') }}" method="POST">
+                @csrf
+                <input type="hidden" name="product_id" value="{{ $products->id }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Rate {{ $products->name }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="rating-css">
+                        <div class="star-icon">
+                            <input type="radio" value="1" name="product_rating" checked id="rating1">
+                            <label for="rating1" class="fa fa-star"></label>
+                            <input type="radio" value="2" name="product_rating" id="rating2">
+                            <label for="rating2" class="fa fa-star"></label>
+                            <input type="radio" value="3" name="product_rating" id="rating3">
+                            <label for="rating3" class="fa fa-star"></label>
+                            <input type="radio" value="4" name="product_rating" id="rating4">
+                            <label for="rating4" class="fa fa-star"></label>
+                            <input type="radio" value="5" name="product_rating" id="rating5">
+                            <label for="rating5" class="fa fa-star"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="card shadow product_data">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-3 border-right">
-                    <img src="{{ asset('upload/image/product/'.$products->image) }}" class="text-center" alt="">
+                <div class="col-md-3 border-right text-center my-auto">
+                    <img src="{{ asset('upload/image/product/'.$products->image) }}" alt="">
                 </div>
                 <div class="col-md-9">
                     <h2 class="mb-0">
@@ -31,7 +70,19 @@
                     <hr>
                     <label class="mr-3">Original Price : <s>Rs {{ $products->original_price }}</s></label>
                     <label class="font-weight-bold">Selling Price : Rs {{ $products->selling_price }}</label>
-                    <p class="mt-3">
+                    @php
+                    $ratenum = number_format($rating_value)
+                    @endphp
+                    <div class="rating">
+                        @for ($i = 1; $i <= $ratenum; $i++) <li class="fa fa-star checked">
+                            </li>
+                            @endfor
+                            @for ($j = $ratenum+1; $j <= 5; $j++) <li class="fa fa-star">
+                                </li>
+                                @endfor
+                                <span>{{ $ratings->count() }} Ratings</span>
+                    </div>
+                    <p class="mt-2">
                         {!! $products->small_description !!}
                     </p>
                     <hr>
@@ -73,6 +124,9 @@
                     {!! $products->description !!}
                 </p>
             </div>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                Rate This Product
+            </button>
         </div>
     </div>
 </div>

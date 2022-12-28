@@ -84,7 +84,7 @@
                                     <h5>{{ $items->products->name }}</h5>
                                 </td>
                                 <td class="p-price" id="p-price">RS.{{ $items->products->selling_price }}</td>
-                                @if ($items->products->qty > $items->prod_qty)
+                                @if ($items->products->qty >= $items->prod_qty)
                                 <td class="qua-col">
                                     <div class="quantity">
                                         <div class="pro-qty">

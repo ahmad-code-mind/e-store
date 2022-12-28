@@ -18,7 +18,7 @@ class WishlistController extends Controller
     public function add(Request $request)
     {
         $product_id = $request->input('product_id');
-        dd($product_id);
+        // dd($product_id);
         if(Auth::check())
         {
             $prod_check = Product::where('id', $product_id)->first();
@@ -62,5 +62,10 @@ class WishlistController extends Controller
                 'status' => "Login to Continue"
             ]);
         }
+    }
+
+    public function wishlistCount(Request $request) {
+        $wishlistcount = Wishlist::where('user_id',Auth::id())->count();
+        return response()->json(['count' => $wishlistcount]);
     }
 }
