@@ -2,10 +2,10 @@
     data-image="{{ asset('assets/img/sidebar-1.jpg') }}">
     <div class="logo">
         <a href="{{ url('/') }}" class="simple-text logo-mini">
-            ES
+            E
         </a>
         <a href="{{ url('/') }}" class="simple-text logo-normal">
-            E-store
+            E-MART
         </a>
     </div>
     <div class="sidebar-wrapper">
@@ -57,6 +57,12 @@
                 </a>
             </li>
             @endcan
+            <li class="nav-item {{ Request::is('admin/order*') ? 'active':'' }} ">
+                <a class="nav-link" href="{{ url('admin/order') }}">
+                    <i class="material-icons">list_alt</i>
+                    <p>Orders</p>
+                </a>
+            </li>
             <li class="nav-item {{ Request::is('admin/role*') ? 'active':'' }} ">
                 <a class="nav-link" href="{{ url('admin/role') }}">
                     <i class="material-icons">group</i>

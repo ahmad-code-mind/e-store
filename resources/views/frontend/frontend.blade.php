@@ -36,8 +36,10 @@
   <link rel="stylesheet" href="{{ asset('frontend/css/jquery-ui.min.css') }}" type="text/css" />
   <link rel="stylesheet" href="{{ asset('frontend/css/slicknav.min.css') }}" type="text/css" />
   <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}" type="text/css" />
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
   <script nonce="28a80ab3-13aa-4fa9-b3a5-436eb21b028b">
     (function (w, d) {
         !(function (e, f, g, h) {
@@ -103,6 +105,7 @@
         })(w, d, 0, "script");
       })(window, document);
   </script>
+
   <style>
     .cust:hover {
       color: #e7ab3c;
@@ -127,7 +130,7 @@
   <header class="header-section">
     <div class="container">
       <div class="inner-header">
-        <div class="row">
+        <div class="row align-items-center">
           <div class="col-lg-2 col-md-2">
             <div class="logo">
               <a href="{{ url('/') }}">
@@ -135,23 +138,26 @@
               </a>
             </div>
           </div>
-          <div class="col-lg-7 col-lg-7">
-            <div class="advanced-search">
-              {{-- <button type="button" class="category-btn">
-                All Categories
-              </button> --}}
-              <form action="#" class="input-group">
-                <input type="text" placeholder="What do you need?" />
-                <button type="button"><i class="ti-search"></i></button>
-              </form>
-            </div>
+          <div class="col-lg-7 my-3">
+            <form action="{{ url('searchproduct') }}" method="POST">
+              <div class="wrap">
+                <div class="search">
+                  @csrf
+                  <input type="search" id="search" name="product_name" class="searchTerm"
+                    placeholder="What are you looking for?">
+                  <button type="submit" class="searchButton">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
           <div class="col-lg-3 text-right col-lg-3">
             <ul class="nav-right">
               <li class="heart-icon">
                 <a href="{{ url('wishlist') }}">
                   <i class="icon_heart_alt"></i>
-                  <span class="wishlist-count"></span>
+                  <span class="wishlist-count" id="wishlist-count"></span>
                 </a>
               </li>
               <li class="cart-icon">
@@ -159,38 +165,6 @@
                   <i class="icon_bag_alt"></i>
                   <span class="cart-count"></span>
                 </a>
-                <div class="cart-hover">
-                  <div class="select-items">
-                    <table>
-                      {{-- <tbody>
-                        @foreach ($cartitems as $items)
-                        <tr>
-                          <td class="si-pic">
-                            <img src="{{ asset('upload/image/product/'.$items->products->image) }}" alt="" />
-                          </td>
-                          <td class="si-text">
-                            <div class="product-selected">
-                              <p>{{ $items->products->selling_price }} x {{ $items->prod_qty }}</p>
-                              <h6>{{ $items->products->name }}</h6>
-                            </div>
-                          </td>
-                          <td class="si-close">
-                            <i class="ti-close"></i>
-                          </td>
-                        </tr>
-                        @endforeach
-                      </tbody> --}}
-                    </table>
-                  </div>
-                  <div class="select-total">
-                    <span>total:</span>
-                    <h5>$120.00</h5>
-                  </div>
-                  <div class="select-button">
-                    <a href="{{ url('cart') }}" class="primary-btn view-card">VIEW CART</a>
-                    <a href="#" class="primary-btn checkout-btn">CHECK OUT</a>
-                  </div>
-                </div>
               </li>
               @guest
               @if (Route::has('login'))
@@ -209,10 +183,6 @@
                   <img data-bs-toggle="dropdown" aria-expanded="false" class="rounded-circle"
                     src="{{ asset('frontend/img/demo.png') }}" alt="" />
                   @endif
-                  {{-- <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    {{ Auth::user()->name }}
-                  </button> --}}
                   <ul class="dropdown-menu">
                     <a class="dropdown-item cust" href="{{ route('profile') }}">Profile</a>
                     <a class="dropdown-item cust" href="{{ route('order-detail') }}">My Orders</a>
@@ -233,6 +203,7 @@
         </div>
       </div>
     </div>
+
     <div class="nav-item">
       <div class="container">
         <div class="nav-depart">
@@ -243,12 +214,6 @@
               <li class="active"><a href="#">Home Appliances</a></li>
               <li><a href="#">Furniture</a></li>
               <li><a href="#">Clothes</a></li>
-              {{-- <li><a href="#">Underwear</a></li>
-              <li><a href="#">Kid's Clothing</a></li>
-              <li><a href="#">Brand Fashion</a></li>
-              <li><a href="#">Accessories/Shoes</a></li>
-              <li><a href="#">Luxury Brands</a></li>
-              <li><a href="#">Brand Outdoor Apparel</a></li> --}}
             </ul>
           </div>
         </div>
@@ -390,6 +355,24 @@
   <script src="{{ asset('frontend/js/main.js') }}"></script>
   <script src="{{ asset('assets/js/core/jquery.min.js') }}"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="{{ asset('frontend/js/checkout.js') }}"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  <script>
+    var availableTags = [];
+      $.ajax({
+        type: "GET",
+        url: "/product-list",
+        success: function (response) {
+          // console.log(response);
+          autocompletesearch(response);
+        }
+      });
+      function autocompletesearch(availableTags){
+        $("#search").autocomplete({
+            source: availableTags,
+        });
+      }
+  </script>
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
   <script>
@@ -401,36 +384,13 @@
 
       gtag("config", "UA-23581568-13");
   </script>
+
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vaafb692b2aea4879b33c060e79fe94621666317369993"
     integrity="sha512-0ahDYl866UMhKuYcW078ScMalXqtFJggm7TmlUtp0UlD4eQk0Ixfnm5ykXKvGJNFjLMoortdseTfsRT8oCfgGA=="
     data-cf-beacon='{"rayId":"76e230d3cecade57","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2022.11.0","si":100}'
     crossorigin="anonymous"></script>
 
-  <script>
-    $(document).ready(function () {
-      loadcart();
-      function loadcart()
-      {
-        $.ajax({
-          type: "GET",
-          url: "{{ route('cart-count') }}",
-          data: "",
-          success: function (response) {
-              $(".cart-count").html('');
-              $(".cart-count").html(response.count);
-          },
-        });
-      }
-        $.ajax({
-          type: "GET",
-          url: "{{ route('wishlist-count') }}",
-          data: "",
-          success: function (response) {
-                $(".wishlist-count").html(response.count);
-          },
-        });
-      });
-  </script>
+
 
   {{-- Toastr --}}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>

@@ -22,6 +22,7 @@
                     <table class="table table-bordered my-auto">
                         <thead>
                             <tr>
+                                <th>Order Date</th>
                                 <th>Tracking Number</th>
                                 <th>Total Price</th>
                                 <th>Status</th>
@@ -31,9 +32,10 @@
                         <tbody>
                             @foreach ($orders as $order)
                             <tr>
+                                <td>{{ date('d-m-y',strtotime($order->created_at)) }}</td>
                                 <td class="t-num">{{ $order->tracking_no }}</td>
                                 <td class="p-price">{{ $order->total_price }}</td>
-                                <td class="p-status">{{ $order->status == '0' ? 'pending' : 'completed'}}</td>
+                                <td class="p-status">{{ $order->status == '0' ? 'In Progress' : 'Completed'}}</td>
                                 <td>
                                     <a href="{{ route('view-order',$order->id) }}" class="btn btn-primary">View</a>
                                 </td>

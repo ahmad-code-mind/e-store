@@ -59,8 +59,8 @@ class CartController extends Controller
     {
         $prod_id = $request->input('prod_id');
         $product_qty = $request->input('prod_qty');
-        // $product_price = $request->input('original_price');
-        // dd($product_price);
+        $product_price = $request->input('selling_price');
+
         if(Auth::check())
         {
             $cart = Cart::where('prod_id', $prod_id)->where('user_id',Auth::user()->id)->first();
@@ -68,11 +68,13 @@ class CartController extends Controller
             {
                 $cart->prod_qty = $product_qty;
                 $cart->update();
-                // $total = ($product_price * $product_qty);
-                // $ttotal = number_format($total);
+                $qty = number_format((int)$product_qty);
+                $price = number_format((int)$product_price);
+                $total = $qty * $price;
+
                 return response()->json([
                     'status' => "Quantity Updated",
-                    // 'tprice'=> ''.$ttotal.''
+                    'total' => ''.$total.''
                 ]);
             }
         }

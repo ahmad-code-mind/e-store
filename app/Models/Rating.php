@@ -13,5 +13,10 @@ class Rating extends Model
         'user_id',
         'prod_id',
         'stars_rated',
+        'prod_review',
     ];
+
+    public function users(){
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

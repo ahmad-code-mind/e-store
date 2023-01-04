@@ -10,6 +10,206 @@
 "use strict";
 
 (function ($) {
+    loadcart();
+    loadwishlist();
+
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+    function loadcart() {
+        $.ajax({
+            type: "GET",
+            // url: "{{ route('cart-count') }}",
+            url: "/load-cart-count",
+            success: function (response) {
+                $(".cart-count").html("");
+                $(".cart-count").html(response.count);
+            },
+        });
+    }
+    $(".addToCartBtn").click(function (e) {
+        e.preventDefault();
+
+        var product_id = $(this)
+            .closest(".product_data")
+            .find(".prod_id")
+            .val();
+        var product_qty = $(this)
+            .closest(".product_data")
+            .find(".qty-input")
+            .val();
+
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "/add-to-cart",
+            data: {
+                product_id: product_id,
+                product_qty: product_qty,
+            },
+            success: function (response) {
+                if (response.status) {
+                    toastr.success(response.status);
+                } else if (response.error) {
+                    toastr.error(response.error);
+                }
+                loadcart();
+            },
+        });
+    });
+    function loadwishlist() {
+        $.ajax({
+            type: "GET",
+            // url: "{{ route('wishlist-count') }}",
+            url: "/wishlist-count",
+            success: function (response) {
+                $(".wishlist-count").html("");
+                $(".wishlist-count").html(response.count);
+            },
+        });
+    }
+    $(".addToWishListde").click(function (e) {
+        e.preventDefault();
+
+        var product_id = $(this)
+            .closest(".product_data")
+            .find(".prod_id")
+            .val();
+
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "/add-to-wishlist",
+            data: {
+                product_id: product_id,
+            },
+            success: function (response) {
+                toastr.success(response.status);
+                loadwishlist();
+            },
+        });
+    });
+    /*------------------
+      Wishlist Home Page
+    --------------------*/
+    // $('.addToWishList').click(function (e) {
+    //     e.preventDefault();
+    //     var product_id = $(this).closest('.product_data').find('.prod_id').val();
+    //     var value = document.getElementById("wishlist-count").innerHTML;
+    //     value = isNaN(value) ? 0 : value;
+    //     value++;
+    //     document.getElementById('wishlist-count').innerHTML = value;
+
+    //     $.ajaxSetup({
+    //         headers: {
+    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //         }
+    //     });
+
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "/add-to-wishlist",
+    //         data: {
+    //             'product_id': product_id,
+    //         },
+    //         success: function (response) {
+    //             $('.icon[data-productid=' + product_id + ']').html(`<i class="fas fa-heart" style="color: red;"></i>`);
+    //             // toastr.success(response.status);
+    //         }
+    //     });
+    // });
+    // $('.delete-wishlist-item').click(function (e) {
+    //     e.preventDefault();
+
+    //     var prod_id = $(this).closest('.product_data').find('.prod_id').val();
+    //     var value = document.getElementById("wishlist-count").innerHTML;
+    //     value = isNaN(value) ? 0 : value;
+    //     value--;
+    //     document.getElementById('wishlist-count').innerHTML = value;
+
+    //     $.ajaxSetup({
+    //         headers: {
+    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //         }
+    //     });
+
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "/delete-wishlist-item",
+    //         data: {
+    //             'prod_id': prod_id,
+    //         },
+    //         success: function (response) {
+    //             // toastr.success(response.status);
+    //             $('.icon[data-productid=' + product_id + ']').html(`<i class="fas fa-heart addToWishList"></i>`);
+    //         },
+    //     });
+    // });
+    $('.icon').click(function (e) {
+        e.preventDefault();
+        var product_id = $(this).closest('.product_data').find('.prod_id').val();
+        var value = document.getElementById("wishlist-count").innerHTML;
+        value = isNaN(value) ? 0 : value;
+        $.ajax({
+            type: "POST",
+            url: "/update-wishlist",
+            data: {
+                prod_id: product_id,
+            },
+            success: function (response) {
+                if (response.action == 'add') {
+                    $('.icon[data-productid=' + product_id + ']').html(`<i class="fas fa-heart"></i>`);
+                    toastr.success(response.status);
+                    value++;
+                    document.getElementById('wishlist-count').innerHTML = value;
+                    // console.log(response);
+                } else if (response.action == 'remove') {
+                    $('.icon[data-productid=' + product_id + ']').html(`<i class="far fa-heart"></i>`);
+                    toastr.success(response.status);
+                    value--;
+                    document.getElementById('wishlist-count').innerHTML = value;
+                    // console.log(response);
+                }
+            }
+        });
+    });
+    /*------------------
+     Increment Decrement
+    --------------------*/
+    $(".increment-btn").click(function (e) {
+        e.preventDefault();
+
+        var inc_val = $(".qty-input").val();
+        var value = parseInt(inc_val, 10);
+        value = isNaN(value) ? "0" : value;
+        if (value < 10) {
+            value++;
+            $(".qty-input").val(value);
+        }
+    });
+    $(".decrement-btn").click(function (e) {
+        e.preventDefault();
+
+        var dec_val = $(".qty-input").val();
+        var value = parseInt(dec_val, 10);
+        value = isNaN(value) ? "0" : value;
+        if (value > 1) {
+            value--;
+            $(".qty-input").val(value);
+        }
+    });
     /*------------------
         Preloader
     --------------------*/
@@ -27,21 +227,21 @@
     });
 
     /*------------------
-		Navigation
-	--------------------*/
+        Navigation
+    --------------------*/
     $(".mobile-menu").slicknav({
         prependTo: "#mobile-menu-wrap",
         // allowParentLinks: true,
     });
     /*------------------
-		Wishlist
-	--------------------*/
+        Wishlist
+    --------------------*/
     $.ajax({
         type: "GET",
         url: "/load-cart-data",
         data: "data",
         dataType: "dataType",
-        success: function (response) {},
+        success: function (response) { },
     });
 
     /*------------------
@@ -79,7 +279,7 @@
         ],
         smartSpeed: 1200,
         autoHeight: false,
-        autoplay: true,
+        autoplay: false,
         responsive: {
             0: {
                 items: 1,
@@ -198,9 +398,9 @@
         $(this).html(
             event.strftime(
                 "<div class='cd-item'><span>%D</span> <p>Days</p> </div>" +
-                    "<div class='cd-item'><span>%H</span> <p>Hrs</p> </div>" +
-                    "<div class='cd-item'><span>%M</span> <p>Mins</p> </div>" +
-                    "<div class='cd-item'><span>%S</span> <p>Secs</p> </div>"
+                "<div class='cd-item'><span>%H</span> <p>Hrs</p> </div>" +
+                "<div class='cd-item'><span>%M</span> <p>Mins</p> </div>" +
+                "<div class='cd-item'><span>%S</span> <p>Secs</p> </div>"
             )
         );
     });
@@ -236,8 +436,8 @@
         $("#tech").data("dd");
     });
     /*-------------------
-		Range Slider
-	--------------------- */
+        Range Slider
+    --------------------- */
     var rangeSlider = $(".price-range"),
         minamount = $("#minamount"),
         maxamount = $("#maxamount"),
@@ -257,8 +457,8 @@
     maxamount.val("$" + rangeSlider.slider("values", 1));
 
     /*-------------------
-		Radio Btn
-	--------------------- */
+        Radio Btn
+    --------------------- */
     $(".fw-size-choose .sc-item label, .pd-size-choose .sc-item label").on(
         "click",
         function () {
@@ -270,13 +470,13 @@
     );
 
     /*-------------------
-		Nice Select
+        Nice Select
     --------------------- */
     $(".sorting, .p-show").niceSelect();
 
     /*------------------
-		Single Product
-	--------------------*/
+        Single Product
+    --------------------*/
     $(".product-thumbs-track .pt").on("click", function () {
         $(".product-thumbs-track .pt").removeClass("active");
         $(this).addClass("active");
@@ -289,100 +489,4 @@
     });
 
     $(".product-pic-zoom").zoom();
-
-    /*-------------------
-		Quantity change
-	--------------------- */
-    // var proQty = $(".pro-qty");
-    // alert(proQty);
-    // proQty.prepend('<span class="dec qtybtn">-</span>');
-    // proQty.append('<span class="inc qtybtn">+</span>');
-    // proQty.on("click", ".qtybtn", function () {
-    //     var $button = $(this);
-    //     var oldValue = $button.parent().find("input").val();
-    //     if ($button.hasClass("inc")) {
-    //         var newVal = parseFloat(oldValue) + 1;
-    //     } else {
-    //         // Don't allow decrementing below zero
-    //         if (oldValue > 0) {
-    //             var newVal = parseFloat(oldValue) - 1;
-    //         } else {
-    //             newVal = 0;
-    //         }
-    //     }
-    //     $button.parent().find("input").val(newVal);
-    // });
 })(jQuery);
-
-// // stripe Payment
-
-// // Create a Stripe client.
-// var stripe = Stripe(publishable_key);
-
-// // Create an instance of Elements.
-// var elements = stripe.elements();
-
-// // Custom styling can be passed to options when creating an Element.
-// // (Note that this demo uses a wider set of styles than the guide below.)
-// var style = {
-//     base: {
-//         color: "#32325d",
-//         fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-//         fontSmoothing: "antialiased",
-//         fontSize: "16px",
-//         "::placeholder": {
-//             color: "#aab7c4",
-//         },
-//     },
-//     invalid: {
-//         color: "#fa755a",
-//         iconColor: "#fa755a",
-//     },
-// };
-
-// // Create an instance of the card Element.
-// var card = elements.create("card", { style: style });
-
-// // Add an instance of the card Element into the `card-element` <div>.
-// card.mount("#card-element");
-
-// // Handle real-time validation errors from the card Element.
-// card.addEventListener("change", function (event) {
-//     var displayError = document.getElementById("card-errors");
-//     if (event.error) {
-//         displayError.textContent = event.error.message;
-//     } else {
-//         displayError.textContent = "";
-//     }
-// });
-
-// // Handle form submission.
-// var form = document.getElementById("payment-form");
-// form.addEventListener("submit", function (event) {
-//     event.preventDefault();
-
-//     stripe.createToken(card).then(function (result) {
-//         if (result.error) {
-//             // Inform the user if there was an error.
-//             var errorElement = document.getElementById("card-errors");
-//             errorElement.textContent = result.error.message;
-//         } else {
-//             // Send the token to your server.
-//             stripeTokenHandler(result.token);
-//         }
-//     });
-// });
-
-// // Submit the form with the token ID.
-// function stripeTokenHandler(token) {
-//     // Insert the token ID into the form so it gets submitted to the server
-//     var form = document.getElementById("payment-form");
-//     var hiddenInput = document.createElement("input");
-//     hiddenInput.setAttribute("type", "hidden");
-//     hiddenInput.setAttribute("name", "stripeToken");
-//     hiddenInput.setAttribute("value", token.id);
-//     form.appendChild(hiddenInput);
-
-//     // Submit the form
-//     form.submit();
-// }

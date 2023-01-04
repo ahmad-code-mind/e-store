@@ -39,8 +39,8 @@
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="original_price">Original Price</label>
-                    <input type="number" class="form-control" value="{{ $product->original_price }}" id="original_price"
-                        name="original_price">
+                    <input type="number" class="form-control" value="{{ $product->original_price }}"
+                        id="original_price" name="original_price">
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="selling_price">Selling Price</label>

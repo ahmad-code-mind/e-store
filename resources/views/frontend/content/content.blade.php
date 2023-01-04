@@ -16,14 +16,21 @@
         padding: 10px 0;
     }
 
-    /* .fa-heart:hover {
+    .far:hover {
+        font-size: 24px;
         color: red;
-    } */
+    }
 
-    .red {
+    .fas:hover {
+        font-size: 24px;
+        color: #a5a5a5;
+    }
+
+    .fas {
         color: red;
     }
 </style>
+
 <section class="featured-banner">
     <div class="container">
         <div class="row">
@@ -38,21 +45,18 @@
                         <input type="hidden" value="{{ $prod->id }}" class="prod_id">
                         <div class="sale">Sale</div>
                         <div class="icon" data-productid="{{ $prod->id }}">
-                            @if($prod->wishlist == null)
-                            <i class="far fa-heart addToWishList"></i>
+                            @if($prod->wishlist > '0')
+                            <i class="fas fa-heart"></i>
                             @else
-                            <i class="fas fa-heart delete-wishlist-item" style="color: red;"></i>
+                            <i class="far fa-heart"></i>
                             @endif
                         </div>
                         <ul>
-                            {{-- <li class="w-icon active">
+                            <li class="w-icon active">
                                 <a href="#"><i class="icon_bag_alt"></i></a>
-                            </li> --}}
-                            {{-- @dd($prod->id) --}}
+                            </li>
                             <li class="quick-view"><a style="cursor: pointer;" id="quickView"
-                                    onclick="quickview({{ $prod->id }})" data-id="{{ $prod->id }}">+
-                                    Quick
-                                    View</a></li>
+                                    onclick="quickview({{ $prod->id }})" data-id="{{ $prod->id }}">+Quick View</a></li>
                             {{-- <li class="w-icon">
                                 <a href="#"><i class="fa fa-random"></i></a>
                             </li> --}}
@@ -64,8 +68,8 @@
                             <h5>{{ $prod->name }}</h5>
                         </a>
                         <div class="product-price">
-                            RS.{{ $prod->selling_price }}
-                            <span>RS.{{ $prod->original_price }}</span>
+                            ${{ $prod->selling_price }}.00
+                            <span>${{ $prod->original_price }}.00</span>
                         </div>
                     </div>
                 </div>
@@ -74,6 +78,7 @@
         </div>
     </div>
 </section>
+
 <section class="featured-banner">
     <div class="container">
         <div class="row">
@@ -115,14 +120,10 @@
         </div>
     </div>
 </section>
-<div class="modal fade product_view p-5" id="product_view">
+
+<div class="modal fade product_view p-5 product_data" id="product_view">
     <div class="modal-dialog">
         <div class="modal-content">
-            {{-- <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div> --}}
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-4 product_img">
@@ -131,9 +132,27 @@
                     <div class="col-md-6 product_content">
                         <h4 id="product_title" class="mb-3"></h4>
                         <p id="product_descrip" class="mb-3"></p>
-                        <h3 class="cost" style="color: #e7ab3c"><span id="product_selling_price"></span>
+                        <h3 class="cost" style="color: #e7ab3c; font-size: 24px"><span
+                                id="product_selling_price"></span>
                             <span><small class="pre-cost" id="product_original_price"></span></small>
                         </h3>
+                        <input type="hidden" value="{{ $prod->id }}" class="prod_id">
+                        <div class="w-25 mt-3">
+                            <div class="input-group text-center mb-3">
+                                <div class="input-group-prepend">
+                                    <button class="input-group-text decrement-btn">
+                                        -
+                                    </button>
+                                </div>
+                                <input type="text" name="quantity" value="1"
+                                    class="form-control qty-input text-center" />
+                                <div class="input-group-append">
+                                    <button class="input-group-text increment-btn">
+                                        +
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         {{-- <div class="row">
                             <div class="col-md-4 col-sm-6 col-xs-12">
                                 <select class="form-control" name="select">
@@ -167,10 +186,10 @@
                         </div> --}}
                         <div class="space-ten"></div>
                         <div class="btn-ground">
-                            <button type="button" class="btn btn-success ml-3 addToCartBtn float-left"><i
-                                    class="fa fa-heart mr-1"></i>Add to Wishlist</button>
-                            <button type="button" class="btn btn-success ml-3 float-left"><i
+                            <button type="button" class="btn btn-success addToCartBtn float-left"><i
                                     class="fa fa-cart mr-1"></i>Add to Cart</button>
+                            {{-- <button type="button" class="btn btn-success addToWishListde ml-3 float-left"><i
+                                    class="fa fa-heart mr-1"></i>Add to Wishlist</button> --}}
                         </div>
                     </div>
                 </div>
@@ -585,60 +604,12 @@
                 document.getElementById("product_img").src = "upload/image/product/" + response.data.image;
                 document.getElementById("product_title").innerText = response.data.name;
                 document.getElementById("product_descrip").innerText = response.data.description;
-                document.getElementById("product_selling_price").innerText = (response.data.selling_price);
-                document.getElementById("product_original_price").innerText = response.data.original_price;
+                document.getElementById("product_selling_price").innerText = "$" + (response.data.selling_price) + ".00";
+                document.getElementById("product_original_price").innerText = "$" + (response.data.original_price) + ".00";
                 $("#product_view").modal('show');
             },
         });
     }
-
-    $(document).ready(function () {
-        $('.addToWishList').click(function (e) { 
-            e.preventDefault();
-            var product_id = $(this).closest('.product_data').find('.prod_id').val();
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $.ajax({
-                type: "POST",
-                url: "/add-to-wishlist",
-                data: {
-                    'product_id':product_id,
-                },
-                success: function (response) {
-                    $('.icon[data-productid='+product_id+']').html(`<i class="fas fa-heart" style="color: red;"></i>`);
-                    toastr.success(response.status);
-                }
-            });
-        });
-        $('.delete-wishlist-item').click(function (e) { 
-            e.preventDefault();
-            
-            var prod_id = $(this).closest('.product_data').find('.prod_id').val();
-    
-            $.ajaxSetup({
-            headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-    
-            $.ajax({
-                type: "POST",
-                url: "/delete-wishlist-item",
-                data: {
-                    'prod_id':prod_id,
-                },
-                success: function (response) {
-                    toastr.success(response.status);
-                    $('.icon[data-productid='+product_id+']').html(`<i class="far fa-heart addToWishList" style="color: black;"></i>`);
-                },
-            });
-        });
-    });
 </script>
 @endsection
 @endsection

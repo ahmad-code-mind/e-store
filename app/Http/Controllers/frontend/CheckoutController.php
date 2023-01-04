@@ -5,10 +5,11 @@ namespace App\Http\Controllers\frontend;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\OrderItem;
 use Stripe\PaymentIntent;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\OrderItem;
 use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
@@ -25,7 +26,29 @@ class CheckoutController extends Controller
             }
         }
         $cartitems = Cart::where('user_id', Auth::id())->get();
-        return view('frontend.shipping.shipping', compact('cartitems'));
+
+        // Stripe Intent ID
+        
+        // Enter Your Stripe Secret
+        \Stripe\Stripe::setApiKey('sk_test_51M9lIkJiRBCGoE6wY9j3ppIhw5UzGO4UNnPrzDxVW7pzEL2P0wCR2vYziRWLknqOSj24aroCs4tA8lFUkrgLHBwW006JqG5W9K');
+
+        // Total Amount
+        $total = 0;
+        $cartitems_total = Cart::where('user_id', Auth::id())->get();
+        foreach($cartitems_total as $prod)
+        {
+            $total += $prod->products->selling_price;
+        }
+        $payment_intent = PaymentIntent::create([
+            'description' => 'Stripe Test Payment',
+            'amount' => $total * 100,
+            'currency' => 'USD',
+            'description' => 'Payment From All About Laravel',
+            'payment_method_types' => ['card'],
+        ]);
+        $intent = $payment_intent->client_secret;
+        
+        return view('frontend.shipping.shipping', compact('cartitems','intent'));
     }
 
     public function placeorder(Request $request)
@@ -41,6 +64,8 @@ class CheckoutController extends Controller
         $order->state = $request->input('state');
         $order->country = $request->input('country');
         $order->pincode = $request->input('pincode');
+        $order->payment_mode = $request->input('payment_mode');
+        $order->payment_id = $request->input('payment_id');
         // Calculate Total
         $total = 0;
         $cartitems_total = Cart::where('user_id', Auth::id())->get();
@@ -69,29 +94,12 @@ class CheckoutController extends Controller
             $prod->update();
         }
 
+        $cartitems = Cart::where('user_id', Auth::id())->get();
+        Cart::destroy($cartitems);
+        if($request->input('payment_mode') == "Paid by PayPal")
+        {
+            return response()->json(['status',"Order Placed Successfully"]);
+        }
         return redirect('/')->with('status',"Order Placed Successfully");
     }
-
-//     public function checkout()
-//     {   
-//         // Enter Your Stripe Secret
-//         \Stripe\Stripe::setApiKey('sk_test_51M9lIkJiRBCGoE6wY9j3ppIhw5UzGO4UNnPrzDxVW7pzEL2P0wCR2vYziRWLknqOSj24aroCs4tA8lFUkrgLHBwW006JqG5W9K');
-
-        		
-// 		$amount = 100;
-// 		$amount *= 100;
-//         $amount = (int) $amount;
-        
-//         $payment_intent = PaymentIntent::create([
-// 			'description' => 'Stripe Test Payment',
-// 			'amount' => $amount,
-// 			'currency' => 'AUD',
-// 			'description' => 'Payment From All About Laravel',
-// 			'payment_method_types' => ['card'],
-// 		]);
-// 		$intent = $payment_intent->client_secret;
-
-// 		return view('frontend.payment.stripe',compact('intent'));
-
-//     }
 }

@@ -1,10 +1,10 @@
-@extends('frontend.frontend')
+@extends('admin.admin')
 
 @section('content')
 <style>
-    .title,
+    h2.bold,
     p.bold {
-        font-weight: 700;
+        font-weight: 500;
     }
 
     .order-total {
@@ -36,32 +36,26 @@
         color: #e7ab3c;
     }
 </style>
-<div class="breacrumb-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="breadcrumb-text">
-                    <a href="{{ url('/') }}"><i class="fa fa-home"></i> Home</a>
-                    {{-- <a href="{{ url('/') }}"><i class="fa fa-home"></i> Home</a> --}}
-                    <span>Order View</span>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="btn-group float-right">
+    <ol class="breadcrumb hide-phone p-0 m-0">
+        <li class="breadcrumb-item"><a href="{{ url('/') }}">Dashboard</a></li>
+        <li class="breadcrumb-item active"><a href="{{ url('admin/order') }}">Order</a></li>
+        <li class="breadcrumb-item active">Order History</li>
+    </ol>
 </div>
 <div class="container" style="margin-top: 20px">
     <div class="card">
-        <div class="card-header p-3">
+        <div class="card-header bg-light p-3">
             <div style="display: flex; justify-content: space-between;margin-bottom: 10px;">
-                <h4 class="title">Order View</h4>
-                <a href="{{ route('order-detail') }}">
-                    <button class="btn btn-outline-primary">Back</button>
+                <h2>Order View</h2>
+                <a href="{{ route('order-history') }}">
+                    <button class="btn btn-outline-primary">Order History</button>
                 </a>
             </div>
         </div>
         <div class="card-body p-3">
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-6 mb-5">
                     <h4>Shipping Details</h4>
                     <hr>
                     <div class="row">
@@ -136,9 +130,21 @@
                         </tbody>
                     </table>
                     <div class="order-total">
-                        <h4 class="ot-price mb-3">Total <span>${{ $orders->total_price }}.00</span></h3>
-                            <h4 class="ot-price">Payment Mode <span>{{ $orders->payment_mode }}</span></h3>
+                        <h4 class="ot-price">Total <span>${{ $orders->total_price }}.00</span></h3>
                     </div>
+                </div>
+                <hr>
+                <div class="container">
+                    <form action="{{ route('update-order',$orders->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <label for="" class="fs-2">Order Status</label>
+                        <select class="form-select" name="order_status">
+                            <option {{ $orders->status == '0'? 'selected':''}} value="0">Pending</option>
+                            <option {{ $orders->status == '1'? 'selected':''}} value="1">Completed</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary mt-3 float-right">Update</button>
+                    </form>
                 </div>
             </div>
         </div>

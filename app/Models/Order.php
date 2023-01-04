@@ -24,6 +24,8 @@ class Order extends Model
         'status',
         'message',
         'total_price',
+        'payment_mode',
+        'payment_id',
         'tracking_no',
     ];
 

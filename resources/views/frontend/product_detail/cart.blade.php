@@ -83,7 +83,8 @@
                                 <td class="cart-title">
                                     <h5>{{ $items->products->name }}</h5>
                                 </td>
-                                <td class="p-price" id="p-price">RS.{{ $items->products->selling_price }}</td>
+                                <td class="price" id="p-price" hidden>{{ $items->products->selling_price }}</td>
+                                <td class="p-price">{{ '$'.$items->products->selling_price.'.00' }}</td>
                                 @if ($items->products->qty >= $items->prod_qty)
                                 <td class="qua-col">
                                     <div class="quantity">
@@ -98,8 +99,8 @@
                                 @php
                                 $total += $items->products->selling_price * $items->prod_qty;
                                 @endphp
-                                <td class="total-price" id="s-total">RS.{{ $items->products->selling_price *
-                                    $items->prod_qty }}</td>
+                                <td class="total-price" id="s-total">${{ $items->products->selling_price *
+                                    $items->prod_qty }}.00</td>
                                 @else
                                 <td><label class="badge bg-danger p-2">Out of stock</label></td>
                                 <td class="total-price" id="s-total">0</td>
@@ -109,32 +110,23 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{-- <div data-aos="fade-down" id="msg" class="bg-danger p-2" data-aos-easing="linear"
+                    <div data-aos="fade-down" id="msg" class="bg-danger p-2" data-aos-easing="linear"
                         data-aos-duration="1000" style="cursor: pointer; display: none;"> !
                         No
                         Product To
                         Proceed
-                    </div> --}}
+                    </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4">
-                        <div class="cart-buttons">
-                            <a href="#" class="primary-btn continue-shop">Continue shopping</a>
-                            <a href="#" class="primary-btn up-cart">Update cart</a>
-                        </div>
-                        <div class="discount-coupon">
-                            <h6>Discount Codes</h6>
-                            <form action="#" class="coupon-form">
-                                <input type="text" placeholder="Enter your codes">
-                                <button type="submit" class="site-btn coupon-btn">Apply</button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 offset-lg-4">
+                    <div class="col-lg-4 offset-lg-8">
                         <div class="proceed-checkout">
                             <ul>
-                                <li class="subtotal">Subtotal <span>$240.00</span></li>
-                                <li class="cart-total">Total <span>Rs.{{ $total }}</span></li>
+                                {{-- <li class="subtotal">Subtotal <span>$240.00</span></li> --}}
+                                <div id="totalajaxcall">
+                                    <div class="totalpricingload">
+                                        <li class="cart-total">Total <span>${{ $total }}.00</span></li>
+                                    </div>
+                                </div>
                             </ul>
                             @if ( $total == '0')
                             <a id="btn-proceed">PROCEED TO CHECK OUT</a>
@@ -180,9 +172,10 @@
         $('.qtybtn').click(function (e) { 
             e.preventDefault();
             setTimeout(() => {
+                var thisClick = $(this);
                 var prod_id = $(this).closest('.product_data').find('.prod_id').val();
                 var qty = $(this).closest('.product_data').find('.qty-input').val();
-                var price = $(this).closest('.product_data').find('.p-price').html();;
+                var price = $(this).closest('.product_data').find('.price').html();;
 
                 $.ajaxSetup({
                 headers: {
@@ -196,12 +189,11 @@
                     data: {
                         'prod_id':prod_id,
                         'prod_qty':qty,
-                        'original_price':price,
+                        'selling_price':price,
                     },
                     success: function (response) {
-                        // console.log(response.tprice);
-                        window.location.reload();
-                        // $(this).closest('.product_data').find('.total-price').text(response.tprice);
+                        thisClick.closest('.product_data').find('.total-price').html('$' + response.total + '.00');
+                        $('#totalajaxcall').load(location.href + ' .totalpricingload')
                     },
                 });    
             }, 1000);

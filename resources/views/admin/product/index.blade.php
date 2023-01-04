@@ -2,6 +2,11 @@
 
 @section('style')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+<style>
+    .center {
+        text-align: center;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -84,9 +89,18 @@
         ],
         "columnDefs": [{
             "className": "dt-center",
-            "target": "_all"
+            "target": 4,
+            "render": function ( data, type, row ) {
+            return data.length > 10 ? data.substr( 0, 10 ) + "..." : data;
+        }
         }],
     });
+    
+    // $.fn.dataTable.render.ellipsis = function () {
+    //     return function ( data, type, row ) {
+    //         return type === 'display' && data.length > 10 ? data.substr( 0, 10 ) +'…' : data;
+    //     }
+    // };
 });
 </script>
 @endsection
