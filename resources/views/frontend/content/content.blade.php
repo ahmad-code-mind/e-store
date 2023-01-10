@@ -30,7 +30,6 @@
         color: red;
     }
 </style>
-
 <section class="featured-banner">
     <div class="container">
         <div class="row">
@@ -45,8 +44,12 @@
                         <input type="hidden" value="{{ $prod->id }}" class="prod_id">
                         <div class="sale">Sale</div>
                         <div class="icon" data-productid="{{ $prod->id }}">
+                            @if(Auth::check())
                             @if($prod->wishlist > '0')
                             <i class="fas fa-heart"></i>
+                            @else
+                            <i class="far fa-heart"></i>
+                            @endif
                             @else
                             <i class="far fa-heart"></i>
                             @endif
@@ -57,9 +60,9 @@
                             </li>
                             <li class="quick-view"><a style="cursor: pointer;" id="quickView"
                                     onclick="quickview({{ $prod->id }})" data-id="{{ $prod->id }}">+Quick View</a></li>
-                            {{-- <li class="w-icon">
+                            <li class="w-icon">
                                 <a href="#"><i class="fa fa-random"></i></a>
-                            </li> --}}
+                            </li>
                         </ul>
                     </div>
                     <div class="pi-text">
@@ -78,50 +81,80 @@
         </div>
     </div>
 </section>
-
-<section class="featured-banner">
-    <div class="container">
-        <div class="row">
-            <h2 class="mb-4">Categories</h2>
-            <div class="product-slider owl-carousel">
-                @foreach ($featured_products as $prod)
-                <div class="product-item">
-                    <div class="pi-pic">
-                        <img src="{{ asset('upload/image/product/'.$prod->image) }}" alt="" />
-                        <div class="sale">Sale</div>
-                        <div class="icon">
-                            <i class="icon_heart_alt"></i>
-                        </div>
-                        <ul>
-                            <li class="w-icon active">
-                                <a href="#"><i class="icon_bag_alt"></i></a>
-                            </li>
-                            <li class="quick-view"><a href="#">+ Quick View</a></li>
-                            <li class="w-icon">
-                                <a href="#"><i class="fa fa-random"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="pi-text">
-                        @foreach ($category as $cat)
-                        <div class="catagory-name">{{ $cat->name }}</div>
+<!-- Category Sidebar-->
+<div class="container mt-3">
+    <h2 class="mb-4" id="shop">Categories</h2>
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-4">
+            <div class="card p-3">
+                <div class="widget-wrapper">
+                    <h4><b>Shop</b></h4>
+                    <hr>
+                    <ul class="category-list">
+                        @foreach (App\Models\Categories::all() as $cate)
+                        <li value="{{ $cate->id }}" class="get-category{{ $cate->id }}"><a>
+                                {{-- <i class="fa fa-square-o mr-2"></i> --}}
+                                {{ $cate->name }}
+                            </a>
+                        </li>
                         @endforeach
-                        <a href="#">
-                            <h5>{{ $prod->name }}</h5>
-                        </a>
-                        <div class="product-price">
-                            RS.{{ $prod->selling_price }}
-                            <span>RS.{{ $prod->original_price }}</span>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 col-md-8 col-sm-8">
+            <div class="card p-3">
+                <div class="show-category">
+                    <div class="row">
+                        @foreach ($products as $prod)
+                        <div class="col-lg-4 col-md-6 col-sm-12 product-item product_data">
+                            <div class="pi-pic">
+                                <a href="{{ url('product/'.$prod->slug) }}">
+                                    <img src="{{ asset('upload/image/product/'.$prod->image) }}" alt="" />
+                                </a>
+                                <input type="hidden" value="{{ $prod->id }}" class="prod_id">
+                                <div class="icon" data-productid="{{ $prod->id }}">
+                                    @if (Auth::check())
+                                    @if($prod->wishlist > '0')
+                                    <i class="fas fa-heart"></i>
+                                    @else
+                                    <i class="far fa-heart"></i>
+                                    @endif
+                                    @else
+                                    <i class="far fa-heart"></i>
+                                    @endif
+                                </div>
+                                <ul>
+                                    <li class="w-icon active">
+                                        <a href="#"><i class="icon_bag_alt"></i></a>
+                                    </li>
+                                    <li class="quick-view"><a style="cursor: pointer;" id="quickView"
+                                            onclick="quickview({{ $prod->id }})" data-id="{{ $prod->id }}">+Quick
+                                            View</a></li>
+                                </ul>
+                            </div>
+                            <div class="pi-text">
+                                <div class="catagory-name">{{ $prod->category->name }}</div>
+                                <a href="#">
+                                    <h5>{{ $prod->name }}</h5>
+                                </a>
+                                <div class="product-price">
+                                    ${{ $prod->selling_price }}.00
+                                    <span>${{ $prod->original_price }}.00</span>
+                                </div>
+                            </div>
                         </div>
+                        @endforeach
                     </div>
                 </div>
-                @endforeach
             </div>
         </div>
     </div>
-</section>
+</div>
+<!--/.Sidebar-->
 
 <div class="modal fade product_view p-5 product_data" id="product_view">
+    <input type="hidden" id="qv_id" class="prod_id">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
@@ -136,7 +169,6 @@
                                 id="product_selling_price"></span>
                             <span><small class="pre-cost" id="product_original_price"></span></small>
                         </h3>
-                        <input type="hidden" value="{{ $prod->id }}" class="prod_id">
                         <div class="w-25 mt-3">
                             <div class="input-group text-center mb-3">
                                 <div class="input-group-prepend">
@@ -197,403 +229,11 @@
         </div>
     </div>
 </div>
-{{-- <div class="banner-section spad">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="single-banner">
-                    <img src="{{ asset('frontend/img/banner-1.jpg') }}" alt="" />
-                    <div class="inner-text">
-                        <h4>Men’s</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="single-banner">
-                    <img src="{{ asset('frontend/img/banner-2.jpg') }}" alt="" />
-                    <div class="inner-text">
-                        <h4>Women’s</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="single-banner">
-                    <img src="{{ asset('frontend/img/banner-3.jpg') }}" alt="" />
-                    <div class="inner-text">
-                        <h4>Kid’s</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+@endsection
 
-<section class="women-banner spad">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="product-large set-bg" data-setbg="{{ asset('frontend/img/products/women-large.jpg') }}">
-                    <h2>Women’s</h2>
-                    <a href="#">Discover More</a>
-                </div>
-            </div>
-            <div class="col-lg-8 offset-lg-1">
-                <div class="filter-control">
-                    <ul>
-                        <li class="active">Clothings</li>
-                        <li>HandBag</li>
-                        <li>Shoes</li>
-                        <li>Accessories</li>
-                    </ul>
-                </div>
-                <div class="product-slider owl-carousel">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="img/products/women-1.jpg" alt="" />
-                            <div class="sale">Sale</div>
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active">
-                                    <a href="#"><i class="icon_bag_alt"></i></a>
-                                </li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                <li class="w-icon">
-                                    <a href="#"><i class="fa fa-random"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Coat</div>
-                            <a href="#">
-                                <h5>Pure Pineapple</h5>
-                            </a>
-                            <div class="product-price">
-                                $14.00
-                                <span>$35.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="img/products/women-2.jpg" alt="" />
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active">
-                                    <a href="#"><i class="icon_bag_alt"></i></a>
-                                </li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                <li class="w-icon">
-                                    <a href="#"><i class="fa fa-random"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Shoes</div>
-                            <a href="#">
-                                <h5>Guangzhou sweater</h5>
-                            </a>
-                            <div class="product-price">$13.00</div>
-                        </div>
-                    </div>
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="img/products/women-3.jpg" alt="" />
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active">
-                                    <a href="#"><i class="icon_bag_alt"></i></a>
-                                </li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                <li class="w-icon">
-                                    <a href="#"><i class="fa fa-random"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Towel</div>
-                            <a href="#">
-                                <h5>Pure Pineapple</h5>
-                            </a>
-                            <div class="product-price">$34.00</div>
-                        </div>
-                    </div>
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="img/products/women-4.jpg" alt="" />
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active">
-                                    <a href="#"><i class="icon_bag_alt"></i></a>
-                                </li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                <li class="w-icon">
-                                    <a href="#"><i class="fa fa-random"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Towel</div>
-                            <a href="#">
-                                <h5>Converse Shoes</h5>
-                            </a>
-                            <div class="product-price">$34.00</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="deal-of-week set-bg spad mb-5" data-setbg="{{ asset('frontend/img/time-bg.jpg') }}">
-    <div class="container">
-        <div class="col-lg-6 text-center">
-            <div class="section-title">
-                <h2>Deal Of The Week</h2>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed<br />
-                    do ipsum dolor sit amet, consectetur adipisicing elit
-                </p>
-                <div class="product-price">
-                    $35.00
-                    <span>/ HanBag</span>
-                </div>
-            </div>
-            <div class="countdown-timer" id="countdown">
-                <div class="cd-item">
-                    <span>56</span>
-                    <p>Days</p>
-                </div>
-                <div class="cd-item">
-                    <span>12</span>
-                    <p>Hrs</p>
-                </div>
-                <div class="cd-item">
-                    <span>40</span>
-                    <p>Mins</p>
-                </div>
-                <div class="cd-item">
-                    <span>52</span>
-                    <p>Secs</p>
-                </div>
-            </div>
-            <a href="#" class="primary-btn">Shop Now</a>
-        </div>
-    </div>
-</section> --}}
-
-{{-- <section class="man-banner spad">
-    <div class="container">
-        <div class="row">
-            <div class="product-slider owl-carousel">
-                @foreach ($featured_products as $prod)
-                <div class="product-item">
-                    <div class="pi-pic">
-                        <img src="{{ asset('upload/image/product/'.$prod->image) }}" alt="" />
-                        <div class="sale">Sale</div>
-                        <div class="icon">
-                            <i class="icon_heart_alt"></i>
-                        </div>
-                        <ul>
-                            <li class="w-icon active">
-                                <a href="#"><i class="icon_bag_alt"></i></a>
-                            </li>
-                            <li class="quick-view"><a href="#">+ Quick View</a></li>
-                            <li class="w-icon">
-                                <a href="#"><i class="fa fa-random"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="pi-text">
-                        <div class="catagory-name">Coat</div>
-                        <a href="#">
-                            <h5>Pure Pineapple</h5>
-                        </a>
-                        <div class="product-price">
-                            ${{ $prod->selling_price }}
-                            <span>${{ $prod->original_price }}</span>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-    </div>
-</section> --}}
-
-{{-- <div class="instagram-photo">
-    <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/insta-1.jpg') }}">
-        <div class="inside-text">
-            <i class="ti-instagram"></i>
-            <h5><a href="#">colorlib_Collection</a></h5>
-        </div>
-    </div>
-    <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/insta-2.jpg') }}">
-        <div class="inside-text">
-            <i class="ti-instagram"></i>
-            <h5><a href="#">colorlib_Collection</a></h5>
-        </div>
-    </div>
-    <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/insta-3.jpg') }}">
-        <div class="inside-text">
-            <i class="ti-instagram"></i>
-            <h5><a href="#">colorlib_Collection</a></h5>
-        </div>
-    </div>
-    <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/insta-4.jpg') }}">
-        <div class="inside-text">
-            <i class="ti-instagram"></i>
-            <h5><a href="#">colorlib_Collection</a></h5>
-        </div>
-    </div>
-    <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/insta-5.jpg') }}">
-        <div class="inside-text">
-            <i class="ti-instagram"></i>
-            <h5><a href="#">colorlib_Collection</a></h5>
-        </div>
-    </div>
-    <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/insta-6.jpg') }}">
-        <div class="inside-text">
-            <i class="ti-instagram"></i>
-            <h5><a href="#">colorlib_Collection</a></h5>
-        </div>
-    </div>
-</div>
-
-<section class="latest-blog spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="section-title">
-                    <h2>From The Blog</h2>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-4 col-md-6">
-                <div class="single-latest-blog">
-                    <img src="{{ asset('frontend/img/latest-1.jpg') }}" alt="" />
-                    <div class="latest-text">
-                        <div class="tag-list">
-                            <div class="tag-item">
-                                <i class="fa fa-calendar-o"></i>
-                                May 4,2019
-                            </div>
-                            <div class="tag-item">
-                                <i class="fa fa-comment-o"></i>
-                                5
-                            </div>
-                        </div>
-                        <a href="#">
-                            <h4>The Best Street Style From London Fashion Week</h4>
-                        </a>
-                        <p>
-                            Sed quia non numquam modi tempora indunt ut labore et dolore
-                            magnam aliquam quaerat
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="single-latest-blog">
-                    <img src="{{ asset('frontend/img/latest-2.jpg') }}" alt="" />
-                    <div class="latest-text">
-                        <div class="tag-list">
-                            <div class="tag-item">
-                                <i class="fa fa-calendar-o"></i>
-                                May 4,2019
-                            </div>
-                            <div class="tag-item">
-                                <i class="fa fa-comment-o"></i>
-                                5
-                            </div>
-                        </div>
-                        <a href="#">
-                            <h4>Vogue's Ultimate Guide To Autumn/Winter 2019 Shoes</h4>
-                        </a>
-                        <p>
-                            Sed quia non numquam modi tempora indunt ut labore et dolore
-                            magnam aliquam quaerat
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="single-latest-blog">
-                    <img src="{{ asset('frontend/img/latest-3.jpg') }}" alt="" />
-                    <div class="latest-text">
-                        <div class="tag-list">
-                            <div class="tag-item">
-                                <i class="fa fa-calendar-o"></i>
-                                May 4,2019
-                            </div>
-                            <div class="tag-item">
-                                <i class="fa fa-comment-o"></i>
-                                5
-                            </div>
-                        </div>
-                        <a href="#">
-                            <h4>How To Brighten Your Wardrobe With A Dash Of Lime</h4>
-                        </a>
-                        <p>
-                            Sed quia non numquam modi tempora indunt ut labore et dolore
-                            magnam aliquam quaerat
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="benefit-items">
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="single-benefit">
-                        <div class="sb-icon">
-                            <img src="{{ asset('frontend/img/icon-1.png') }}" alt="" />
-                        </div>
-                        <div class="sb-text">
-                            <h6>Free Shipping</h6>
-                            <p>For all order over 99$</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="single-benefit">
-                        <div class="sb-icon">
-                            <img src="{{ asset('frontend/img/icon-2.png') }}" alt="" />
-                        </div>
-                        <div class="sb-text">
-                            <h6>Delivery On Time</h6>
-                            <p>If good have prolems</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="single-benefit">
-                        <div class="sb-icon">
-                            <img src="{{ asset('frontend/img/icon-1.png') }}" alt="" />
-                        </div>
-                        <div class="sb-text">
-                            <h6>Secure Payment</h6>
-                            <p>100% secure payment</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section> --}}
 @section('script')
 <script>
     function quickview(id) {
-        // alert(id);
         $.ajax({
             type: "GET",
             url: "{{ url('/') }}/product",
@@ -601,6 +241,7 @@
                 "id": id,
             },
             success: function (response) {
+                document.getElementById("qv_id").value = response.data.id;
                 document.getElementById("product_img").src = "upload/image/product/" + response.data.image;
                 document.getElementById("product_title").innerText = response.data.name;
                 document.getElementById("product_descrip").innerText = response.data.description;
@@ -610,6 +251,23 @@
             },
         });
     }
+    $(document).ready(function () {
+        @foreach (App\Models\Categories::all() as $cate)
+            $(".get-category{{ $cate->id }}").click(function (e) { 
+                e.preventDefault();
+                var category = $(".get-category{{ $cate->id }}").val();
+                
+                $.ajax({
+                    type: "GET",
+                    url: "/cateProducts",
+                    data: "cate_id=" + category,
+                    dataType: "html",
+                    success: function (response) {
+                        $('.show-category').html(response);
+                    }
+                });
+            });
+        @endforeach
+    });
 </script>
-@endsection
 @endsection

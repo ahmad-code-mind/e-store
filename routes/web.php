@@ -1,24 +1,25 @@
 <?php
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\frontend\profile;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\admin\OrdersController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProfileController;
+use App\Http\Controllers\frontend\CartController;
 use App\Http\Controllers\frontend\MainController;
 use App\Http\Controllers\admin\CategoryController;
-use App\Http\Controllers\admin\OrdersController;
-use App\Http\Controllers\admin\RoleAndPermissionController;
-use App\Http\Controllers\frontend\CartController;
-use App\Http\Controllers\frontend\CheckoutController;
 use App\Http\Controllers\frontend\OrderController;
 use App\Http\Controllers\frontend\RatingController;
+use App\Http\Controllers\frontend\CheckoutController;
 use App\Http\Controllers\frontend\WishlistController;
 use App\Http\Controllers\payments\StripePaymentController;
+use App\Http\Controllers\admin\RoleAndPermissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +33,9 @@ use App\Http\Controllers\payments\StripePaymentController;
 */
 
 // Login Auth
-Auth::routes();
+Auth::routes([
+    'verify' => true
+]);
 
 // Google login
 Route::get('login-google', [LoginController::class, 'redirectToProvider'])->name('login.google');
@@ -40,12 +43,15 @@ Route::get('auth/google/callback', [LoginController::class, 'handleCallback']);
 
 // Home Page 
 Route::get('/', [HomeController::class, 'index']);
-Route::get('/',[HomeController::class, 'featured_products']);
+Route::get('/',[HomeController::class, 'featured_products'])->middleware('verified');
 Route::get('product',[HomeController::class, 'quickView']);
 Route::get('product/{prod_slug}',[HomeController::class, 'productView']);
 Route::get('product-list',[HomeController::class, 'productlist']);
 Route::post('searchproduct',[HomeController::class, 'searchproduct']);
 Route::get('contact',[HomeController::class, 'contact']);
+Route::get('faq',[HomeController::class, 'faq']);
+// Products by Category
+Route::get('cateProducts',[HomeController::class, 'category'])->name('category');
 // Wishlist
 Route::post('add-to-wishlist',[WishlistController::class, 'add']);
 Route::post('update-wishlist',[WishlistController::class, 'updateWishlist']);
@@ -156,8 +162,6 @@ Route::middleware(['auth'])->group(function() {
         Route::post('store-Role',[RoleAndPermissionController::class, 'storeRole'])->name('store-role');
         Route::get('permission/{id}',[RoleAndPermissionController::class, 'getAllPermissions'])->name('get-permissions');
         Route::post('assign-permission',[RoleAndPermissionController::class, 'assignPermissions'])->name('assign-permissions');
-        // Route::put('edit/{id}',[ProductController::class, 'edit'])->name('edit-product');
-        // Route::get('delete/{id}',[ProductController::class, 'delete'])->name('delete-product');
     });
     // ***********************************End Role***************************************  //
     

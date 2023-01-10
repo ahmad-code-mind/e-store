@@ -206,40 +206,22 @@
 
     <div class="nav-item">
       <div class="container">
-        <div class="nav-depart">
-          <div class="depart-btn">
-            <i class="ti-menu"></i>
-            <span>All Categories</span>
-            <ul class="depart-hover">
-              <li class="active"><a href="#">Home Appliances</a></li>
-              <li><a href="#">Furniture</a></li>
-              <li><a href="#">Clothes</a></li>
-            </ul>
-          </div>
-        </div>
         <nav class="nav-menu mobile-menu">
           <ul>
-            <li><a href="index-2.html">Home</a></li>
-            <li><a href="shop.html">Shop</a></li>
-            <li>
+            <li class="{{ Request::is('/') ? 'active' :'' }}"><a href="{{ url('/') }}">Home</a></li>
+            <li><a href="{{ url('/') }}#shop">Shop</a></li>
+            {{-- <li>
               <a href="#">Collection</a>
               <ul class="dropdown">
                 <li><a href="#">Home Appliances</a></li>
                 <li><a href="#">Furniture</a></li>
                 <li><a href="#">Clothes</a></li>
               </ul>
-            </li>
-            <li><a href="blog.html">Blog</a></li>
-            <li><a href="{{ url('contact') }}">Contact</a></li>
-            <li>
-              <a href="#">More</a>
-              <ul class="dropdown">
-                <li><a href="blog-details.html">Blog Details</a></li>
-                <li><a href="{{ url('cart') }}">Shopping Cart</a></li>
-                <li><a href="check-out.html">Checkout</a></li>
-                <li><a href="{{ url('faq') }}">Faq</a></li>
-              </ul>
-            </li>
+            </li> --}}
+            <li><a href="blog-details.html">Blog Details</a></li>
+            <li><a href="{{ url('cart') }}">Shopping Cart</a></li>
+            <li class="{{ Request::is('faq') ? 'active' :'' }}"><a href="{{ url('faq') }}">Faq</a></li>
+            <li class="{{ Request::is('contact') ? 'active' :'' }}"><a href="{{ url('contact') }}">Contact</a></li>
           </ul>
         </nav>
         <div class="d-md-none" id="mobile-menu-wrap"></div>

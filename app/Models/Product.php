@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Categories;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
 
 class Product extends Model
 {
@@ -33,7 +34,7 @@ class Product extends Model
     }
 
     public function wishlist() {
-        return $this->hasOne(Wishlist::class, 'prod_id', 'id');
+        return $this->hasOne(Wishlist::class, 'prod_id', 'id')->where('user_id',Auth::id());
     }
 
     public function cart() {

@@ -24,10 +24,9 @@
 
 
             <div class="col-sm-12 mb-4">
-                {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#staticBackdrop">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                     + Permissions
-                </button> --}}
+                </button>
                 <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#role">
                     + Add New Role
                 </button>
@@ -45,6 +44,9 @@
                             <div class="modal-body">
                                 <input type="text" class="form-control" id="name" name="name" v-model="permission_name"
                                     aria-describedby="emailHelp" placeholder="Enter Permission" required>
+                                <input type="text" class="form-control mt-4" id="group_name" name="group_name"
+                                    v-model="group_name" aria-describedby="emailHelp" placeholder="Enter Group Name"
+                                    required>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

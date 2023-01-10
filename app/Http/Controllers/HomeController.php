@@ -8,7 +8,9 @@ use App\Models\Product;
 use App\Models\Wishlist;
 use App\Models\Categories;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use PhpOffice\PhpSpreadsheet\Calculation\Category;
 
 class HomeController extends Controller
 {
@@ -38,18 +40,21 @@ class HomeController extends Controller
     public function featured_products(Request $request)
     {
         $cartitems = Cart::where('user_id',Auth::id())->get();
-        $category = Categories::all();
+        $products = Product::where('status','1')->with('wishlist')->with('category')->get();
         $featured_products = Product::where('trending','1')->with('wishlist')->with('category')->take(5)->get();
-        return view('frontend.content.content', compact('featured_products','category','cartitems'));
+        return view('frontend.content.content', compact('featured_products','cartitems','products'));
     }
-    
-    public function contact()
+
+    public function category(Request $request)
     {
-        return view('frontend.contact.contact');
+        $cate_id = $request->cate_id;
+        $data = Product::with('category')->where('products.category_id',$cate_id)->with('wishlist')->get();
+        return view('frontend.category.index', ['data' => $data]);
     }
 
     public function productView($prod_slug)
     {
+        $category = Categories::all();
         if(Product::where('slug', $prod_slug)->exists())
         {
             $products = Product::where('slug', $prod_slug)->first();  
@@ -64,7 +69,7 @@ class HomeController extends Controller
             }else {
                 $rating_value = 0;
             }
-            return view('frontend.product_detail.detail', compact('products','ratings','rating_value','user_rating','user_review')); 
+            return view('frontend.product_detail.detail', compact('products','ratings','rating_value','user_rating','user_review','category')); 
         } else {
             return redirect('/')->with('error',"The link was broken");
         }
@@ -101,5 +106,15 @@ class HomeController extends Controller
         } else {
             return redirect()->back('status',"No Product Match your Search");
         }
+    }
+
+    public function contact()
+    {
+        return view('frontend.contact.contact');
+    }
+    
+    public function faq()
+    {
+        return view('frontend.faq.faq');
     }
 }

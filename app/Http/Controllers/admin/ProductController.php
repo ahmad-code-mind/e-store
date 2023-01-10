@@ -9,13 +9,20 @@ use Illuminate\Support\Carbon;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        return view('admin.product.index');
+        if (Gate::allows('product.view'))
+        {
+            return view('admin.product.index');
+        } else {
+            abort(403, "You don't have permission to access");
+        }
     }
 
     public function show()
@@ -50,8 +57,13 @@ class ProductController extends Controller
     }
     public function add()
     {
-        $category = Categories::all();
-        return view('admin.product.add',compact('category'));
+        if (Gate::allows('product.add'))
+        {
+            $category = Categories::all();
+            return view('admin.product.add',compact('category'));
+        } else {
+            abort(403, "You don't have permission to access");
+        }
     }
     public function store(Request $request)
     {
@@ -83,9 +95,14 @@ class ProductController extends Controller
     }
     public function showedit($id)
     {
-        $product = Product::find($id);
-        $category = Categories::all();
-        return view('admin.product.edit',compact('product','category'));
+        if (Gate::allows('product.edit'))
+        {
+            $product = Product::find($id);
+            $category = Categories::all();
+            return view('admin.product.edit',compact('product','category'));
+        } else {
+            abort(403, "You don't have permission to access");
+        }
     }
     public function edit(request $request,$id)
     {
@@ -124,9 +141,14 @@ class ProductController extends Controller
 
     public function delete($id)
     {
-        $product = Categories::find($id);
-        unlink('upload/image/product/'.$product->image);
-        $product->delete();
-        return redirect('admin/product')->with('status','Product Deleted Successfully');
+        if (Gate::allows('product.delete'))
+        {
+            $product = Categories::find($id);
+            unlink('upload/image/product/'.$product->image);
+            $product->delete();
+            return redirect('admin/product')->with('status','Product Deleted Successfully');
+        } else {
+            abort(403, "You don't have permission to access");
+        }
     }
 }

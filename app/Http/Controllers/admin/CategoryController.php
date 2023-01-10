@@ -17,27 +17,26 @@ use PhpOffice\PhpSpreadsheet\Calculation\Category;
 
 class CategoryController extends Controller
 {
-    public function index(){
-        return view('admin.category.index');
+    public function index()
+    {
+        if (Gate::allows('category.view'))
+        {
+            return view('admin.category.index');
+        } else {
+            abort(403, "You don't have permission to access");
+        }
     }
+    
     public function show()
     {
         $category = Categories::all();
-        // select(['id', 'name', 'slug','description', 'image']);
-        // if(Gate::allows('edit-category') && Gate::allows('delete-category')) {
-
-        // } else if(Gate::allows('edit-category')) {
-
-        // } else {
-
-        // }
         return DataTables::of($category)->addColumn('image', function($category){
             $img = '<img src='.asset('upload/image/category/'.$category->image).' width="50" height="50"
             class="img img-responsive">';
             return $img;
             // $img = '<model-viewer src='.asset('upload/image/category/'.$category->image).' camera-controls ;"
             // class="img img-responsive"></model-viewer>';
-            return $img;
+            // return $img;
         })
 
         ->editColumn('action', function($category)
@@ -55,8 +54,14 @@ class CategoryController extends Controller
         ->make(true);
     }
 
-    public function add(){
-        return view('admin.category.add');
+    public function add()
+    {
+        if (Gate::allows('category.add'))
+        {
+            return view('admin.category.add');
+        } else {
+            abort(403, "You don't have permission to access");
+        }
     }
 
     public function store(Request $request)
@@ -85,8 +90,13 @@ class CategoryController extends Controller
 
     public function showedit($id)
     {
-        $category = Categories::find($id);
-        return view('admin.category.edit',compact('category'));
+        if (Gate::allows('category.edit'))
+        {
+            $category = Categories::find($id);
+            return view('admin.category.edit',compact('category'));
+        } else {
+            abort(403, "You don't have permission to access");
+        }
     }
     
     public function edit(request $request,$id)
@@ -120,10 +130,15 @@ class CategoryController extends Controller
 
     public function delete($id)
     {
-        $category = Categories::find($id);
-        unlink('upload/image/category/'.$category->image);
-        $category->delete();
-        return redirect('admin/category')->with('status','Category Deleted Successfully');
+        if (Gate::allows('category.delete'))
+        {
+            $category = Categories::find($id);
+            unlink('upload/image/category/'.$category->image);
+            $category->delete();
+            return redirect('admin/category')->with('status','Category Deleted Successfully');
+        } else {
+            abort(403, "You don't have permission to access");
+        }
     }
 
     public function exportCategory()

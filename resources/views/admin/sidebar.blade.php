@@ -1,10 +1,10 @@
 <div class="sidebar" data-color="rose" data-background-color="black"
     data-image="{{ asset('assets/img/sidebar-1.jpg') }}">
     <div class="logo">
-        <a href="{{ url('/') }}" class="simple-text logo-mini">
+        <a href="{{ url('/admin') }}" class="simple-text logo-mini bg-secondary" style="border-radius: 35%">
             E
         </a>
-        <a href="{{ url('/') }}" class="simple-text logo-normal">
+        <a href="{{ url('/admin') }}" class="simple-text logo-normal">
             E-MART
         </a>
     </div>
@@ -37,18 +37,22 @@
             </div>
         </div>
         <ul class="nav">
+            @can('dashboard.view')
             <li class="nav-item {{ Request::is('admin') ? 'active':'' }}  ">
                 <a class="nav-link" href="{{ url('/admin') }}">
                     <i class="material-icons">dashboard</i>
                     <p>Dashboard</p>
                 </a>
             </li>
+            @endcan
+            @can('category.view')
             <li class="nav-item {{ Request::is('admin/category*') ? 'active':'' }} ">
                 <a class="nav-link" href="{{ url('admin/category') }}">
                     <i class="material-icons">category</i>
                     <p>Category</p>
                 </a>
             </li>
+            @endcan
             @can('product.view')
             <li class="nav-item {{ Request::is('admin/product*') ? 'active':'' }} ">
                 <a class="nav-link" href="{{ url('admin/product') }}">
@@ -57,24 +61,30 @@
                 </a>
             </li>
             @endcan
+            @can('order.view')
             <li class="nav-item {{ Request::is('admin/order*') ? 'active':'' }} ">
                 <a class="nav-link" href="{{ url('admin/order') }}">
                     <i class="material-icons">list_alt</i>
                     <p>Orders</p>
                 </a>
             </li>
+            @endcan
+            @can('role.view')
             <li class="nav-item {{ Request::is('admin/role*') ? 'active':'' }} ">
                 <a class="nav-link" href="{{ url('admin/role') }}">
                     <i class="material-icons">group</i>
                     <p>Roles</p>
                 </a>
             </li>
+            @endcan
+            @can('user.view')
             <li class="nav-item {{ Request::is('admin/user*') ? 'active':'' }} ">
                 <a class="nav-link" href="{{ url('admin/user') }}">
                     <i class="material-icons">group</i>
                     <p>Users</p>
                 </a>
             </li>
+            @endcan
         </ul>
     </div>
     <div class="sidebar-background"></div>

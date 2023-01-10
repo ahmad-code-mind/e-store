@@ -46,7 +46,7 @@
                         </div>
                         <div class="ci-text">
                             <span>Address:</span>
-                            <p>60-49 Road 11378 New York</p>
+                            <p>Address: Ferozpur Road 57600 Pakistan</p>
                         </div>
                     </div>
                     <div class="cw-item">
@@ -55,7 +55,7 @@
                         </div>
                         <div class="ci-text">
                             <span>Phone:</span>
-                            <p>+65 11.188.888</p>
+                            <p>+92 311 4127829</p>
                         </div>
                     </div>
                     <div class="cw-item">

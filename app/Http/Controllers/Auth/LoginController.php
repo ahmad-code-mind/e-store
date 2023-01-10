@@ -32,11 +32,19 @@ class LoginController extends Controller
     protected $redirectTo = '/';
     protected function authenticated()
     {
-        if(Auth::user()->role_as == '1') //1 = Admin Login
+        if(Auth::user()->role_as == '1') //1 = SuperAdmin Login
         {
             return redirect('/admin')->with('status','Welcome to your dashboard');
         }
-        elseif(Auth::user()->role_as == '2') // = User Login
+        elseif(Auth::user()->role_as == '2') // = Admin Login
+        {
+            return redirect('/admin')->with('status','Welcome to your dashboard');
+        }
+        elseif(Auth::user()->role_as == '3') // = SubAdmin Login
+        {
+            return redirect('/admin')->with('status','Welcome to your dashboard');
+        }
+        elseif(Auth::user()->role_as == '4') // = Employee Login
         {
             return redirect('/admin')->with('status','Welcome to your dashboard');
         }

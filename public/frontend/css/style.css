@@ -1,12 +1,3 @@
-/******************************************************************
-  Template Name: Fashi
-  Description: Fashi eCommerce HTML Template
-  Author: Colorlib
-  Author URI: https://colorlib.com/
-  Version: 1.0
-  Created: Colorlib
-******************************************************************/
-
 /*------------------------------------------------------------------
 [Table of contents]
 
@@ -27,16 +18,13 @@
 
 -------------------------------------------------------------------*/
 
-/*----------------------------------------*/
-/* Template default CSS
-/*----------------------------------------*/
-
 html,
 body {
     height: 100%;
     font-family: "Muli", sans-serif;
     -webkit-font-smoothing: antialiased;
     font-smoothing: antialiased;
+    scroll-behavior: smooth;
 }
 
 h1,
@@ -623,7 +611,7 @@ ol {
 }
 
 .nav-item {
-    background: #252525;
+    background: #494949;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -713,7 +701,8 @@ ol {
 .nav-item .nav-menu {
     display: -webkit-inline-box;
     display: -ms-inline-flexbox;
-    display: inline-flex;
+    display: flex;
+    justify-content: center;
     position: relative;
 }
 
@@ -733,7 +722,7 @@ ol {
     font-weight: 700;
     display: block;
     color: #ffffff;
-    border-right: 2px solid #3b3b3b;
+    border-right: 1px solid #707070;
     text-transform: uppercase;
     padding: 16px 42px 15px;
     -webkit-transition: all 0.3s;
@@ -4054,7 +4043,7 @@ ol {
     }
 
     .nav-item .nav-menu li a {
-        padding: 16px 10px 15px;
+        padding: 16px 24px 15px;
     }
 
     .instagram-photo .insta-item .inside-text h5 {
@@ -4632,4 +4621,24 @@ ol {
 /*Resize the wrap to see the search bar change!*/
 .wrap {
     width: 100%;
+}
+
+.widget-wrapper .category-list li {
+    list-style: none;
+    padding: .8rem;
+}
+
+.widget-wrapper .category-list li a {
+    color: rgb(44, 44, 44);
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.widget-wrapper .category-list li a i {
+    font-size: 18px;
+}
+
+.widget-wrapper .category-list li a:hover {
+    color: #e7ab3c;
 }

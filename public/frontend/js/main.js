@@ -1,12 +1,3 @@
-/*  ---------------------------------------------------
-    Template Name: Fashi
-    Description: Fashi eCommerce HTML Template
-    Author: Colorlib
-    Author URI: https://colorlib.com/
-    Version: 1.0
-    Created: Colorlib
----------------------------------------------------------  */
-
 "use strict";
 
 (function ($) {
@@ -18,10 +9,10 @@
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
     });
+
     function loadcart() {
         $.ajax({
             type: "GET",
-            // url: "{{ route('cart-count') }}",
             url: "/load-cart-count",
             success: function (response) {
                 $(".cart-count").html("");
@@ -29,6 +20,7 @@
             },
         });
     }
+
     $(".addToCartBtn").click(function (e) {
         e.preventDefault();
 
@@ -36,11 +28,13 @@
             .closest(".product_data")
             .find(".prod_id")
             .val();
+
+        console.log(product_id);
+
         var product_qty = $(this)
             .closest(".product_data")
             .find(".qty-input")
             .val();
-
         $.ajaxSetup({
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -64,10 +58,10 @@
             },
         });
     });
+
     function loadwishlist() {
         $.ajax({
             type: "GET",
-            // url: "{{ route('wishlist-count') }}",
             url: "/wishlist-count",
             success: function (response) {
                 $(".wishlist-count").html("");
@@ -75,6 +69,7 @@
             },
         });
     }
+
     $(".addToWishListde").click(function (e) {
         e.preventDefault();
 
@@ -101,62 +96,10 @@
             },
         });
     });
+
     /*------------------
       Wishlist Home Page
     --------------------*/
-    // $('.addToWishList').click(function (e) {
-    //     e.preventDefault();
-    //     var product_id = $(this).closest('.product_data').find('.prod_id').val();
-    //     var value = document.getElementById("wishlist-count").innerHTML;
-    //     value = isNaN(value) ? 0 : value;
-    //     value++;
-    //     document.getElementById('wishlist-count').innerHTML = value;
-
-    //     $.ajaxSetup({
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         }
-    //     });
-
-    //     $.ajax({
-    //         type: "POST",
-    //         url: "/add-to-wishlist",
-    //         data: {
-    //             'product_id': product_id,
-    //         },
-    //         success: function (response) {
-    //             $('.icon[data-productid=' + product_id + ']').html(`<i class="fas fa-heart" style="color: red;"></i>`);
-    //             // toastr.success(response.status);
-    //         }
-    //     });
-    // });
-    // $('.delete-wishlist-item').click(function (e) {
-    //     e.preventDefault();
-
-    //     var prod_id = $(this).closest('.product_data').find('.prod_id').val();
-    //     var value = document.getElementById("wishlist-count").innerHTML;
-    //     value = isNaN(value) ? 0 : value;
-    //     value--;
-    //     document.getElementById('wishlist-count').innerHTML = value;
-
-    //     $.ajaxSetup({
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         }
-    //     });
-
-    //     $.ajax({
-    //         type: "POST",
-    //         url: "/delete-wishlist-item",
-    //         data: {
-    //             'prod_id': prod_id,
-    //         },
-    //         success: function (response) {
-    //             // toastr.success(response.status);
-    //             $('.icon[data-productid=' + product_id + ']').html(`<i class="fas fa-heart addToWishList"></i>`);
-    //         },
-    //     });
-    // });
     $('.icon').click(function (e) {
         e.preventDefault();
         var product_id = $(this).closest('.product_data').find('.prod_id').val();
@@ -185,6 +128,7 @@
             }
         });
     });
+
     /*------------------
      Increment Decrement
     --------------------*/
@@ -210,6 +154,7 @@
             $(".qty-input").val(value);
         }
     });
+
     /*------------------
         Preloader
     --------------------*/
@@ -232,16 +177,6 @@
     $(".mobile-menu").slicknav({
         prependTo: "#mobile-menu-wrap",
         // allowParentLinks: true,
-    });
-    /*------------------
-        Wishlist
-    --------------------*/
-    $.ajax({
-        type: "GET",
-        url: "/load-cart-data",
-        data: "data",
-        dataType: "dataType",
-        success: function (response) { },
     });
 
     /*------------------
@@ -435,6 +370,7 @@
         $(".language_drop").msDropdown({ roundedBorder: false });
         $("#tech").data("dd");
     });
+
     /*-------------------
         Range Slider
     --------------------- */
@@ -489,4 +425,5 @@
     });
 
     $(".product-pic-zoom").zoom();
+
 })(jQuery);

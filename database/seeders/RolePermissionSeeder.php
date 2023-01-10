@@ -78,6 +78,26 @@ class RolePermissionSeeder extends Seeder
                     'role.delete',
                 ]
             ],
+            [
+                'group_name' => 'user',
+                'permissions' => [
+                    // User Permissions
+                    'user.add',
+                    'user.view',
+                    'user.edit',
+                    'user.delete',
+                ]
+            ],
+            [
+                'group_name' => 'order',
+                'permissions' => [
+                    // Order Permissions
+                    'order.view',
+                    'order.history',
+                    'order.viewdetail',
+                    'order.update',
+                ]
+            ],
         ];
         
         // Create and Assign Permissions
